@@ -28,16 +28,40 @@ CLMS is a secure client management system with role-based access control. It ena
 - [Specify database requirements]
 - [Specify frontend requirements]
 
+# CLMS (Client Management System)
+
 ## Installation
 
 1. Clone the repository
 ```bash
 git clone [repository-url]
+cd CLMS
 ```
 
-2. Install dependencies
+2. Create and activate a virtual environment
 ```bash
-npm install
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+```
+
+3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+4. Apply migrations
+```bash
+python manage.py migrate
+```
+
+5. Create a superuser (admin account)
+```bash
+python manage.py createsuperuser
+```
+
+6. Start the development server
+```bash
+python manage.py runserver
 ```
 
 3. Configure environment variables

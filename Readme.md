@@ -34,14 +34,18 @@ CLMS is a secure client management system with role-based access control. It ena
 
 1. Clone the repository
 ```bash
-git clone [repository-url]
+git clone [https://github.com/RupSagarGautam/CLMS]
 cd CLMS
 ```
 
 2. Create and activate a virtual environment
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+python -m venv .venv
+source .venv/bin/activate
+```
+On Windows Use: 
+```bash
+.venv\Scripts\Activate
 ```
 
 3. Install dependencies

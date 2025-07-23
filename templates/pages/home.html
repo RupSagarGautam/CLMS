@@ -1,0 +1,9 @@
+Hello World
+
+{% comment %} Logout Buttom {% endcomment %}
+<a href="/logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <i class="fa-solid fa-sign-out-alt"></i> Logout 
+</a>
+<form id="logout-form" action="/logout" style="display: none;">
+    {% csrf_token %}
+</form>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLMS Staff Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body>
+  
+    <div class="login-container">
+        <div class="login-header">
+            <h2>CLMS Staff Login</h2>
+            <p>Staff access only. Please login to continue.</p>
+        </div>
+        <form class="login-form" autocomplete="off" method="post" action="/log-in/">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="username">Username or Email</label>
+                <div class="input-icon-wrapper">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="username" name="username" placeholder="Enter your username or email" required autofocus>
+                    {% if username.error %}
+                      <p class="error-text">{{ username.error }}</p>
+                    {% endif %}
+                  </div>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-icon-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    {% if password.error %}
+                      <p class="error-text">{{ password.error }}</p>
+                    {% endif %}
+                  </div>
+            </div>
+            <button type="submit"><i class="fa-solid fa-sign-in-alt"></i> <span>Login</span></button>
+        </form>
+        <div class="login-footer">
+            &copy; 2025 CLMS System. Staff access only.
+        </div>
+    </div>
+    <script>
+// Circular invert hover effect for login button
+const loginBtn = document.querySelector('.login-form button');
+const loginBtnText = loginBtn ? loginBtn.querySelector('span') : null;
+const loginBtnIcon = loginBtn ? loginBtn.querySelector('i') : null;
+if (loginBtn) {
+  loginBtn.addEventListener('mousemove', function(e) {
+    const rect = this.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    this.style.setProperty('--x', x + 'px');
+    this.style.setProperty('--y', y + 'px');
+    // Check if mouse is inside the green circle (radius 60px)
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const dist = Math.sqrt(Math.pow(x - cx, 2) + Math.pow(y - cy, 2));
+    if (dist <= 60) {
+      loginBtnText && loginBtnText.classList.add('invert');
+      loginBtnIcon && loginBtnIcon.classList.add('invert');
+    } else {
+      loginBtnText && loginBtnText.classList.remove('invert');
+      loginBtnIcon && loginBtnIcon.classList.remove('invert');
+    }
+  });
+  loginBtn.addEventListener('mouseenter', function() {
+    this.classList.add('invert-hover');
+  });
+  loginBtn.addEventListener('mouseleave', function() {
+    this.classList.remove('invert-hover');
+    this.style.removeProperty('--x');
+    this.style.removeProperty('--y');
+    loginBtnText && loginBtnText.classList.remove('invert');
+    loginBtnIcon && loginBtnIcon.classList.remove('invert');
+  });
+}
+</script>
+</body>
+</html> 

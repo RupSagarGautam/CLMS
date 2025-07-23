@@ -22,20 +22,20 @@
                 <div class="input-icon-wrapper">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="username" name="username" placeholder="Enter your username or email" required autofocus>
-                    {% if username.error %}
-                      <p class="error-text">{{ username.error }}</p>
-                    {% endif %}
                   </div>
+                  {% if errors.username %}
+                    <p class="error-text">{{ errors.username }}</p>
+                  {% endif %}
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
                 <div class="input-icon-wrapper">
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    {% if password.error %}
-                      <p class="error-text">{{ password.error }}</p>
-                    {% endif %}
                   </div>
+                  {% if errors.password %}
+                    <p class="error-text">{{ errors.password }}</p>
+                  {% endif %}
             </div>
             <button type="submit"><i class="fa-solid fa-sign-in-alt"></i> <span>Login</span></button>
         </form>

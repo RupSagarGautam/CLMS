@@ -68,16 +68,6 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-3. Configure environment variables
-- Create `.env` file
-- Set up database connections
-- Configure authentication parameters
-
-4. Start the application
-```bash
-npm start
-```
-
 ## Usage
 1. Admin login to create staff accounts
 2. Provide credentials to staff members

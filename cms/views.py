@@ -7,33 +7,38 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
+
 def staff_login(request):
-    errors = {}
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        try:
-            user_obj = User.objects.get(username=username)
-        except User.DoesNotExist:
-            user_obj = None
-
-        if user_obj:
-            authenticated_user = authenticate(request, username=username, password=password)
-            if authenticated_user:
-                login(request, authenticated_user)
-                messages.success(request, "You have successfully logged in")
-                return redirect("/")
-            else:
-                errors['password'] = "Password does not match"
-                print(errors['password'])
-        else:
-            errors['username'] = "Username does not match"
-            print(errors['username'])
-
-        return render(request, 'pages/login.html', {'errors': errors})
+    if request.user.is_authenticated:
+        messages.info(request, "You are already logged in")
+        return redirect("/")
     else:
-        return render(request, 'pages/login.html')
+        errors = {}
+        if request.method == "POST":
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+    
+            try:
+                user_obj = User.objects.get(username=username)
+            except User.DoesNotExist:
+                user_obj = None
+    
+            if user_obj:
+                authenticated_user = authenticate(request, username=username, password=password)
+                if authenticated_user:
+                    login(request, authenticated_user)
+                    messages.success(request, "You have successfully logged in")
+                    return redirect("/")
+                else:
+                    errors['password'] = "Password does not match"
+                    print(errors['password'])
+            else:
+                errors['username'] = "Username does not match"
+                print(errors['username'])
+    
+            return render(request, 'pages/login.html', {'errors': errors})
+        else:
+            return render(request, 'pages/login.html')
 
 @login_required(login_url="/log-in")
 def logoutUser(request):

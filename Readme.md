@@ -24,9 +24,8 @@ CLMS is a secure client management system with role-based access control. It ena
 - Protected client information
 
 ## System Requirements
-- [Specify backend requirements]
-- [Specify database requirements]
-- [Specify frontend requirements]
+- [Internet & Browser]
+
 
 # CLMS (Client Management System)
 

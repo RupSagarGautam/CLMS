@@ -111,7 +111,16 @@ td a{
     background-color: #fff !important;
 }
 
-
+.login-page img {
+    max-width: 60px !important;
+    max-height: 60px !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px auto;
+    object-fit: contain;
+}
 
 .login-logo img {
     max-width: 150px !important;

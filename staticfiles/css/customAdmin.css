@@ -46,7 +46,16 @@
 }
 
 
-
+.login-page img {
+    max-width: 160px !important;
+    max-height: 160px !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px auto;
+    object-fit: contain;
+}
 
 .login-logo img {
     max-width: 150px !important;

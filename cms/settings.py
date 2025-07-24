@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
 JAZZMIN_SETTINGS = {
     "site_title": " Blog Management System Admin Dashboard",
-     "site_logo": "assets/Digital Pathshala logo.jpg",
+     "site_logo": "assets/favicon.png",
      "site_logo_classes": "img-fluid rounded-circle",
     "site_header": "Admin Dashboard",
     "site_brand": "Digital Pathshala",
@@ -127,6 +127,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'cms.backends.EmailOrUsernameModelBackend',  # your custom backend
+    'django.contrib.auth.backends.ModelBackend',  # fallback
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

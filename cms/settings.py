@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,32 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'clientapp',
 ]
+
+JAZZMIN_SETTINGS = {
+    "site_title": " Blog Management System Admin Dashboard",
+     "site_logo": "assets/Digital Pathshala logo.jpg",
+     "site_logo_classes": "img-fluid rounded-circle",
+    "site_header": "Admin Dashboard",
+    "site_brand": "Digital Pathshala",
+    "welcome_sign": "Welcome to Admin Dashboard",
+    "copyright": "Digital Pathshala",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "order_with_respect_to": ["auth", "myapp"],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+    },
+    
+    "show_ui_builder": False,  # hides the UI builder button (optional)
+    "custom_css": "css/custom_admin.css"
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "css": "css/customAdmin.css",
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

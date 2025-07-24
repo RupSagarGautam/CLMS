@@ -7,6 +7,7 @@ from django.contrib import messages
 from .models import PasswordResetOTP
 import random
 from datetime import timedelta
+from django.contrib.auth import login as auth_login
 
 # Create your views here.
 
@@ -17,10 +18,10 @@ def request_otp(request):
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             messages.error(request, 'No user found with this email.')
-            return redirect('staff_login')
+            return redirect('forgot_password')
         # Generate OTP
         otp = str(random.randint(100000, 999999))
-        expires_at = timezone.now() + timedelta(minutes=10)
+        expires_at = timezone.now() + timedelta(minutes=2)  # 2 minutes expiry
         # Save OTP in DB
         PasswordResetOTP.objects.create(email=email, otp=otp, expires_at=expires_at)
         # Send OTP via email
@@ -31,9 +32,35 @@ def request_otp(request):
             [email],
             fail_silently=False,
         )
-        messages.success(request, 'OTP sent to your email. Please check your inbox.')
-        return redirect('staff_login')
-    return redirect('staff_login')
+        # Redirect to OTP verification page
+        return redirect(f'/verify-otp/?email={email}')
+    return redirect('forgot_password')
+
+def verify_otp(request):
+    email = request.GET.get('email') or request.POST.get('email')
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        try:
+            otp_obj = PasswordResetOTP.objects.filter(email=email, otp=otp, used=False).latest('created_at')
+        except PasswordResetOTP.DoesNotExist:
+            messages.error(request, 'Invalid OTP or email.')
+            return render(request, 'pages/verify_otp.html', {'email': email})
+        if otp_obj.is_expired():
+            messages.error(request, 'OTP has expired. Please request a new one.')
+            return render(request, 'pages/verify_otp.html', {'email': email})
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, 'No user found with this email.')
+            return render(request, 'pages/verify_otp.html', {'email': email})
+        # Mark OTP as used
+        otp_obj.used = True
+        otp_obj.save()
+        # Log the user in
+        auth_login(request, user)
+        messages.success(request, 'OTP verified. You are now logged in.')
+        return redirect('/')
+    return render(request, 'pages/verify_otp.html', {'email': email})
 
 def reset_password(request):
     if request.method == 'POST':

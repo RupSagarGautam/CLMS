@@ -45,7 +45,7 @@
             </div>
         </form>
 
-        {% comment %} <div id="forgot-password-form" style="display:none;">
+      <div id="forgot-password-form" style="display:none;">
             <form method="post" action="{% url 'request_otp' %}">
                 {% csrf_token %}
                 <label for="email">Enter your email:</label>
@@ -72,7 +72,7 @@
             document.getElementById('forgot-password-form').style.display = 'block';
             document.getElementById('reset-password-form').style.display = 'none';
         }
-        </script> {% endcomment %}
+        </script>
         <div class="login-footer">
             &copy; 2025 CLMS System. Staff access only.
         </div>

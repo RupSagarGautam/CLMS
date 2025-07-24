@@ -27,4 +27,5 @@ urlpatterns = [
     path('request-otp/', clientapp_views.request_otp, name='request_otp'),
     path('reset-password/', clientapp_views.reset_password, name='reset_password'),
     path('forgot-password/', clientapp_views.forgot_password, name='forgot_password'),
+    path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'),
 ]

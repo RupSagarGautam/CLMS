@@ -7,3 +7,6 @@ Hello World
 <form id="logout-form" action="/logout" style="display: none;">
     {% csrf_token %}
 </form>
+{% if user.is_superuser %}
+<a href="/admin">Super Admin Dashboard</a>
+{% endif %}

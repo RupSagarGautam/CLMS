@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 
 JAZZMIN_SETTINGS = {
     "site_title": " Blog Management System Admin Dashboard",
-     "site_logo": "assets/Digital Pathshala logo.jpg",
+     "site_logo": "assets/favicon.png",
      "site_logo_classes": "img-fluid rounded-circle",
     "site_header": "Admin Dashboard",
     "site_brand": "Digital Pathshala",
@@ -128,6 +128,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'cms.backends.EmailOrUsernameModelBackend',  # your custom backend
+    'django.contrib.auth.backends.ModelBackend',  # fallback
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
@@ -157,3 +161,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+# Email backend configuration for Gmail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'dangalrejina0@gmail.com'  # Replace with your Gmail address
+EMAIL_HOST_PASSWORD = 'vqayheraixduatwn'  # Replace with your Gmail app password
+DEFAULT_FROM_EMAIL = 'dangalrejina0@gmail.com'

@@ -19,6 +19,7 @@
     text-align: center;
 }
 
+
 .brand-link .brand-image {
     height: 100% !important;
     width: auto !important;
@@ -108,4 +109,17 @@ td i{
 
 td a{
     background-color: #fff !important;
+}
+
+
+
+.login-logo img {
+    max-width: 150px !important;
+    max-height: 150px !important;
+    width: auto !important;
+    height: auto !important;
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;  /* Optional: make it circular */
+    object-fit: contain;
 }

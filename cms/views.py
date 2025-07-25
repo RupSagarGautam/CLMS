@@ -46,6 +46,7 @@ def staff_login(request):
         return render(request, 'pages/login.html', {'errors': errors})
     
     return render(request, 'pages/login.html')
+
 @login_required(login_url="/log-in")
 def logoutUser(request):
     logout(request)

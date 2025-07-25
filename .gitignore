@@ -1,5 +1,6 @@
 .env
-.venv/
+.venv/*
+.venv/Scripts/*
 *.sqlite3
 *.pyc
 __pycache__/

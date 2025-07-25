@@ -36,6 +36,10 @@ def request_otp(request):
         return redirect(f'/verify-otp/?email={email}')
     return redirect('forgot_password')
 
+from django.contrib.auth import authenticate, login as auth_login
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 def verify_otp(request):
     email = request.GET.get('email') or request.POST.get('email')
     if request.method == 'POST':
@@ -56,7 +60,8 @@ def verify_otp(request):
         # Mark OTP as used
         otp_obj.used = True
         otp_obj.save()
-        # Log the user in
+        # Set the backend and log the user in
+        user.backend = 'cms.backends.EmailOrUsernameModelBackend'  # Specify your custom backend
         auth_login(request, user)
         messages.success(request, 'OTP verified. You are now logged in.')
         return redirect('/')

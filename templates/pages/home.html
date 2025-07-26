@@ -1,0 +1,20 @@
+    <link rel="shortcut icon" href="/assets/logo.png" type="image/x-icon">
+
+Hello World
+
+{% comment %} Logout Buttom {% endcomment %}
+<br>
+<a href="/logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <i class="fa-solid fa-sign-out-alt"></i> Logout 
+</a>
+<form id="logout-form" action="/logout" style="display: none;">
+    {% csrf_token %}
+</form>
+<br>
+{% if user.is_superuser %}
+<a href="/dashboard">Overall Stats</a>
+{% endif %}
+<br>
+{% if user.is_superuser %}
+<a href="/admin">Super Admin Dashboard</a>
+{% endif %}

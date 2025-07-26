@@ -37,7 +37,6 @@ def request_otp(request):
         )
         # Redirect to OTP verification page
         return redirect(f'/verify-otp/?email={email}')
-    return redirect('forgot_password')
 
 from django.contrib.auth import authenticate, login as auth_login
 from django.shortcuts import render, redirect
@@ -71,6 +70,10 @@ def verify_otp(request):
     return render(request, 'pages/verify_otp.html', {'email': email})
 
 def reset_password(request):
+    if not request.user.is_staff or not request.user.is_superuser:
+        errors = {"privilege": "Account doesn't have privileges to access"}
+        messages.error(request, errors["privilege"])
+        return render(request, "pages/forget_password.html", {"errors": errors})
     if request.method == 'POST':
         email = request.POST.get('email')
         otp = request.POST.get('otp')

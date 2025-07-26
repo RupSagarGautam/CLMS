@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Client Visit List</title>
+  <link rel="stylesheet" href="{% static 'css/ClientVisit.css' %}">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo">
+        <img src="{% static 'assets/favicon.png' %}" alt="Logo">
+      </div>
+      <h2>CLMS</h2>
+      <ul>
+        <li>Office Visit</li>
+        <li>Online Class Inquiry</li>
+        <li class="active">Client Visit</li>
+        <li>College/School Visit</li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="header">
+        <h2>Models View List</h2>
+
+        <!-- Flex container for message and add button -->
+        <div class="top-controls">
+          <div class="left-msg">
+            {% if messages %}
+              <div class="message-container">
+                {% for message in messages %}
+                  <div class="success-message">{{ message }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="right-btn">
+            <a href="{% url 'visit_dashboard' %}" class="add-btn">Add ➕</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>Purpose</th>
+            <th>Date</th>
+            <th>Action</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for visit in client_visits %}
+          <tr class="{% cycle 'white-row' 'green-row' %}">
+            <td>{{ visit.name }}</td>
+            <td>{{ visit.contact_number }}</td>
+            <td>{{ visit.purpose }}</td>
+            <td>{{ visit.date }}</td>
+            <td>
+              <form method="POST" action="{% url 'delete_client' visit.id %}">
+                {% csrf_token %}
+                <button class="delete-btn">Delete</button>
+              </form>
+            </td>
+            <td>{{ visit.remarks }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6">No client visits available.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

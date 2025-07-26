@@ -19,6 +19,9 @@ def request_otp(request):
         except User.DoesNotExist:
             messages.error(request, 'No user found with this email.')
             return redirect('forgot_password')
+        if not user.is_staff and not user.is_superuser:
+            messages.error(request, 'You do not have privileges to reset password.')
+            return redirect('forgot_password')
         # Generate OTP
         otp = str(random.randint(100000, 999999))
         expires_at = timezone.now() + timedelta(minutes=2)  # 2 minutes expiry

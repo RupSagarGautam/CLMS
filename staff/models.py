@@ -1,15 +1,30 @@
 from django.db import models
-from django.contrib.auth.models import User
 
-class OfficeVisit(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class ClientVisit(models.Model):
     name = models.CharField(max_length=100)
     contact_number = models.CharField(max_length=20)
-    email = models.EmailField()
-    address = models.CharField(max_length=255)
     purpose = models.CharField(max_length=255)
     date = models.DateField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    remarks = models.TextField(blank=True)
+    
+class OnlineClassInquiry(models.Model):
+    name = models.CharField(max_length=100)
+    contact = models.CharField(max_length=15)
+    interest_area = models.CharField(max_length=200)
+    date = models.DateField()
+
+class OfficeVisit(models.Model):
+    name = models.CharField(max_length=100)
+    contact = models.CharField(max_length=15)
+    department = models.CharField(max_length=100)
+    date = models.DateField()
+
+class CollegeVisit(models.Model):
+    name = models.CharField(max_length=100)
+    contact = models.CharField(max_length=15)
+    institution = models.CharField(max_length=200)
+    date = models.DateField()
+
 
     def __str__(self):
         return f"{self.name} - {self.date}"

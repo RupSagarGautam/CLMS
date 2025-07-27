@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow rounded">
+    <div class="card-body">
+      <h2 class="card-title mb-4">My Profile</h2>
+
+      <div class="row mb-2">
+        <div class="col-sm-3 font-weight-bold">Username:</div>
+        <div class="col-sm-9">{{ request.user.username }}</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-sm-3 font-weight-bold">Full Name:</div>
+        <div class="col-sm-9">{{ request.user.first_name }} {{ request.user.last_name }}</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-sm-3 font-weight-bold">Email:</div>
+        <div class="col-sm-9">{{ request.user.email }}</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-sm-3 font-weight-bold">Phone:</div>
+        <div class="col-sm-9">{{ request.user.profile.phone }}</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-sm-3 font-weight-bold">Address:</div>
+        <div class="col-sm-9">{{ request.user.profile.address }}</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-sm-3 font-weight-bold">Bio:</div>
+        <div class="col-sm-9">{{ request.user.profile.bio }}</div>
+      </div>
+
+      <div class="mt-4">
+        <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

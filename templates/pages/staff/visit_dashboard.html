@@ -5,27 +5,23 @@
   <meta charset="UTF-8" />
   <title>CLMS Dashboard</title>
   <link rel="stylesheet" href="{% static 'css/clms.css' %}">
-  
-
 </head>
 <body>
   <div class="container">
     
-    
-   <!-- Sidebar -->
-<div class="sidebar">
-  <div class="logo">
-    <img src="{% static 'assets/favicon.png' %}" alt="CLMS Logo" style="width: 60px; height: 60px; border-radius: 50%;">
-  </div>
-  <h2>CLMS</h2>
-  <ul>
-    <li class="active">Office Visit</li>
-    <li>Online Class Inquiry</li>
-    <li>Client Visit</li>
-    <li>College/School Visit</li>
-  </ul>
-</div>
-
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo">
+        <img src="{% static 'assets/favicon.png' %}" alt="CLMS Logo" style="width: 60px; height: 60px; border-radius: 50%;">
+      </div>
+      <h2>CLMS</h2>
+      <ul>
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
+        <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
+        <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
+        <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
+      </ul>
+    </div>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -38,21 +34,19 @@
           <table>
             <thead>
               <tr>
-                <th>Name</th>
                 <th>Contact Number</th>
+                <th>Name</th>
                 <th>Purpose</th>
                 <th>Date</th>
-                <th>Remarks</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><input type="text" name="name" required placeholder="Enter Name"></td>
-                <td><input type="text" name="contact_number" required placeholder="Enter Number"></td>
-                <td><input type="text" name="purpose" placeholder="Enter Purpose"></td>
+                <td><input type="text" name="contact_number" required></td>
+                <td><input type="text" name="name" required></td>
+                <td><input type="text" name="purpose"></td>
                 <td><input type="date" name="date"></td>
-                <td><input type="text" name="remarks" placeholder="Write Remarks"></td>
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
             </tbody>
@@ -68,19 +62,19 @@
           <table>
             <thead>
               <tr>
+                <th>Name</th>
                 <th>Contact Number</th>
                 <th>Purpose</th>
                 <th>Date</th>
-                <th>Remarks</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><input type="text" name="contact" required placeholder="Enter Number"></td>
-                <td><input type="text" name="interest_area" placeholder="Enter Purpose"></td>
+                <td><input type="text" name="name" required></td>
+                <td><input type="text" name="contact" required></td>
+                <td><input type="text" name="purpose"></td>
                 <td><input type="date" name="date"></td>
-                <td><input type="text" name="remarks" placeholder="Write Remarks"></td>
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
             </tbody>
@@ -97,24 +91,22 @@
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Contact Number</th>
+                <th>Contact</th>
                 <th>Email</th>
                 <th>Address</th>
                 <th>Purpose</th>
                 <th>Date</th>
-                <th>Remarks</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><input type="text" name="name" placeholder="Enter Name"></td>
-                <td><input type="text" name="contact" placeholder="Enter Number"></td>
-                <td><input type="email" name="email" placeholder="Your Mail Address"></td>
-                <td><input type="text" name="address" placeholder="Enter Address"></td>
-                <td><input type="text" name="purpose" placeholder="Enter Purpose"></td>
+                <td><input type="text" name="name"></td>
+                <td><input type="text" name="contact"></td>
+                <td><input type="email" name="email"></td>
+                <td><input type="text" name="address"></td>
+                <td><input type="text" name="purpose"></td>
                 <td><input type="date" name="date"></td>
-                <td><input type="text" name="remarks" placeholder="Write Remarks"></td>
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
             </tbody>
@@ -132,19 +124,17 @@
               <tr>
                 <th>Name</th>
                 <th>Contact Number</th>
+                <th>Person Name (Whom You Met)</th>
                 <th>Purpose</th>
-                <th>Person</th>
-                <th>Remarks</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><input type="text" name="name" placeholder="Enter Name"></td>
-                <td><input type="text" name="contact" placeholder="Enter Number"></td>
-                <td><input type="text" name="purpose" placeholder="Enter Purpose"></td>
-                <td><input type="text" name="person" placeholder="Person You Met"></td>
-                <td><input type="text" name="remarks" placeholder="Write Remarks"></td>
+                <td><input type="text" name="name"></td>
+                <td><input type="text" name="contact"></td>
+                <td><input type="text" name="person_name"></td>
+                <td><input type="text" name="purpose"></td>
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
             </tbody>

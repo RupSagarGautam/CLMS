@@ -16,17 +16,18 @@
       </div>
       <h2>CLMS</h2>
       <ul>
-        <li>Office Visit</li>
-        <li>Online Class Inquiry</li>
-        <li class="active">Client Visit</li>
-        <li>College/School Visit</li>
-      </ul>
+  <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
+  <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
+  <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
+  <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
+</ul>
+
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
       <div class="header">
-        <h2>Models View List</h2>
+        <h2>Client Visit View List</h2>
 
         <!-- Flex container for message and add button -->
         <div class="top-controls">
@@ -54,7 +55,7 @@
             <th>Purpose</th>
             <th>Date</th>
             <th>Action</th>
-            <th>Remarks</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -70,7 +71,7 @@
                 <button class="delete-btn">Delete</button>
               </form>
             </td>
-            <td>{{ visit.remarks }}</td>
+  
           </tr>
           {% empty %}
           <tr>

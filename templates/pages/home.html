@@ -16,11 +16,11 @@
         {% endif %}
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-icon" onclick="toggleDropdown()">
-                <i class="fa-solid fa-user"></i>
+               <i class="fa-solid fa-user"></i>
             </div>
             <div class="dropdown-content" id="dropdownContent">
                 <a href="/profile"><i class="fa-solid fa-id-badge"></i> My Profile</a>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+                <a href="#" class="prf-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
     </div>

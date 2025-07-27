@@ -31,4 +31,4 @@ urlpatterns = [
     path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'),
     path('dashboard/', include('staff.urls')),
     
-]x
+]

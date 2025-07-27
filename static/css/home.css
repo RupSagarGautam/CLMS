@@ -16,7 +16,7 @@ body {
 }
 .top-bar .dashboard-btn, .top-bar .stats-btn {
     background: #fff;
-    color: #31882e;
+    color: #333;
     border: none;
     border-radius: 5px;
     padding: 0.5rem 1.1rem;
@@ -27,10 +27,12 @@ body {
     transition: background 0.2s, color 0.2s;
     text-decoration: none;
     display: inline-block;
+    transition: 300ms;
 }
 .top-bar .dashboard-btn:hover, .top-bar .stats-btn:hover {
-    background: #e6f7ea;
-    color: #1e5c1a;
+    background: #1e5c1a ;
+    color:#e6f7ea ;
+    transition: 300ms;
 }
 .profile-dropdown {
     position: relative;
@@ -41,7 +43,7 @@ body {
     height: 40px;
     border-radius: 50%;
     background: #fff;
-    color: #31882e;
+    color: #333;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,7 +68,7 @@ body {
     overflow: hidden;
 }
 .dropdown-content a {
-    color: #31882e;
+    color: #333;
     padding: 12px 18px;
     text-decoration: none;
     display: block;
@@ -94,4 +96,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.prf-logout {
+    color: #ff0707 !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    align-items: center !important;
+    transition: 300ms !important;
+    padding: 0.5rem 1.1rem !important;
+}
+
+.prf-logout:hover{
+    background-color: #ff0707 !important;
+    color: #fff !important;    
 }

@@ -13,7 +13,9 @@ urlpatterns = [
 
     # View Lists
     path('client-visit/list/', views.client_visit_list, name='client_visit_list'),
+    path('online-class/list/', views.online_class_list, name='online_class_list'),  # ✅ Add this
 
-    # Optional: Add delete path for client visit
+    # Delete Views
     path('delete/client/<int:id>/', views.delete_client_visit, name='delete_client'),
+    path('delete/online/<int:id>/', views.delete_online_class, name='delete_online'),  # ✅ Add this
 ]

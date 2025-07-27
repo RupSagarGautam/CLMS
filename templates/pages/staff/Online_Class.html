@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Online Class Inquiry</title>
+  <link rel="stylesheet" href="{% static 'css/OnlineClass.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h2>Add Online Class Inquiry</h2>
+    <form method="POST" action="{% url 'add_online' %}">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="text" name="contact_number" placeholder="Contact Number" required>
+      <input type="text" name="purpose" placeholder="Purpose" required>
+      <input type="date" name="date" required>
+      <button type="submit">Submit</button>
+    </form>
+
+    <h2 style="margin-top: 30px;">Online Class Inquiry List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Contact</th>
+          <th>Purpose</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inquiry in online_classes %}
+        <tr>
+          <td>{{ inquiry.name }}</td>
+          <td>{{ inquiry.contact_number }}</td>
+          <td>{{ inquiry.purpose }}</td>
+          <td>{{ inquiry.date }}</td>
+          <td>
+            <form method="POST" action="{% url 'delete_online' inquiry.id %}">
+              {% csrf_token %}
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No inquiries yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

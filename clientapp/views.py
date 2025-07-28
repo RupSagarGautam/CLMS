@@ -8,16 +8,22 @@ from .models import PasswordResetOTP
 import random
 from datetime import timedelta
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate, login as auth_login
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 # Create your views here.
 
 def request_otp(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+        email = request.POST.get('email') 
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             messages.error(request, 'No user found with this email.')
+            return redirect('forgot_password')
+        if not user.is_staff and not user.is_superuser:
+            messages.error(request, 'You do not have privileges to reset password.')
             return redirect('forgot_password')
         # Generate OTP
         otp = str(random.randint(100000, 999999))
@@ -34,11 +40,8 @@ def request_otp(request):
         )
         # Redirect to OTP verification page
         return redirect(f'/verify-otp/?email={email}')
-    return redirect('forgot_password')
 
-from django.contrib.auth import authenticate, login as auth_login
-from django.shortcuts import render, redirect
-from django.contrib import messages
+
 
 def verify_otp(request):
     email = request.GET.get('email') or request.POST.get('email')
@@ -68,6 +71,10 @@ def verify_otp(request):
     return render(request, 'pages/verify_otp.html', {'email': email})
 
 def reset_password(request):
+    if not request.user.is_staff or not request.user.is_superuser:
+        errors = {"privilege": "Account doesn't have privileges to access"}
+        messages.error(request, errors["privilege"])
+        return render(request, "pages/forget_password.html", {"errors": errors})
     if request.method == 'POST':
         email = request.POST.get('email')
         otp = request.POST.get('otp')

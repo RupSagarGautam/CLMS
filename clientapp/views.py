@@ -13,7 +13,7 @@ from django.contrib.auth import login as auth_login
 
 def request_otp(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+        email = request.POST.get('email') 
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Online Class Inquiry List</title>
-  <link rel="stylesheet" href="{% static 'css/ClientVisit.css' %}">
+  <link rel="stylesheet" href="{% static 'css/Visit.css' %}">
 
 </head>
 
@@ -13,16 +13,17 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="logo">
-        <img src="{% static 'assets/favicon.png' %}" alt="Logo">
+        <a href="{% url 'add_dashboard' %}">
+         <img src="{% static 'assets/favicon.png' %}" alt="Logo">
+        </a>
       </div>
       <h2>CLMS</h2>
       <ul>
-  <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
-  <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
-  <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
-  <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
-</ul>
-
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
+        <li class="active"><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
+        <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
+        <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
+      </ul>
     </div>
 
     <!-- Main Content -->
@@ -42,7 +43,7 @@
             {% endif %}
           </div>
           <div class="right-btn">
-            <a href="{% url 'visit_dashboard' %}" class="add-btn">Add ➕</a>
+            <a href="{% url 'add_dashboard' %}" class="add-btn">Add ➕</a>
           </div>
         </div>
       </div>

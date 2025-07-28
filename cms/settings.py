@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +42,32 @@ INSTALLED_APPS = [
     'clientapp',
     'dashboard',  
 ]
+
+JAZZMIN_SETTINGS = {
+    "site_title": " Blog Management System Admin Dashboard",
+     "site_logo": "assets/favicon.png",
+     "site_logo_classes": "img-fluid rounded-circle",
+    "site_header": "Admin Dashboard",
+    "site_brand": "Digital Pathshala",
+    "welcome_sign": "Welcome to Admin Dashboard",
+    "copyright": "Digital Pathshala",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "order_with_respect_to": ["auth", "myapp"],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+    },
+    
+    "show_ui_builder": False,  # hides the UI builder button (optional)
+    "custom_css": "css/custom_admin.css"
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "css": "css/customAdmin.css",
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,7 +84,7 @@ ROOT_URLCONF = 'cms.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,6 +128,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'cms.backends.EmailOrUsernameModelBackend',  # your custom backend
+    'django.contrib.auth.backends.ModelBackend',  # fallback
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
@@ -130,3 +161,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# Email backend configuration for Gmail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'dangalrejina0@gmail.com'  # Replace with your Gmail address
+EMAIL_HOST_PASSWORD = 'vqayheraixduatwn'  # Replace with your Gmail app password
+DEFAULT_FROM_EMAIL = 'dangalrejina0@gmail.com'

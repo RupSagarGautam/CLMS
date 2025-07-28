@@ -4,8 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import ClientVisit, OnlineClassInquiry, OfficeVisit, CollegeVisit
 from .forms import ClientVisitForm, OnlineClassInquiryForm, OfficeVisitForm, CollegeVisitForm
 
-#  DASHBOARD 
-
+# DASHBOARD
 @login_required
 def visit_dashboard(request):
     return render(request, 'pages/staff/visit_dashboard.html', {
@@ -15,9 +14,7 @@ def visit_dashboard(request):
         'college_form': CollegeVisitForm(),
     })
 
-
-#  ADD FORMS 
-
+# ADD FORMS
 @login_required
 def add_client_visit(request):
     if request.method == 'POST':
@@ -31,7 +28,6 @@ def add_client_visit(request):
         else:
             messages.error(request, "There were errors in your form.")
     return redirect('visit_dashboard')
-
 
 @login_required
 def add_online_class(request):
@@ -47,7 +43,6 @@ def add_online_class(request):
             messages.error(request, "There were errors in your form.")
     return redirect('visit_dashboard')
 
-
 @login_required
 def add_office_visit(request):
     if request.method == 'POST':
@@ -59,9 +54,11 @@ def add_office_visit(request):
             messages.success(request, "Office Visit added successfully.")
             return redirect('office_visit_list')
         else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
             messages.error(request, "There were errors in your form.")
     return redirect('visit_dashboard')
-
 
 @login_required
 def add_college_visit(request):
@@ -74,12 +71,13 @@ def add_college_visit(request):
             messages.success(request, "College/School Visit added successfully.")
             return redirect('college_visit_list')
         else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
             messages.error(request, "There were errors in your form.")
     return redirect('visit_dashboard')
 
-
-#  VIEW LISTS 
-
+# VIEW LISTS
 @login_required
 def client_visit_list(request):
     if request.user.is_superuser:
@@ -87,7 +85,6 @@ def client_visit_list(request):
     else:
         client_visits = ClientVisit.objects.filter(user=request.user).order_by('-date')
     return render(request, 'pages/staff/Client_Visit.html', {'client_visits': client_visits})
-
 
 @login_required
 def online_class_list(request):
@@ -97,7 +94,6 @@ def online_class_list(request):
         online_classes = OnlineClassInquiry.objects.filter(user=request.user).order_by('-date')
     return render(request, 'pages/staff/Online_Class.html', {'online_classes': online_classes})
 
-
 @login_required
 def office_visit_list(request):
     if request.user.is_superuser:
@@ -105,7 +101,6 @@ def office_visit_list(request):
     else:
         office_visits = OfficeVisit.objects.filter(user=request.user).order_by('-date')
     return render(request, 'pages/staff/Office_Visit.html', {'office_visits': office_visits})
-
 
 @login_required
 def college_visit_list(request):
@@ -115,9 +110,7 @@ def college_visit_list(request):
         college_visits = CollegeVisit.objects.filter(user=request.user).order_by('-id')
     return render(request, 'pages/staff/College_SchoolVisit.html', {'college_visits': college_visits})
 
-
-#  DELETE 
-
+# DELETE
 @login_required
 def delete_client_visit(request, id):
     visit = get_object_or_404(ClientVisit, id=id)
@@ -127,7 +120,6 @@ def delete_client_visit(request, id):
     else:
         messages.error(request, "You are not authorized to delete this.")
     return redirect('client_visit_list')
-
 
 @login_required
 def delete_online_class(request, id):
@@ -139,7 +131,6 @@ def delete_online_class(request, id):
         messages.error(request, "You are not authorized to delete this.")
     return redirect('online_class_list')
 
-
 @login_required
 def delete_office_visit(request, id):
     visit = get_object_or_404(OfficeVisit, id=id)
@@ -149,7 +140,6 @@ def delete_office_visit(request, id):
     else:
         messages.error(request, "You are not authorized to delete this.")
     return redirect('office_visit_list')
-
 
 @login_required
 def delete_college_visit(request, id):

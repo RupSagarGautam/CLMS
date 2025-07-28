@@ -39,9 +39,10 @@ class OfficeVisit(models.Model):
 class CollegeVisit(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    contact_number = models.CharField(max_length=20)
+    contact = models.CharField(max_length=20)
     person_name = models.CharField(max_length=100)
     purpose = models.CharField(max_length=255)
+    
 
     def __str__(self):
         return self.name

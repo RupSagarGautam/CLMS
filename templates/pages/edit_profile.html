@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="/static/css/edit_profile.css" />
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            margin-bottom: 12px;
+        }
+        .success-message {
+            color: green;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-container">
+    <h2>Edit Profile</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="success-message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" value="{{ firstName }}" required />
+        {% if field_errors.firstName %}
+            <div class="error-message">{{ field_errors.firstName }}</div>
+        {% endif %}
+
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" value="{{ lastName }}" required />
+        {% if field_errors.lastName %}
+            <div class="error-message">{{ field_errors.lastName }}</div>
+        {% endif %}
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ email }}" readonly />
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" value="{{ phone }}" readonly />
+
+        <label for="roles">Role</label>
+        <input type="text" id="roles" name="roles" value="{{ roles }}" readonly />
+
+        <button type="submit">Update Profile</button>
+    </form>
+</div>
+
+</body>
+</html>

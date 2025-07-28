@@ -1,45 +1,62 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-<div class="container mt-5">
-  <div class="card shadow rounded">
-    <div class="card-body">
-      <h2 class="card-title mb-4">My Profile</h2>
-
-      <div class="row mb-2">
-        <div class="col-sm-3 font-weight-bold">Username:</div>
-        <div class="col-sm-9">{{ request.user.username }}</div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-3 font-weight-bold">Full Name:</div>
-        <div class="col-sm-9">{{ request.user.first_name }} {{ request.user.last_name }}</div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-3 font-weight-bold">Email:</div>
-        <div class="col-sm-9">{{ request.user.email }}</div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-3 font-weight-bold">Phone:</div>
-        <div class="col-sm-9">{{ request.user.profile.phone }}</div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-3 font-weight-bold">Address:</div>
-        <div class="col-sm-9">{{ request.user.profile.address }}</div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-3 font-weight-bold">Bio:</div>
-        <div class="col-sm-9">{{ request.user.profile.bio }}</div>
-      </div>
-
-      <div class="mt-4">
-        <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/static/css/profile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="profile-wrapper">
+    <div class="sidebar">
+        <div class="profile-pic">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="contact-info">
+            <p><i class="fas fa-envelope"></i> {{ email }}</p>
+            <p><i class="fas fa-phone"></i> {{ phone|default:"Not set" }}</p>
+            <p><i class="fas fa-map-marker-alt"></i> Not set</p>
+        </div>
     </div>
-  </div>
+
+    <div class="profile-container">
+        <h2>User Profile</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="success-message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="profile-field">
+            <label class="profile-label">First Name</label>
+            <div class="profile-value">{{ firstName }}</div>
+        </div>
+
+        <div class="profile-field">
+            <label class="profile-label">Last Name</label>
+            <div class="profile-value">{{ lastName }}</div>
+        </div>
+
+        <div class="profile-field">
+            <label class="profile-label">Email</label>
+            <div class="profile-value">{{ email }}</div>
+        </div>
+
+        <div class="profile-field">
+            <label class="profile-label">Phone Number</label>
+            <div class="profile-value">{{ phone|default:"Not set" }}</div>
+        </div>
+
+        <div class="profile-field">
+            <label class="profile-label">Role</label>
+            <div class="profile-value text-capitalize">{{ roles }}</div>
+        </div>
+
+        <a href="/edit-profile" class="edit-btn">Edit Profile</a>
+    </div>
 </div>
-{% endblock %}
+</body>
+</html>

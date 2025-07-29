@@ -12,6 +12,9 @@ urlpatterns = [
 
     # Edit Data
     path('edit/office/<int:id>/', views.edit_office_visit, name='edit_office'),
+    path('edit/client/<int:id>/', views.edit_client_visit, name='edit_client'),
+    path('edit/college/<int:id>/', views.edit_college_visit, name='edit_college'),
+    path('edit/online/<int:id>/', views.edit_online_class, name='edit_online'),
 
     # View Data
     path('client-visit/list/', views.client_visit_list, name='client_visit_list'),

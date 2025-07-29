@@ -67,6 +67,7 @@
             <td>{{ inquiry.purpose }}</td>
             <td>{{ inquiry.date }}</td>
             <td>
+              <a href="{% url 'edit_online' inquiry.id %}" class="edit-btn">Edit</a>
               <form method="POST" action="{% url 'delete_online' inquiry.id %}">
                 {% csrf_token %}
                 <button class="delete-btn">Delete</button>

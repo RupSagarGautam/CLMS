@@ -102,6 +102,72 @@ def edit_office_visit(request, id):
         messages.error(request, "You are not authorized to edit this.")
         return redirect('office_visit_list')
 
+@login_required
+def edit_client_visit(request, id):
+    visit = get_object_or_404(ClientVisit, id=id)
+    if request.user.is_superuser or visit.user == request.user:
+        if request.method == 'POST':
+            form = ClientVisitForm(request.POST, instance=visit)
+            if form.is_valid():
+                if form.has_changed():
+                    form.save()
+                    messages.success(request, "Client Visit updated successfully.")
+                else:
+                    messages.info(request, "No changes were made to the client visit.")
+                return redirect('client_visit_list')
+            else:
+                messages.error(request, "There were errors in your form. Please check the fields below.")
+        else:
+            form = ClientVisitForm(instance=visit)
+        return render(request, 'pages/staff/edit_client_visit.html', {'form': form, 'visit': visit})
+    else:
+        messages.error(request, "You are not authorized to edit this.")
+        return redirect('client_visit_list')
+
+@login_required
+def edit_college_visit(request, id):
+    visit = get_object_or_404(CollegeVisit, id=id)
+    if request.user.is_superuser or visit.user == request.user:
+        if request.method == 'POST':
+            form = CollegeVisitForm(request.POST, instance=visit)
+            if form.is_valid():
+                if form.has_changed():
+                    form.save()
+                    messages.success(request, "College/School Visit updated successfully.")
+                else:
+                    messages.info(request, "No changes were made to the college/school visit.")
+                return redirect('college_visit_list')
+            else:
+                messages.error(request, "There were errors in your form. Please check the fields below.")
+        else:
+            form = CollegeVisitForm(instance=visit)
+        return render(request, 'pages/staff/edit_college_visit.html', {'form': form, 'visit': visit})
+    else:
+        messages.error(request, "You are not authorized to edit this.")
+        return redirect('college_visit_list')
+
+@login_required
+def edit_online_class(request, id):
+    inquiry = get_object_or_404(OnlineClassInquiry, id=id)
+    if request.user.is_superuser or inquiry.user == request.user:
+        if request.method == 'POST':
+            form = OnlineClassInquiryForm(request.POST, instance=inquiry)
+            if form.is_valid():
+                if form.has_changed():
+                    form.save()
+                    messages.success(request, "Online Class Inquiry updated successfully.")
+                else:
+                    messages.info(request, "No changes were made to the online class inquiry.")
+                return redirect('online_class_list')
+            else:
+                messages.error(request, "There were errors in your form. Please check the fields below.")
+        else:
+            form = OnlineClassInquiryForm(instance=inquiry)
+        return render(request, 'pages/staff/edit_online_class.html', {'form': form, 'inquiry': inquiry})
+    else:
+        messages.error(request, "You are not authorized to edit this.")
+        return redirect('online_class_list')
+
 
 #  VIEW LISTS 
 

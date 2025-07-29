@@ -86,7 +86,7 @@ class OnlineClassInquiryForm(forms.ModelForm):
 class CollegeVisitForm(forms.ModelForm):
     class Meta:
         model = CollegeVisit
-        fields = ['name', 'contact', 'person_name', 'purpose']
+        fields = ['name', 'contact', 'person_name', 'purpose', 'date']
 
     def clean_contact(self):
         contact = self.cleaned_data.get('contact')

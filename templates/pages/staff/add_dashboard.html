@@ -12,7 +12,9 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="logo">
-        <img src="{% static 'assets/favicon.png' %}" alt="CLMS Logo" style="width: 60px; height: 60px; border-radius: 50%;">
+        <a href="{% url 'add_dashboard' %}">
+         <img src="{% static 'assets/favicon.png' %}" alt="Logo">
+        </a>
       </div>
       <h2>CLMS</h2>
       <ul>
@@ -75,6 +77,7 @@
                 <td><input type="text" name="contact" required></td>
                 <td><input type="text" name="purpose"></td>
                 <td><input type="date" name="date"></td>
+                
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
             </tbody>
@@ -91,7 +94,7 @@
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Contact Number</th>
+                <th>Contact</th>
                 <th>Email</th>
                 <th>Address</th>
                 <th>Purpose</th>
@@ -126,6 +129,7 @@
                 <th>Contact Number</th>
                 <th>Person Name (Whom You Met)</th>
                 <th>Purpose</th>
+                <th>Date</th>
                 <th></th>
               </tr>
             </thead>
@@ -135,6 +139,7 @@
                 <td><input type="text" name="contact"></td>
                 <td><input type="text" name="person_name"></td>
                 <td><input type="text" name="purpose"></td>
+                <td><input type="date" name="date"></td> <!-- ✅ Date Input -->
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
             </tbody>

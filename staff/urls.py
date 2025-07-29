@@ -2,13 +2,19 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.visit_dashboard, name='visit_dashboard'),
+    path('', views.add_dashboard, name='add_dashboard'),
 
     # Add Data
     path('add/client/', views.add_client_visit, name='add_client'),
     path('add/online/', views.add_online_class, name='add_online'),
     path('add/office/', views.add_office_visit, name='add_office'),
     path('add/college/', views.add_college_visit, name='add_college'),
+
+    # Edit Data
+    path('edit/office/<int:id>/', views.edit_office_visit, name='edit_office'),
+    path('edit/client/<int:id>/', views.edit_client_visit, name='edit_client'),
+    path('edit/college/<int:id>/', views.edit_college_visit, name='edit_college'),
+    path('edit/online/<int:id>/', views.edit_online_class, name='edit_online'),
 
     # View Data
     path('client-visit/list/', views.client_visit_list, name='client_visit_list'),

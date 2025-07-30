@@ -446,13 +446,6 @@ form input[type="date"]:focus {
   color: #fff;
 }
 
-/* Add button row: right-aligned, above filter bar (added for improved UI layout) */
-.add-btn-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
-}
-
 /* === FILTER BAR === */
 .filter-bar {
   background-color: #e9fce8;

@@ -8,7 +8,7 @@
 
 </head>
 
-
+<body>
   <div class="container">
     <!-- Sidebar -->
     <div class="sidebar">
@@ -29,23 +29,52 @@
     <!-- Main Content -->
     <div class="main-content">
       <div class="header">
-        <h2>Online Class View List</h2>
-
-        <!-- Flex container for message and add button -->
-        <div class="top-controls">
-          <div class="left-msg">
-            {% if messages %}
-              <div class="message-container">
-                {% for message in messages %}
-                  <div class="success-message">{{ message }}</div>
-                {% endfor %}
-              </div>
-            {% endif %}
-          </div>
-          <div class="right-btn">
-            <a href="{% url 'add_dashboard' %}" class="add-btn">Add ➕</a>
-          </div>
+        <h2>Online Class Inquiry List</h2>
+        {# --- Add button row: right-aligned, above filter bar (added for improved UI layout) --- #}
+        <div class="add-btn-row">
+          <a href="{% url 'add_dashboard' %}" class="add-btn">Add ➕</a>
         </div>
+
+        {% if messages %}
+          <div class="message-container">
+            {% for message in messages %}
+              <div class="success-message">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {# --- Filter bar for admin users: filter by staff and date range (added for admin data management) --- #}
+        {% if user.is_superuser and staff_users %}
+        <div class="filter-bar">
+          <form method="GET" class="filter-form-clean">
+            <div class="filter-inline-group">
+              <div class="filter-item">
+                <label for="staff">Staff:</label>
+                <select name="staff" id="staff">
+                  <option value="all" {% if current_filters.staff == 'all' or not current_filters.staff %}selected{% endif %}>All</option>
+                  {% for staff_user in staff_users %}
+                    <option value="{{ staff_user.id }}" {% if current_filters.staff == staff_user.id|stringformat:"s" %}selected{% endif %}>
+                      {{ staff_user.username }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              
+              <div class="filter-item">
+                <label for="start_date">Start Date:</label>
+                <input type="date" name="start_date" id="start_date" value="{{ current_filters.start_date }}" placeholder="yyyy-mm-dd">
+              </div>
+              
+              <div class="filter-item">
+                <label for="end_date">End Date:</label>
+                <input type="date" name="end_date" id="end_date" value="{{ current_filters.end_date }}" placeholder="yyyy-mm-dd">
+              </div>
+              
+              <button type="submit" class="apply-btn">Apply Filters</button>
+            </div>
+          </form>
+        </div>
+        {% endif %}
       </div>
 
       <!-- Table -->
@@ -68,7 +97,7 @@
             <td>{{ inquiry.date }}</td>
             <td>
               <a href="{% url 'edit_online' inquiry.id %}" class="edit-btn">Edit</a>
-              <form method="POST" action="{% url 'delete_online' inquiry.id %}">
+              <form method="POST" action="{% url 'delete_online' inquiry.id %}" style="display: inline; margin: 0;">
                 {% csrf_token %}
                 <button class="delete-btn">Delete</button>
               </form>

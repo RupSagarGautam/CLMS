@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Online Class Inquiry List</title>
+  <link rel="stylesheet" href="{% static 'css/Visit.css' %}">
+
+</head>
+
+
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo">
+        <a href="{% url 'add_dashboard' %}">
+         <img src="{% static 'assets/favicon.png' %}" alt="Logo">
+        </a>
+      </div>
+      <h2>CLMS</h2>
+      <ul>
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
+        <li class="active"><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
+        <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
+        <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="header">
+        <h2>Online Class View List</h2>
+
+        <!-- Flex container for message and add button -->
+        <div class="top-controls">
+          <div class="left-msg">
+            {% if messages %}
+              <div class="message-container">
+                {% for message in messages %}
+                  <div class="success-message">{{ message }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="right-btn">
+            <a href="{% url 'add_dashboard' %}" class="add-btn">Add ➕</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Contact</th>
+            <th>Purpose</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for inquiry in online_classes %}
+          <tr class="{% cycle 'white-row' 'green-row' %}">
+            <td>{{ inquiry.name }}</td>
+            <td>{{ inquiry.contact }}</td>
+            <td>{{ inquiry.purpose }}</td>
+            <td>{{ inquiry.date }}</td>
+            <td>
+              <a href="{% url 'edit_online' inquiry.id %}" class="edit-btn">Edit</a>
+              <form method="POST" action="{% url 'delete_online' inquiry.id %}">
+                {% csrf_token %}
+                <button class="delete-btn">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">No online class inquiries available.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

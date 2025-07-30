@@ -29,11 +29,9 @@
     <div class="main-content">
       <div class="header">
         <h2>Office Visit List</h2>
-        
-        <!-- Add button and filters row -->
+        <!-- Add button and filters -->
         <div class="header-controls">
           <a href="{% url 'add_dashboard' %}" class="add-btn">Add ➕</a>
-          
           {% if user.is_superuser and staff_users %}
           <div class="filter-container">
             <form method="GET" class="filter-form" style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
@@ -48,43 +46,38 @@
                   {% endfor %}
                 </select>
               </div>
-              
               <div class="filter-item">
                 <label for="start_date">Start Date</label>
                 <input type="date" name="start_date" id="start_date" value="{{ current_filters.start_date }}" placeholder="yyyy-mm-dd">
               </div>
-              
               <div class="filter-item">
                 <label for="end_date">End Date</label>
                 <input type="date" name="end_date" id="end_date" value="{{ current_filters.end_date }}" placeholder="yyyy-mm-dd">
               </div>
-              
               <button type="submit" class="apply-btn">Apply Filters</button>
             </form>
           </div>
           {% endif %}
         </div>
-
         {% if messages %}
-          <div class="message-container">
-            {% for message in messages %}
-              <div class="success-message">{{ message }}</div>
-            {% endfor %}
-          </div>
+        <div class="message-container">
+          {% for message in messages %}
+            <div class="success-message">{{ message }}</div>
+          {% endfor %}
+        </div>
         {% endif %}
-      </div>
-
-      <!-- Table -->
+        <!-- Table of office visits -->
       <table>
         <thead>
           <tr>
             <th>Name</th>
-            <th>Contact</th>
+            <th>Contact Number</th>
             <th>Email</th>
             <th>Address</th>
             <th>Purpose</th>
             <th>Date</th>
             <th>Action</th>
+            <th>Added By</th>
           </tr>
         </thead>
         <tbody>
@@ -104,10 +97,11 @@
                 <button class="delete-btn">Delete</button>
               </form>
             </td>
+            <td>{{ visit.user.username }}</td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="7">No office visits available.</td>
+            <td colspan="8">No office visits available.</td>
           </tr>
           {% endfor %}
         </tbody>

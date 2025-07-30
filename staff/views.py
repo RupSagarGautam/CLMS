@@ -1,7 +1,3 @@
-"""
-Views for staff app: handles CRUD and filtering for Office Visit, Client Visit, Online Class Inquiry, and College/School Visit.
-Filtering and admin features added for professional project maintainability.
-"""
 
 # --- Imports: Django core, models, forms ---
 from django.shortcuts import render, redirect, get_object_or_404
@@ -13,10 +9,12 @@ from datetime import datetime
 from .models import ClientVisit, OnlineClassInquiry, OfficeVisit, CollegeVisit
 from .forms import ClientVisitForm, OnlineClassInquiryForm, OfficeVisitForm, CollegeVisitForm
 
-# --- Dashboard View ---
+
+
+#  DASHBOARD 
+
 @login_required
 def add_dashboard(request):
-    """Render the dashboard with all add forms."""
     return render(request, 'pages/staff/add_dashboard.html', {
         'client_form': ClientVisitForm(),
         'online_form': OnlineClassInquiryForm(),
@@ -24,65 +22,132 @@ def add_dashboard(request):
         'college_form': CollegeVisitForm(),
     })
 
-# --- Add Views ---
+#  ADD FORMS 
+
 @login_required
 def add_client_visit(request):
-    """Add a new client visit record."""
     if request.method == 'POST':
         form = ClientVisitForm(request.POST)
         if form.is_valid():
+            contact = form.cleaned_data.get('contact_number')
+
+            if ClientVisit.objects.filter(contact_number=contact).exists():
+                messages.error(request, "Client Visit with this contact number already exists.")
+                return render(request, 'pages/staff/add_dashboard.html', {
+                    'client_form': form,
+                    'online_form': OnlineClassInquiryForm(),
+                    'office_form': OfficeVisitForm(),
+                    'college_form': CollegeVisitForm(),
+                })
+
             client_visit = form.save(commit=False)
             client_visit.user = request.user
             client_visit.save()
             messages.success(request, "Client Visit added successfully.")
             return redirect('client_visit_list')
-        else:
-            messages.error(request, "There were errors in your form.")
+
+        # Show validation errors
+        return render(request, 'pages/staff/add_dashboard.html', {
+            'client_form': form,
+            'online_form': OnlineClassInquiryForm(),
+            'office_form': OfficeVisitForm(),
+            'college_form': CollegeVisitForm(),
+        })
+
     return redirect('add_dashboard')
+
+
+
 
 @login_required
 def add_online_class(request):
-    """Add a new online class inquiry record."""
     if request.method == 'POST':
         form = OnlineClassInquiryForm(request.POST)
         if form.is_valid():
+            contact = form.cleaned_data.get('contact')
+            if OnlineClassInquiry.objects.filter(contact=contact).exists():
+                messages.error(request, "Online Class Inquiry with this contact number already exists.")
+                return render(request, 'pages/staff/add_dashboard.html', {
+                    'online_form': form,
+                    'client_form': ClientVisitForm(),
+                    'office_form': OfficeVisitForm(),
+                    'college_form': CollegeVisitForm(),
+                })
             inquiry = form.save(commit=False)
             inquiry.user = request.user
             inquiry.save()
             messages.success(request, "Online Class Inquiry added successfully.")
             return redirect('online_class_list')
-        else:
-            messages.error(request, "There were errors in your form.")
+        # Show validation errors
+        return render(request, 'pages/staff/add_dashboard.html', {
+            'online_form': form,
+            'client_form': ClientVisitForm(),
+            'office_form': OfficeVisitForm(),
+            'college_form': CollegeVisitForm(),
+        })
     return redirect('add_dashboard')
+
+
 
 @login_required
 def add_office_visit(request):
-    """Add a new office visit record."""
     if request.method == 'POST':
         form = OfficeVisitForm(request.POST)
         if form.is_valid():
+            contact = form.cleaned_data.get('contact')
+
+            # ✅ Check if contact already exists
+            if OfficeVisit.objects.filter(contact=contact).exists():
+                messages.error(request, "An Office Visit with this contact number already exists.")
+                return render(request, 'pages/staff/add_dashboard.html', {
+                    'office_form': form,
+                    'client_form': ClientVisitForm(),
+                    'online_form': OnlineClassInquiryForm(),
+                    'college_form': CollegeVisitForm(),
+                })
+
             visit = form.save(commit=False)
             visit.user = request.user
             visit.save()
             messages.success(request, "Office Visit added successfully.")
             return redirect('office_visit_list')
-        else:
-            messages.error(request, "There were errors in your form.")
+
+        # If form validation fails
+        return render(request, 'pages/staff/add_dashboard.html', {
+            'office_form': form,
+            'client_form': ClientVisitForm(),
+            'online_form': OnlineClassInquiryForm(),
+            'college_form': CollegeVisitForm(),
+        })
     return redirect('add_dashboard')
+
 
 @login_required
 def add_college_visit(request):
-    """Add a new college/school visit record."""
     if request.method == 'POST':
         form = CollegeVisitForm(request.POST)
         if form.is_valid():
+            contact = form.cleaned_data.get('contact')
+            if CollegeVisit.objects.filter(contact=contact).exists():
+                messages.error(request, "College Visit with this contact number already exists.")
+                return render(request, 'pages/staff/add_dashboard.html', {
+                    'college_form': form,
+                    'client_form': ClientVisitForm(),
+                    'office_form': OfficeVisitForm(),
+                    'online_form': OnlineClassInquiryForm(),
+                })
             visit = form.save(commit=False)
             visit.user = request.user
             visit.save()
             messages.success(request, "College/School Visit added successfully.")
             return redirect('college_visit_list')
-        else:
-            messages.error(request, "There were errors in your form.")
+        # Show validation errors
+        return render(request, 'pages/staff/add_dashboard.html', {
+            'college_form': form,
+            'client_form': ClientVisitForm(),
+            'office_form': OfficeVisitForm(),
+            'online_form': OnlineClassInquiryForm(),
+        })
     return redirect('add_dashboard')
 
 # --- Edit Views ---

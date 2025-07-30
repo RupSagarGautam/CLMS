@@ -15,9 +15,7 @@ def staff_login(request):
     
     errors = {}
 
-    
     if request.method == "POST":
-
         identifier = request.POST.get("username")  # can be email or username
         password = request.POST.get("password")
 

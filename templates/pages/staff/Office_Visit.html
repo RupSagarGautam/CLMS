@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Office Visit List</title>
-  <link rel="stylesheet" href="{% static 'css/ClientVisit.css' %}">
+  <link rel="stylesheet" href="{% static 'css/Visit.css' %}">
 </head>
 
 <body>
@@ -12,14 +12,17 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="logo">
-        <img src="{% static 'assets/favicon.png' %}" alt="Logo">
+        <a href="{% url 'add_dashboard' %}">
+         <img src="{% static 'assets/favicon.png' %}" alt="Logo">
+        </a>
       </div>
       <h2>CLMS</h2>
       <ul>
-        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
+        <li class="active"><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
         <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
         <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
         <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
+        <li><a href="{% url 'home' %}">View Dashboard</a></li>
       </ul>
     </div>
 
@@ -33,17 +36,13 @@
             {% if messages %}
               <div class="message-container">
                 {% for message in messages %}
-                  {% if message.tags == "success" %}
-                    <div class="success-message">{{ message }}</div>
-                  {% else %}
-                    <div class="error-message">{{ message }}</div>
-                  {% endif %}
+                  <div class="success-message">{{ message }}</div>
                 {% endfor %}
               </div>
             {% endif %}
           </div>
           <div class="right-btn">
-            <a href="{% url 'visit_dashboard' %}" class="add-btn">Add ➕</a>
+            <a href="{% url 'add_dashboard' %}" class="add-btn">Add ➕</a>
           </div>
         </div>
       </div>
@@ -69,9 +68,11 @@
             <td>{{ visit.email }}</td>
             <td>{{ visit.address }}</td>
             <td>{{ visit.purpose }}</td>
+
             <td>{{ visit.date }}</td>
             <td>
-              <form method="POST" action="{% url 'delete_office' visit.id %}">
+              <a href="{% url 'edit_office' visit.id %}" class="edit-btn">Edit</a>
+              <form method="POST" action="{% url 'delete_office' visit.id %}" style="display: inline;">
                 {% csrf_token %}
                 <button class="delete-btn">Delete</button>
               </form>

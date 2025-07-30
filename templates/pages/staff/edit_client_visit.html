@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Client Visit</title>
+  <link rel="stylesheet" href="{% static 'css/Visit.css' %}">
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="logo">
+        <a href="{% url 'add_dashboard' %}">
+         <img src="{% static 'assets/favicon.png' %}" alt="Logo">
+        </a>
+      </div>
+      <h2>CLMS</h2>
+      <ul>
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
+        <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
+        <li class="active"><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
+        <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
+      </ul>
+    </div>
+    <div class="main-content">
+      <div class="header">
+        <h2>Edit Client Visit</h2>
+        <div class="top-controls">
+          <div class="left-msg">
+            {% if messages %}
+              <div class="message-container">
+                {% for message in messages %}
+                  <div class="{% if message.tags == 'error' %}error-message{% elif message.tags == 'info' %}info-message{% else %}success-message{% endif %}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="right-btn">
+            <a href="{% url 'client_visit_list' %}" class="add-btn">Back to List</a>
+          </div>
+        </div>
+      </div>
+      <div class="form-container">
+        <form method="POST">
+          {% csrf_token %}
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th>Purpose</th>
+                <th>Date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input type="text" name="name" value="{{ form.name.value|default:'' }}" required class="{% if form.name.errors %}error-field{% endif %}">
+                  {% if form.name.errors %}
+                    <div class="field-error">{{ form.name.errors.0 }}</div>
+                  {% endif %}
+                </td>
+                <td>
+                  <input type="text" name="contact_number" value="{{ form.contact_number.value|default:'' }}" required class="{% if form.contact_number.errors %}error-field{% endif %}">
+                  {% if form.contact_number.errors %}
+                    <div class="field-error">{{ form.contact_number.errors.0 }}</div>
+                  {% endif %}
+                </td>
+                <td>
+                  <input type="text" name="purpose" value="{{ form.purpose.value|default:'' }}" required class="{% if form.purpose.errors %}error-field{% endif %}">
+                  {% if form.purpose.errors %}
+                    <div class="field-error">{{ form.purpose.errors.0 }}</div>
+                  {% endif %}
+                </td>
+                <td>
+                  <input type="date" name="date" value="{{ form.date.value|date:'Y-m-d' }}" required class="{% if form.date.errors %}error-field{% endif %}">
+                  {% if form.date.errors %}
+                    <div class="field-error">{{ form.date.errors.0 }}</div>
+                  {% endif %}
+                </td>
+                <td><button type="submit" class="add-btn">Update</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

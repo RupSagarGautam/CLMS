@@ -1,26 +1,39 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="shortcut icon" href="/static/assets/logo.png" type="image/x-icon">
-    
+
+    <!-- Existing home.css -->
     <link rel="stylesheet" href="/static/css/home.css">
+
+    <!-- Dashboard CSS and fonts -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+    <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ApexCharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
     <div class="top-bar">
         {% if user.is_superuser %}
-            <a href="/dashboard" class="stats-btn">Overall Stats</a>
+            <a href="/add-dashboard" class="stats-btn">Overall Stats</a>
             <a href="/admin" class="dashboard-btn">Super Admin Dashboard</a>
         {% endif %}
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-icon" onclick="toggleDropdown()">
-               <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-user"></i>
             </div>
             <div class="dropdown-content" id="dropdownContent">
                 <a href="/profile"><i class="fa-solid fa-id-badge"></i> My Profile</a>
-                <a href="#" class="prf-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
     </div>
@@ -38,9 +51,119 @@
             }
         }
     </script>
+
     <div style="padding: 2rem;">
-        <div class="welcome-main" style="font-size:1.3rem;font-weight:600;color:#31882e;margin-bottom:2rem;">Welcome, {{ user.username }}</div>
-        <!-- Main homepage content can go here -->
+        <div class="welcome-main" style="font-size:1.3rem;font-weight:600;color:#31882e;margin-bottom:2rem;">
+            Welcome, {{ user.username }}
+        </div>
+
+        <!-- START: Insert dashboard.html content here -->
+
+        <div class="dashboard-container">
+          <header>
+            <h1>Dashboard</h1>
+            <p>Welcome, Admin! Here's your real-time overview.</p>
+          </header>
+
+          <!-- Filter Section -->
+          <form method="get" id = "filterForm">
+          <div class="filter-section">
+            <label for="visitType">Visit Type:</label>
+            <select id="visitType" name="visit_type" onchange="document.getElementById('filterForm').submit();">
+              <option value="All" {% if selected_type == "All" %}selected{% endif %}>All</option>
+              {% for vt in visit_types %}
+                <option value="{{ vt.name }}" {% if selected_type == vt.name %}selected{% endif %}>{{ vt.name }}</option>
+              {% endfor %}
+            </select>
+
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="start_date" disabled>
+
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="end_date" disabled>
+
+            <button disabled>Apply Filters</button>
+          </div>
+          </form>
+
+          <!-- Stat Cards -->
+          <section class="stats">
+            <div class="stat-card"><h3>Total Visits</h3><p>{{ total_visits }}</p></div>
+            <div class="stat-card"><h3>Today's Visits</h3><p>{{ todays_visits }}</p></div>
+            <div class="stat-card"><h3>Monthly Visits</h3><p>{{ monthly_visits }}</p></div>
+            <div class="stat-card"><h3>Total Staff</h3><p>--</p></div>
+          </section>
+{{allDates}}: {{raw_dates}}
+          <!-- Charts -->
+          <section class="charts">
+            <div class="chart-placeholder">
+              <h2>Visits Over Time</h2>
+              <div id="lineChart" style="height: 400px;"></div>
+            </div>
+
+            <div class="chart-placeholder">
+              <h2>Distribution by Type</h2>
+              <div id="barChart" style="height: 400px;"></div>
+            </div>
+          </section>
+
+
+
+          <!-- Table -->
+          <section class="recent-visits">
+            <h2>🗂 Recent Visits</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Visit Type</th>
+                  <th>Date</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for visit in detailed_visits %}
+                  <tr>
+                    <td>{{ visit.visit_type.name }}</td>
+                    <td>{{ visit.date }}</td>
+                    <td>{{ visit.count }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td colspan="3">No visits found.</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </section>
+        </div>
+
+        <!-- END: Dashboard content -->
+
     </div>
+
+<script id="dashboard-data" type="application/json">
+  {{ {
+    'dates': dates,
+    'totals': totals,
+    'type_labels': type_labels,
+    'type_counts': type_counts,
+  }|json_script:"dashboard-data" }}
+</script>
+
+
+<script>
+  const dashboardData = JSON.parse(document.getElementById('dashboard-data').textContent);
+  window.allDates = dashboardData.dates;
+  window.allVisitCounts = dashboardData.totals;
+  window.typeLabels = dashboardData.type_labels;
+  window.typeCounts = dashboardData.type_counts;
+
+  console.log("Dates:", window.allDates);
+  console.log("Counts:", window.allVisitCounts);
+</script>
+
+
+
+<script src="{% static 'js/apex-charts.js' %}"></script>
+
+
 </body>
 </html>

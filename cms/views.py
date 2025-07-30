@@ -1,4 +1,3 @@
-from pyexpat.errors import messages
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
@@ -6,6 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.shortcuts import render
+from django.db.models import Sum
+from django.utils import timezone
+from dashboard.models import Visit, VisitType 
+from django.shortcuts import render
+from django.db.models import Count
+
 
 
 def staff_login(request):
@@ -36,11 +42,7 @@ def staff_login(request):
         # If user found, try to authenticate
         if user_obj:
             authenticated_user = authenticate(request, username=user_obj.username, password=password)
-
             if authenticated_user:
-                if not authenticated_user.is_staff and not authenticated_user.is_superuser:
-                    messages.info(request, "You are not authorized to access this page")
-                    return redirect("/log-in")
                 login(request, authenticated_user)
                 messages.success(request, "You have successfully logged in")
                 return redirect("/")
@@ -48,9 +50,9 @@ def staff_login(request):
                 errors["password"] = "Incorrect password"
 
         return render(request, 'pages/login.html', {'errors': errors})
-    else:
-        return render(request, 'pages/login.html')
     
+    return render(request, 'pages/login.html')
+
 @login_required(login_url="/log-in")
 def logoutUser(request):
     logout(request)
@@ -67,3 +69,59 @@ def home(request):
         messages.error(request, "You are not authorized to access this page")
         return render(request, "pages/login.html", status=403)
     return render(request, 'pages/home.html')
+
+
+def home_view(request):
+    selected_type = request.GET.get('visit_type', 'All')
+
+    # Get all VisitTypes
+    visit_types = VisitType.objects.all()
+
+    # Filter visits based on selected type
+    if selected_type != 'All':
+        visits = Visit.objects.filter(visit_type__name=selected_type)
+    else:
+        visits = Visit.objects.all()
+
+    # Recent visits for table
+    detailed_visits = (
+        visits.values('visit_type__name', 'date')
+        .annotate(count=Count('id'))
+        .order_by('-date')[:15]
+    )
+
+    # Total stats
+    total_visits = visits.count()
+    todays_visits = visits.filter(date=timezone.now().date()).count()
+    monthly_visits = visits.filter(date__month=timezone.now().month).count()
+
+    # For charts
+    visits_by_date = (
+        visits.values('date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
+    dates = [v['date'].strftime('%Y-%m-%d') for v in visits_by_date]
+    totals = [v['count'] for v in visits_by_date]
+
+    visits_by_type = (
+        visits.values('visit_type__name')
+        .annotate(count=Count('id'))
+    )
+    type_labels = [v['visit_type__name'] for v in visits_by_type]
+    type_counts = [v['count'] for v in visits_by_type]
+
+    context = {
+        'visit_types': visit_types,
+        'selected_type': selected_type,
+        'detailed_visits': detailed_visits,
+        'total_visits': total_visits,
+        'todays_visits': todays_visits,
+        'monthly_visits': monthly_visits,
+        'dates': dates,
+        'totals': totals,
+        'type_labels': type_labels,
+        'type_counts': type_counts,
+    }
+
+    return render(request, 'pages/home.html', context)

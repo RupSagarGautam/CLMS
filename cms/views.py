@@ -7,11 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import render
 from django.db.models import Sum
-from datetime import date, timezone
+from django.utils import timezone
 from dashboard.models import Visit, VisitType 
 from django.shortcuts import render
 from django.db.models import Count
-from django.utils.timezone import now
 
 
 
@@ -43,11 +42,7 @@ def staff_login(request):
         # If user found, try to authenticate
         if user_obj:
             authenticated_user = authenticate(request, username=user_obj.username, password=password)
-
             if authenticated_user:
-                if not authenticated_user.is_staff and not authenticated_user.is_superuser:
-                    messages.info(request, "You are not authorized to access this page")
-                    return redirect("/log-in")
                 login(request, authenticated_user)
                 messages.success(request, "You have successfully logged in")
                 return redirect("/")
@@ -55,9 +50,9 @@ def staff_login(request):
                 errors["password"] = "Incorrect password"
 
         return render(request, 'pages/login.html', {'errors': errors})
-    else:
-        return render(request, 'pages/login.html')
     
+    return render(request, 'pages/login.html')
+
 @login_required(login_url="/log-in")
 def logoutUser(request):
     logout(request)
@@ -67,7 +62,6 @@ def logoutUser(request):
 
 @login_required(login_url="/log-in")
 def home(request):
-
     if not request.user.is_authenticated:
         messages.error(request, "You need to log in to access this page")
         return render(request, "pages/login.html", status=403)

@@ -18,8 +18,6 @@
             <h2>CLMS Staff Login</h2>
             <p>Staff access only. Please login to continue.</p>
         </div>
-        
-
         <form class="login-form" autocomplete="off" method="post" action="/log-in/">
             {% csrf_token %}
             <div class="input-group">
@@ -42,20 +40,6 @@
                   {% if errors.password %}
                     <p class="error-text">{{ errors.password }}</p>
                   {% endif %}
-                  {% if errors.form %}
-                    <p class="error-text">{{ errors.form }}</p>
-                  {% endif %}
-           {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            {% if "success" not in message.tags %}
-                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
-                    {{ message }}
-                </div>
-            {% endif %}
-        {% endfor %}
-    </div>
-{% endif %}
             </div>
             <button type="submit"><i class="fa-solid fa-sign-in-alt"></i> <span>Login</span></button>
             <div style="margin-top: 10px; text-align: center;">

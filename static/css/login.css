@@ -179,6 +179,16 @@ body {
     letter-spacing: 0.2px;
     transition: color 0.3s;
 }
+.forgot-link {
+    color: #27ae60 !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+.forgot-link:hover {
+    color: #219150 !important;
+    text-decoration: underline !important;
+}
 @media (max-width: 600px) {
     body {
         padding: 0.5rem;
@@ -207,6 +217,7 @@ body {
         font-size: 0.92rem;
     }
 }
+
 @media (max-width: 400px) {
     .login-container {
         padding: 0.7rem 0.2rem 0.7rem 0.2rem;
@@ -225,3 +236,15 @@ body {
   font-weight: 400 !important;
  
 }
+
+ .messages {
+    margin: 10px 0;
+    color: #a94442 !important;
+}
+ .message {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #a94442 !important;
+ }

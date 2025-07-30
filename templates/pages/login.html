@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="shortcut icon" href="/static/assets/favicon.png" type="image/x-icon">
 </head>
 
 <body>
@@ -17,6 +18,8 @@
             <h2>CLMS Staff Login</h2>
             <p>Staff access only. Please login to continue.</p>
         </div>
+        
+
         <form class="login-form" autocomplete="off" method="post" action="/log-in/">
             {% csrf_token %}
             <div class="input-group">
@@ -24,6 +27,7 @@
                 <div class="input-icon-wrapper">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="username" name="username" placeholder="Enter your username or email" required autofocus>
+
                   </div>
                   {% if errors.username %}
                     <p class="error-text">{{ errors.username }}</p>
@@ -38,9 +42,55 @@
                   {% if errors.password %}
                     <p class="error-text">{{ errors.password }}</p>
                   {% endif %}
+                  {% if errors.form %}
+                    <p class="error-text">{{ errors.form }}</p>
+                  {% endif %}
+           {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            {% if "success" not in message.tags %}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
             </div>
             <button type="submit"><i class="fa-solid fa-sign-in-alt"></i> <span>Login</span></button>
+            <div style="margin-top: 10px; text-align: center;">
+                <a href="{% url 'forgot_password' %}" class="forgot-link">Forgot Password?</a>
+            </div>
         </form>
+
+      <div id="forgot-password-form" style="display:none;">
+            <form method="post" action="{% url 'request_otp' %}">
+                {% csrf_token %}
+                <label for="email">Enter your email:</label>
+                <input type="email" name="email" required>
+                <button type="submit">Send OTP</button>
+            </form>
+        </div>
+
+        <div id="reset-password-form" style="display:none;">
+            <form method="post" action="{% url 'reset_password' %}">
+                {% csrf_token %}
+                <label for="email">Email:</label>
+                <input type="email" name="email" required><br>
+                <label for="otp">OTP:</label>
+                <input type="text" name="otp" maxlength="6" required><br>
+                <label for="new_password">New Password:</label>
+                <input type="password" name="new_password" required><br>
+                <button type="submit">Reset Password</button>
+            </form>
+        </div>
+
+        <script>
+        function showForgotForm() {
+            document.getElementById('forgot-password-form').style.display = 'block';
+            document.getElementById('reset-password-form').style.display = 'none';
+        }
+        </script>
         <div class="login-footer">
             &copy; 2025 CLMS System. Staff access only.
         </div>

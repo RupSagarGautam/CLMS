@@ -27,6 +27,10 @@
             <a href="/add-dashboard" class="stats-btn">Overall Stats</a>
             <a href="/admin" class="dashboard-btn">Super Admin Dashboard</a>
         {% endif %}
+
+        {% if user.is_staff %}
+            <a href="/add-dashboard" class="dashboard-btn">Staff Dashboard</a>
+        {% endif %}
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-icon" onclick="toggleDropdown()">
                 <i class="fa-solid fa-user"></i>

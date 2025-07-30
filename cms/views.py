@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import render
 from django.db.models import Sum
-from datetime import date
+from datetime import date, timezone
 from dashboard.models import Visit, VisitType 
 from django.shortcuts import render
 from django.db.models import Count

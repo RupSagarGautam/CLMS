@@ -8,12 +8,15 @@ from .models import PasswordResetOTP
 import random
 from datetime import timedelta
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate, login as auth_login
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 # Create your views here.
 
 def request_otp(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+        email = request.POST.get('email') 
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
@@ -38,9 +41,7 @@ def request_otp(request):
         # Redirect to OTP verification page
         return redirect(f'/verify-otp/?email={email}')
 
-from django.contrib.auth import authenticate, login as auth_login
-from django.shortcuts import render, redirect
-from django.contrib import messages
+
 
 def verify_otp(request):
     email = request.GET.get('email') or request.POST.get('email')

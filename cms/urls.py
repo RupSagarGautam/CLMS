@@ -16,17 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('dashboard/', include('dashboard.urls')),
-    path('', RedirectView.as_view(url='/dashboard/', permanent=False)),
-]
-
-from django.urls import path
 from cms import views as cms_views
 from clientapp import views as clientapp_views
+from staff import views as staff_views
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,5 +30,9 @@ urlpatterns = [
     path('request-otp/', clientapp_views.request_otp, name='request_otp'),
     path('reset-password/', clientapp_views.reset_password, name='reset_password'),
     path('forgot-password/', clientapp_views.forgot_password, name='forgot_password'),
-    path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'), 
+    path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'),
+    path('dashboard/', include('dashboard.urls')), 
+    path('dashboard/', include('staff.urls')),
+    path('home/', cms_views.home_view, name='home'),
+
 ]

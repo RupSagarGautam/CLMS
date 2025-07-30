@@ -1,10 +1,11 @@
 :root {
-    --primary-color: #90b494;
-    --background-color: #faf9f6;
+    --primary-color: #2ecc71;
+    --secondary-color: #27ae60;
+    --background-color: #e3fbe6;
     --text-color: #333;
-    --border-color: #ccc;
+    --border-color: #ddd;
     --card-bg: #ffffff;
-    --field-bg: #f2f2f2;
+    --field-bg: #f5f9f6;
 }
 
 body {
@@ -13,86 +14,121 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
-}
-
-.profile-wrapper {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 30px;
-    padding: 60px 20px;
-    box-sizing: border-box;
-    max-width: 1200px;
-    margin: auto;
-}
-
-.sidebar {
-    width: 280px;
-    background-color: var(--card-bg);
-    padding: 20px 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--border-color);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.profile-pic i {
-    font-size: 80px;
-    color: #999;
-    margin-bottom: 15px;
-}
-
-.contact-info {
+.profile-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2.5rem;
+    margin-top: 3rem;
     width: 100%;
+    max-width: 950px;
 }
 
-.contact-info p {
-    margin: 10px 0;
-    font-size: 14px;
+.profile-card {
+    background: #c8f5d1;
+    border-radius: 2rem;
+    box-shadow: 0 8px 32px rgba(44, 204, 113, 0.10);
+    max-width: 420px;
+    width: 100%;
+    padding: 3rem 2.5rem 2.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 7px solid #fff;
+    box-shadow: 0 2px 12px rgba(44, 204, 113, 0.10);
+    margin-bottom: 2rem;
+    background: #fff;
     display: flex;
     align-items: center;
-    color: var(--text-color);
+    justify-content: center;
 }
 
-.contact-info i {
-    margin-right: 10px;
+.profile-pic img,
+.profile-pic i {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    font-size: 150px;
     color: var(--primary-color);
-    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.profile-container {
-    flex: 1;
-    max-width: 600px;
-    background-color: var(--card-bg);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--border-color);
-}
-
-h2 {
-    margin-bottom: 20px;
+.profile-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1.2rem;
     text-align: center;
+}
+
+.profile-info {
     color: var(--text-color);
+    font-size: 1.1rem;
+    text-align: left;
+    margin-bottom: 0.7rem;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.profile-info i {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    min-width: 24px;
+}
+
+.details-card {
+    background: var(--card-bg);
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 16px rgba(44, 204, 113, 0.08);
+    max-width: 540px;
+    width: 100%;
+    padding: 2.5rem;
+}
+
+.details-card h2 {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .profile-field {
-    margin-bottom: 15px;
+    margin-bottom: 1.2rem;
 }
 
 .profile-label {
     font-weight: 500;
-    margin-bottom: 6px;
+    color: var(--primary-color);
+    margin-bottom: 0.2rem;
     display: block;
 }
 
 .profile-value {
-    background-color: var(--field-bg);
-    padding: 10px 12px;
+    background: var(--field-bg);
     border-radius: 6px;
     border: 1px solid var(--border-color);
+    padding: 10px 14px;
+    font-size: 1rem;
+    color: var(--text-color);
 }
 
 .success-message {
@@ -103,6 +139,7 @@ h2 {
     margin-bottom: 15px;
     border: 1px solid var(--primary-color);
     text-align: center;
+    font-weight: 600;
 }
 
 .edit-btn {
@@ -110,7 +147,7 @@ h2 {
     margin-top: 25px;
     width: 100%;
     padding: 12px;
-    background: linear-gradient(90deg, #43ea7c 0%, #27ae60 100%);
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
     border: none;
     border-radius: 6px;
@@ -119,10 +156,40 @@ h2 {
     text-align: center;
     text-decoration: none;
     transition: all 0.3s ease;
+    font-weight: 600;
 }
 
 .edit-btn:hover {
-    color: #faf6f9;
-    background: linear-gradient(90deg, #43ea7c 0%, #27ae60 100%);
-    box-shadow: 0px 0px 19px #33333354 inset;
+    background: linear-gradient(90deg, var(--secondary-color) 0%, #219653 100%);
+    box-shadow: 0px 4px 8px rgba(39, 174, 96, 0.3);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 950px) {
+    .profile-layout {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .details-card {
+        max-width: 100%;
+        padding: 1.5rem 0.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-card,
+    .details-card {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-name {
+        font-size: 1.3rem;
+    }
 }

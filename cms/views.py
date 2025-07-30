@@ -64,6 +64,11 @@ def home(request):
     return render(request, 'pages/home.html')
 
 
+from clientapp.models import UserProfile
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import os
+
 @login_required
 def profile(request):
     if not request.user.is_staff:
@@ -71,6 +76,9 @@ def profile(request):
         return render(request, "pages/login.html", status=403)
 
     user = request.user
+    
+    # Get or create user profile
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
 
     context = {
         "firstName": user.first_name,
@@ -78,6 +86,7 @@ def profile(request):
         "email": user.email,
         "phone": getattr(user, 'phone', ''),
         "roles": "Super Admin" if user.is_superuser else ("Staff" if user.is_staff else "User"),
+        "profile_picture": user_profile.profile_picture,
     }
 
     return render(request, 'pages/profile.html', context)
@@ -91,6 +100,9 @@ def editProfile(request):
         messages.error(request, "You are not authorized to access this page")
         return render(request, "pages/login.html", status=403)
 
+    # Get or create user profile
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
+    
     field_errors = {}
     first_name = user.first_name
     last_name = user.last_name
@@ -98,6 +110,22 @@ def editProfile(request):
     if request.method == "POST":
         first_name = request.POST.get("firstName", "").strip()
         last_name = request.POST.get("lastName", "").strip()
+        
+        # Handle profile picture upload
+        profile_picture = request.FILES.get('profile_picture')
+        
+        if profile_picture:
+            # Check if file is an image
+            if not profile_picture.content_type.startswith('image'):
+                field_errors["profile_picture"] = "Please upload an image file only"
+            else:
+                # Delete old profile picture if it exists
+                if user_profile.profile_picture:
+                    if os.path.isfile(user_profile.profile_picture.path):
+                        os.remove(user_profile.profile_picture.path)
+                # Save new profile picture
+                user_profile.profile_picture = profile_picture
+                user_profile.save()
 
         if not first_name:
             field_errors["firstName"] = "First name cannot be empty"
@@ -123,6 +151,7 @@ def editProfile(request):
         "phone": getattr(user, 'phone', ''),
         "roles": "Super Admin" if user.is_superuser else ("Staff" if user.is_staff else "User"),
         "field_errors": field_errors,
+        "profile_picture": user_profile.profile_picture,
     }
 
     return render(request, "pages/edit_profile.html", context)

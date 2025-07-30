@@ -5,57 +5,277 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Edit Profile</title>
     <link rel="stylesheet" href="/static/css/edit_profile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .error-message {
-            color: red;
+        body {
+            background: #f6fef7;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-layout {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 2.5rem;
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 950px;
+        }
+        .profile-card {
+            background: #c8f5d1;
+            border-radius: 2rem;
+            box-shadow: 0 8px 32px rgba(44, 204, 113, 0.10);
+            max-width: 420px;
+            width: 100%;
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 7px solid #fff;
+            box-shadow: 0 2px 12px rgba(44, 204, 113, 0.10);
+            margin-bottom: 2rem;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: box-shadow 0.2s;
+        }
+        .profile-pic:hover {
+            box-shadow: 0 4px 24px rgba(44, 204, 113, 0.18);
+        }
+        .profile-pic img,
+        .profile-pic i {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            font-size: 150px;
+            color: #2ecc71;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        .profile-info {
+            color: #333;
+            font-size: 1.1rem;
+            text-align: left;
+            margin-bottom: 0.7rem;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .profile-info i {
+            color: #2ecc71;
+            font-size: 1.3rem;
+            min-width: 24px;
+        }
+        .edit-card {
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 16px rgba(44, 204, 113, 0.08);
+            max-width: 540px;
+            width: 100%;
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+        }
+        .edit-card h2 {
+            color: #2ecc71;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .edit-card form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .edit-card label {
+            margin-top: 1rem;
+            font-weight: 600;
+            color: #2ecc71;
+        }
+        .edit-card input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 0.3rem;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background-color: #f5f9f6;
+            font-size: 15px;
+            color: #333;
+            box-sizing: border-box;
+        }
+        .edit-card button {
+            margin-top: 2rem;
+            padding: 12px;
+            width: 100%;
+            background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .edit-card button:hover {
+            background: linear-gradient(90deg, #27ae60 0%, #219653 100%);
+            box-shadow: 0px 4px 8px rgba(39, 174, 96, 0.3);
+            transform: translateY(-2px);
+        }
+        .edit-card .error-message {
+            color: #e74c3c;
             font-size: 0.9rem;
             margin-top: 4px;
             margin-bottom: 12px;
         }
-        .success-message {
-            color: green;
+        .edit-card .success-message {
+            background-color: #e0f3e5;
+            color: #2ecc71;
+            padding: 10px;
+            border-radius: 6px;
             margin-bottom: 15px;
+            border: 1px solid #2ecc71;
+            text-align: center;
+            font-weight: 600;
+        }
+        .file-input {
+            display: none;
+        }
+        @media (max-width: 950px) {
+            .profile-layout {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+            .edit-card {
+                max-width: 100%;
+                padding: 1.5rem 0.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .profile-card, .edit-card {
+                padding: 1.5rem 0.5rem;
+            }
+            .profile-pic {
+                width: 120px;
+                height: 120px;
+            }
+            .profile-name {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="profile-container">
-    <h2>Edit Profile</h2>
-
-    {% if messages %}
-        {% for message in messages %}
-            <div class="success-message {{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-
-    <form method="POST">
-        {% csrf_token %}
-
-        <label for="firstName">First Name</label>
-        <input type="text" id="firstName" name="firstName" value="{{ firstName }}" required />
-        {% if field_errors.firstName %}
-            <div class="error-message">{{ field_errors.firstName }}</div>
-        {% endif %}
-
-        <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" name="lastName" value="{{ lastName }}" required />
-        {% if field_errors.lastName %}
-            <div class="error-message">{{ field_errors.lastName }}</div>
-        {% endif %}
-
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" value="{{ email }}" readonly />
-
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone" value="{{ phone }}" readonly />
-
-        <label for="roles">Role</label>
-        <input type="text" id="roles" name="roles" value="{{ roles }}" readonly />
-
-        <button type="submit">Update Profile</button>
-    </form>
-</div>
-
+    <div class="profile-layout">
+        <div class="profile-card">
+            <form id="profile-pic-form" enctype="multipart/form-data" style="display:contents;">
+                <input type="file" id="profile_picture" name="profile_picture" class="file-input" accept="image/*">
+                <div class="profile-pic" id="profile-pic-clickable">
+                    {% if profile_picture %}
+                        <img src="{{ profile_picture.url }}" alt="Profile Picture" id="profile-pic-preview">
+                    {% else %}
+                        <i class="fas fa-user-circle" id="profile-pic-icon"></i>
+                    {% endif %}
+                </div>
+            </form>
+            <div class="profile-name">{{ firstName }} {{ lastName }}</div>
+            <div class="profile-info"><i class="fas fa-envelope"></i> {{ email }}</div>
+            <div class="profile-info"><i class="fas fa-phone"></i> {{ phone|default:"Not set" }}</div>
+            <div class="profile-info"><i class="fas fa-map-marker-alt"></i> {{ address|default:"Not set" }}</div>
+            {% if country %}
+            <div class="profile-info"><i class="fas fa-globe"></i> {{ country }}</div>
+            {% endif %}
+        </div>
+        <div class="edit-card">
+            <h2>Edit User Details</h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="success-message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" value="{{ firstName }}" required />
+                {% if field_errors.firstName %}
+                    <div class="error-message">{{ field_errors.firstName }}</div>
+                {% endif %}
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" value="{{ lastName }}" required />
+                {% if field_errors.lastName %}
+                    <div class="error-message">{{ field_errors.lastName }}</div>
+                {% endif %}
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" readonly />
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" value="{{ email }}" readonly />
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" value="{{ phone }}" readonly />
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" value="{{ address|default:'' }}" placeholder="Enter your address" />
+                <button type="submit">Update Profile</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Make profile picture clickable to trigger file input
+        document.getElementById('profile-pic-clickable').addEventListener('click', function() {
+            document.getElementById('profile_picture').click();
+        });
+        // Preview profile picture before upload
+        document.getElementById('profile_picture').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Check if file is an image
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file only');
+                    e.target.value = '';
+                    return;
+                }
+                // Create preview
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    // Hide icon if it exists
+                    const iconElement = document.getElementById('profile-pic-icon');
+                    if (iconElement) {
+                        iconElement.style.display = 'none';
+                    }
+                    // Create or update image preview
+                    let previewImg = document.getElementById('profile-pic-preview');
+                    if (!previewImg) {
+                        previewImg = document.createElement('img');
+                        previewImg.id = 'profile-pic-preview';
+                        previewImg.alt = 'Profile Picture';
+                        document.getElementById('profile-pic-clickable').appendChild(previewImg);
+                    }
+                    previewImg.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 </html>

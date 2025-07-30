@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from cms import views as cms_views
 from clientapp import views as clientapp_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,3 +33,7 @@ urlpatterns = [
     path('profile/', cms_views.profile,),
     path('edit-profile/', cms_views.editProfile,),
 ]
+
+# Add this at the end of the file to serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

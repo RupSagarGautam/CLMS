@@ -6,57 +6,60 @@
     <title>User Profile</title>
     <link rel="stylesheet" href="/static/css/profile.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+   
 </head>
 <body>
-<div class="profile-wrapper">
-    <div class="sidebar">
-        <div class="profile-pic">
-            <i class="fas fa-user-circle"></i>
+    <div class="profile-layout">
+        <div class="profile-card">
+            <div class="profile-pic">
+                {% if profile_picture %}
+                    <img src="{{ profile_picture.url }}" alt="Profile Picture">
+                {% else %}
+                    <i class="fas fa-user-circle"></i>
+                {% endif %}
+            </div>
+            <div class="profile-name">{{ firstName }} {{ lastName }}</div>
+            <div class="profile-info"><i class="fas fa-envelope"></i> {{ email }}</div>
+            <div class="profile-info"><i class="fas fa-phone"></i> {{ phone|default:"Not set" }}</div>
+            <div class="profile-info"><i class="fas fa-map-marker-alt"></i> {{ address|default:"Not set" }}</div>
+            {% if country %}
+            <div class="profile-info"><i class="fas fa-globe"></i> {{ country }}</div>
+            {% endif %}
         </div>
-        <div class="contact-info">
-            <p><i class="fas fa-envelope"></i> {{ email }}</p>
-            <p><i class="fas fa-phone"></i> {{ phone|default:"Not set" }}</p>
-            <p><i class="fas fa-map-marker-alt"></i> Not set</p>
+        <div class="details-card">
+            <h2>User Details Customization</h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="success-message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="profile-field">
+                <label class="profile-label">First Name</label>
+                <div class="profile-value">{{ firstName }}</div>
+            </div>
+            <div class="profile-field">
+                <label class="profile-label">Last Name</label>
+                <div class="profile-value">{{ lastName }}</div>
+            </div>
+            <div class="profile-field">
+                <label class="profile-label">Username</label>
+                <div class="profile-value">{{ user.username }}</div>
+            </div>
+            <div class="profile-field">
+                <label class="profile-label">Email</label>
+                <div class="profile-value">{{ email }}</div>
+            </div>
+            <div class="profile-field">
+                <label class="profile-label">Phone Number</label>
+                <div class="profile-value">{{ phone|default:"Not set" }}</div>
+            </div>
+            <div class="profile-field">
+                <label class="profile-label">Address</label>
+                <div class="profile-value">{{ address|default:"Not set" }}</div>
+            </div>
+            <a href="/edit-profile" class="edit-btn">Edit Profile</a>
         </div>
     </div>
-
-    <div class="profile-container">
-        <h2>User Profile</h2>
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="success-message {{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-
-        <div class="profile-field">
-            <label class="profile-label">First Name</label>
-            <div class="profile-value">{{ firstName }}</div>
-        </div>
-
-        <div class="profile-field">
-            <label class="profile-label">Last Name</label>
-            <div class="profile-value">{{ lastName }}</div>
-        </div>
-
-        <div class="profile-field">
-            <label class="profile-label">Email</label>
-            <div class="profile-value">{{ email }}</div>
-        </div>
-
-        <div class="profile-field">
-            <label class="profile-label">Phone Number</label>
-            <div class="profile-value">{{ phone|default:"Not set" }}</div>
-        </div>
-
-        <div class="profile-field">
-            <label class="profile-label">Role</label>
-            <div class="profile-value text-capitalize">{{ roles }}</div>
-        </div>
-
-        <a href="/edit-profile" class="edit-btn">Edit Profile</a>
-    </div>
-</div>
 </body>
 </html>

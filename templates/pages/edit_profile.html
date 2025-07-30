@@ -15,6 +15,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            font-family: 'Poppins', sans-serif;
         }
         .profile-layout {
             display: flex;
@@ -44,17 +45,12 @@
             overflow: hidden;
             border: 7px solid #fff;
             box-shadow: 0 2px 12px rgba(44, 204, 113, 0.10);
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             background: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
             position: relative;
-            transition: box-shadow 0.2s;
-        }
-        .profile-pic:hover {
-            box-shadow: 0 4px 24px rgba(44, 204, 113, 0.18);
         }
         .profile-pic img,
         .profile-pic i {
@@ -95,7 +91,7 @@
             box-shadow: 0 4px 16px rgba(44, 204, 113, 0.08);
             max-width: 540px;
             width: 100%;
-            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            padding: 2.5rem;
         }
         .edit-card h2 {
             color: #2ecc71;
@@ -190,25 +186,31 @@
 </head>
 <body>
     <div class="profile-layout">
+        <!-- LEFT: Profile Card -->
         <div class="profile-card">
-            <form id="profile-pic-form" enctype="multipart/form-data" style="display:contents;">
-                <input type="file" id="profile_picture" name="profile_picture" class="file-input" accept="image/*">
-                <div class="profile-pic" id="profile-pic-clickable">
+            <div class="profile-pic">
+                <label for="profile_picture" style="cursor: pointer; width: 100%; height: 100%;">
                     {% if profile_picture %}
-                        <img src="{{ profile_picture.url }}" alt="Profile Picture" id="profile-pic-preview">
+                        <img src="{{ profile_picture.url }}" alt="Profile Picture">
                     {% else %}
-                        <i class="fas fa-user-circle" id="profile-pic-icon"></i>
+                        <i class="fas fa-user-circle"></i>
                     {% endif %}
-                </div>
-            </form>
+                </label>
+                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="file-input">
+            </div>
+            {% if field_errors.profile_picture %}
+                <div class="error-message">{{ field_errors.profile_picture }}</div>
+            {% endif %}
             <div class="profile-name">{{ firstName }} {{ lastName }}</div>
             <div class="profile-info"><i class="fas fa-envelope"></i> {{ email }}</div>
             <div class="profile-info"><i class="fas fa-phone"></i> {{ phone|default:"Not set" }}</div>
             <div class="profile-info"><i class="fas fa-map-marker-alt"></i> {{ address|default:"Not set" }}</div>
             {% if country %}
-            <div class="profile-info"><i class="fas fa-globe"></i> {{ country }}</div>
+                <div class="profile-info"><i class="fas fa-globe"></i> {{ country }}</div>
             {% endif %}
         </div>
+
+        <!-- RIGHT: Edit Form -->
         <div class="edit-card">
             <h2>Edit User Details</h2>
             {% if messages %}
@@ -216,6 +218,7 @@
                     <div class="success-message {{ message.tags }}">{{ message }}</div>
                 {% endfor %}
             {% endif %}
+
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for="firstName">First Name</label>
@@ -223,59 +226,22 @@
                 {% if field_errors.firstName %}
                     <div class="error-message">{{ field_errors.firstName }}</div>
                 {% endif %}
+
                 <label for="lastName">Last Name</label>
                 <input type="text" id="lastName" name="lastName" value="{{ lastName }}" required />
                 {% if field_errors.lastName %}
                     <div class="error-message">{{ field_errors.lastName }}</div>
                 {% endif %}
+
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" value="{{ user.username }}" readonly />
+
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" value="{{ email }}" readonly />
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" value="{{ phone }}" readonly />
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" value="{{ address|default:'' }}" placeholder="Enter your address" />
+
                 <button type="submit">Update Profile</button>
             </form>
         </div>
     </div>
-    <script>
-        // Make profile picture clickable to trigger file input
-        document.getElementById('profile-pic-clickable').addEventListener('click', function() {
-            document.getElementById('profile_picture').click();
-        });
-        // Preview profile picture before upload
-        document.getElementById('profile_picture').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                // Check if file is an image
-                if (!file.type.startsWith('image/')) {
-                    alert('Please select an image file only');
-                    e.target.value = '';
-                    return;
-                }
-                // Create preview
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    // Hide icon if it exists
-                    const iconElement = document.getElementById('profile-pic-icon');
-                    if (iconElement) {
-                        iconElement.style.display = 'none';
-                    }
-                    // Create or update image preview
-                    let previewImg = document.getElementById('profile-pic-preview');
-                    if (!previewImg) {
-                        previewImg = document.createElement('img');
-                        previewImg.id = 'profile-pic-preview';
-                        previewImg.alt = 'Profile Picture';
-                        document.getElementById('profile-pic-clickable').appendChild(previewImg);
-                    }
-                    previewImg.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
 </body>
 </html>

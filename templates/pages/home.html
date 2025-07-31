@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="shortcut icon" href="/static/assets/logo.png" type="image/x-icon">
+    
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="top-bar">
+        {% if user.is_superuser %}
+            <a href="/add-dashboard" class="stats-btn">Overall Stats</a>
+            <a href="/admin" class="dashboard-btn">Super Admin Dashboard</a>
+        {% endif %}
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-icon" onclick="toggleDropdown()">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="dropdown-content" id="dropdownContent">
+                <a href="/profile"><i class="fa-solid fa-id-badge"></i> My Profile</a>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </div>
+    <form id="logout-form" action="/logout" style="display: none;">
+        {% csrf_token %}
+    </form>
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.profile-dropdown')) {
+                document.getElementById('profileDropdown').classList.remove('show');
+            }
+        }
+    </script>
+    <div style="padding: 2rem;">
+        <div class="welcome-main" style="font-size:1.3rem;font-weight:600;color:#31882e;margin-bottom:2rem;">Welcome, {{ user.username }}</div>
+        <!-- Main homepage content can go here -->
+    </div>
+</body>
+</html>

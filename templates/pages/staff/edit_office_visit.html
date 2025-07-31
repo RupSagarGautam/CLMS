@@ -22,7 +22,6 @@
         <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
         <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
         <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
-        <li><a href="/">View Dashboard</a></li>
       </ul>
     </div>
 
@@ -109,7 +108,12 @@
                     <div class="field-error">{{ form.date.errors.0 }}</div>
                   {% endif %}
                 </td>
-                <td><button type="submit" class="add-btn">Update</button></td>
+                <td>
+                  <div class="button-container">
+                    <button type="submit" class="add-btn">Update</button>
+                    <a href="{% url 'office_visit_list' %}" class="cancel-btn">Cancel</a>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>

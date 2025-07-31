@@ -20,6 +20,8 @@ from cms import views as cms_views
 from clientapp import views as clientapp_views
 from staff import views as staff_views
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', cms_views.home),
@@ -29,6 +31,7 @@ urlpatterns = [
     path('reset-password/', clientapp_views.reset_password, name='reset_password'),
     path('forgot-password/', clientapp_views.forgot_password, name='forgot_password'),
     path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'),
+    path('dashboard/', include('dashboard.urls')), 
     path('add-dashboard/', include('staff.urls')),
 
 ]

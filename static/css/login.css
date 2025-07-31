@@ -1,0 +1,250 @@
+body {
+    background: #f6fff9;
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #333;
+    transition: background 0.4s;
+}
+.login-container {
+    background: #fff;
+    padding: 2.5rem 2rem 2rem 2rem;
+    border-radius: 18px;
+    box-shadow: 2px 2px 25px #3333335e;
+    width: 100%;
+    max-width: 400px;
+    min-width: 0;
+    transition: box-shadow 0.4s, transform 0.4s;
+    box-sizing: border-box;
+    animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.login-container:hover {
+    box-shadow: 0 10px 40px rgba(67, 234, 124, 0.18);
+    transform: translateY(-4px) scale(1.01);
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.login-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.login-header h2 {
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+    color: #333;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+.login-header p {
+    color: #333;
+    font-size: 1.05rem;
+    margin: 0;
+    transition: color 0.3s;
+}
+.login-form {
+    margin-top: 0.5rem;
+}
+.input-group {
+    position: relative;
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #333;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.input-group .fa-solid {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #43ea7c;
+    font-size: 1.15rem;
+    pointer-events: none;
+    transition: color 0.3s;
+}
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 0.7rem 0.9rem 0.7rem 2.5rem;
+    border: 1.5px solid #d1f5e0;
+    border-radius: 7px;
+    font-size: 1rem;
+    background: #fafffc;
+    transition: border 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
+    box-sizing: border-box;
+    color: #333;
+}
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: #2ecc40;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 0 2px #43ea7c33;
+    color: #222;
+}
+.login-form button {
+    width: 100%;
+    padding: 0.9rem;
+    background: linear-gradient(90deg, #43ea7c 0%, #27ae60 100%);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.35s cubic-bezier(0.4,0,0.2,1), color 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s, border 0.3s;
+    box-shadow: 0 2px 8px rgba(67, 234, 124, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    margin-top: 0.2rem;
+    position: relative;
+    overflow: hidden;
+}
+.login-form button::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background: radial-gradient(circle 60px at var(--x, 50%) var(--y, 50%), #27ae60 0%, #27ae60 60px, transparent 80px);
+    opacity: 0;
+    transition: opacity 0.3s, background-position 0.35s cubic-bezier(0.4,0,0.2,1), background 0.35s cubic-bezier(0.4,0,0.2,1);
+    z-index: 1;
+}
+.login-form button.invert-hover {
+    color: #27ae60 !important;
+    background: #fff !important;
+    border: 2px solid #27ae60;
+    transition: background 0.35s cubic-bezier(0.4,0,0.2,1), color 0.35s cubic-bezier(0.4,0,0.2,1), border 0.3s;
+}
+.login-form button.invert-hover::before {
+    opacity: 1;
+    transition: opacity 0.3s, background-position 0.35s cubic-bezier(0.4,0,0.2,1), background 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.login-form button span, .login-form button i {
+    position: relative;
+    z-index: 2;
+    transition: color 0.3s;
+}
+.login-form button.invert-hover .fa-sign-in-alt,
+.login-form button.invert-hover span {
+    color: #27ae60;
+    transition: color 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.login-form button.invert-hover .fa-sign-in-alt.invert,
+.login-form button.invert-hover span.invert {
+    color: #fff !important;
+    transition: color 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.login-form button:hover {
+    background: #fff;
+    color: #27ae60;
+    border: 2px solid #27ae60;
+    box-shadow: 0 4px 16px rgba(67, 234, 124, 0.18);
+    transition: background 0.35s cubic-bezier(0.4,0,0.2,1), color 0.35s cubic-bezier(0.4,0,0.2,1), border 0.3s, box-shadow 0.2s;
+}
+.login-form button:hover .fa-sign-in-alt {
+    color: #27ae60;
+}
+.login-footer {
+    text-align: center;
+    margin-top: 1.3rem;
+    color: #333;
+    font-size: 0.97rem;
+    letter-spacing: 0.2px;
+    transition: color 0.3s;
+}
+.forgot-link {
+    color: #27ae60 !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+.forgot-link:hover {
+    color: #219150 !important;
+    text-decoration: underline !important;
+}
+@media (max-width: 600px) {
+    body {
+        padding: 0.5rem;
+        min-height: 100vh;
+    }
+    .login-container {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        max-width: 98vw;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(67, 234, 124, 0.13);
+    }
+    .login-header h2 {
+        font-size: 1.3rem;
+    }
+    .login-header p {
+        font-size: 0.95rem;
+    }
+    .login-form button {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+    .input-group label {
+        font-size: 0.97rem;
+    }
+    .login-footer {
+        font-size: 0.92rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .login-container {
+        padding: 0.7rem 0.2rem 0.7rem 0.2rem;
+        border-radius: 8px;
+    }
+    .login-header h2 {
+        font-size: 1.05rem;
+    }
+}
+
+
+.error-text {
+  color: #ff0000 !important;
+  font-size: 1em !important;
+  margin-top: 6px !important;
+  font-weight: 400 !important;
+ 
+}
+
+ .messages {
+    margin: 10px 0;
+    color: #a94442 !important;
+}
+ .message {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #a94442 !important;
+ }

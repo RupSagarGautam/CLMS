@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'clientapp',
     'staff',
+    'dashboard', # For additional features like model validation
 ]
 
 JAZZMIN_SETTINGS = {

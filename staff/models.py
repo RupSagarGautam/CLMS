@@ -1,7 +1,10 @@
+# Models for staff app: defines data structure for Office Visit, Client Visit, Online Class Inquiry, and College/School Visit.
+
 from django.db import models
 from django.contrib.auth.models import User
 
 class ClientVisit(models.Model):
+    """Client visit record."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contact_number = models.CharField(max_length=20)
     name = models.CharField(max_length=100)
@@ -11,8 +14,8 @@ class ClientVisit(models.Model):
     def __str__(self):
         return self.name
 
-
 class OnlineClassInquiry(models.Model):
+    """Online class inquiry record."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     contact = models.CharField(max_length=20)
@@ -22,8 +25,8 @@ class OnlineClassInquiry(models.Model):
     def __str__(self):
         return self.name
 
-
 class OfficeVisit(models.Model):
+    """Office visit record."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     contact = models.CharField(max_length=20)
@@ -35,14 +38,14 @@ class OfficeVisit(models.Model):
     def __str__(self):
         return self.name
 
-
 class CollegeVisit(models.Model):
+    """College/school visit record."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     contact = models.CharField(max_length=20)
     person_name = models.CharField(max_length=100)
     purpose = models.CharField(max_length=255)
-    date = models.DateField()  
+    date = models.DateField()
 
     def __str__(self):
         return self.name

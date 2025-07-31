@@ -1,11 +1,9 @@
 # dashboard/urls.py
 from django.urls import path
-from .views import dashboard_view  # remove import of `home`
-from cms import views as cms_views
+from dashboard import views as d_views
+
 
 urlpatterns = [
-    path('', dashboard_view, name='dashboard_home'),
-    # path('home/', dashboard_view, name='home'),  # change this line!
-
+    path('', d_views.dashboard, name='dashboard'),
 
 ]

@@ -17,6 +17,9 @@
             <a href="/dashboard" class="stats-btn-head">Overall Stats</a>
             <a href="/admin" class="dashboard-btn-head">Super Admin Dashboard</a>
         {% endif %}
+        {% if user.is_staff %}
+        <a href="/add-dashboard" class="stats-btn-head">Data Entry</a>
+        {% endif %}
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-icon" onclick="toggleDropdown()">
                <i class="fa-solid fa-user"></i>
@@ -40,6 +43,15 @@
                 document.getElementById('profileDropdown').classList.remove('show');
             }
         }
+        function goBack() {
+    window.history.back(); // or use history.go(-1);
+  }
     </script>
+{% if request.path != "/" %}
+    <button class="go-back-btn" onclick="goBack()">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+{% endif %}
+
 </body>
 </html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="/static/css/edit_profile.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* YOUR EXISTING STYLES (unchanged) */
+    body {
+        background: #f6fef7;
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: 'Poppins', sans-serif;
+    }
+    .profile-layout {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 2.5rem;
+        margin-top: 3rem;
+        width: 100%;
+        max-width: 950px;
+    }
+    .profile-card {
+        background: #c8f5d1;
+        border-radius: 2rem;
+        box-shadow: 0 8px 32px rgba(44, 204, 113, 0.10);
+        max-width: 420px;
+        width: 100%;
+        padding: 3rem 2.5rem 2.5rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .profile-pic {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 7px solid #fff;
+        box-shadow: 0 2px 12px rgba(44, 204, 113, 0.10);
+        margin-bottom: 1rem;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        cursor: pointer;
+    }
+    .profile-pic img,
+    .profile-pic i {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        font-size: 150px;
+        color: #2ecc71;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .profile-name {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .profile-info {
+        color: #333;
+        font-size: 1.1rem;
+        text-align: left;
+        margin-bottom: 0.7rem;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+    }
+    .profile-info i {
+        color: #2ecc71;
+        font-size: 1.3rem;
+        min-width: 24px;
+    }
+    .edit-card {
+        background: #fff;
+        border-radius: 1.5rem;
+        box-shadow: 0 4px 16px rgba(44, 204, 113, 0.08);
+        max-width: 540px;
+        width: 100%;
+        padding: 2.5rem;
+    }
+    .edit-card h2 {
+        color: #2ecc71;
+        font-weight: 700;
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    .edit-card form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .edit-card label {
+        margin-top: 1rem;
+        font-weight: 600;
+        color: #2ecc71;
+    }
+    .edit-card input {
+        width: 100%;
+        padding: 12px 15px;
+        margin-top: 0.3rem;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        background-color: #f5f9f6;
+        font-size: 15px;
+        color: #333;
+        box-sizing: border-box;
+    }
+    .edit-card button {
+        margin-top: 2rem;
+        padding: 12px;
+        width: 100%;
+        background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+        border: none;
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .edit-card button:hover {
+        background: linear-gradient(90deg, #27ae60 0%, #219653 100%);
+        box-shadow: 0px 4px 8px rgba(39, 174, 96, 0.3);
+        transform: translateY(-2px);
+    }
+    .edit-card .error-message {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        margin-top: 4px;
+        margin-bottom: 12px;
+    }
+    .edit-card .success-message {
+        background-color: #e0f3e5;
+        color: #2ecc71;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        border: 1px solid #2ecc71;
+        text-align: center;
+        font-weight: 600;
+    }
+    .file-input {
+        display: none;
+    }
+    @media (max-width: 950px) {
+        .profile-layout {
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        .edit-card {
+            max-width: 100%;
+            padding: 1.5rem 0.5rem;
+        }
+    }
+    @media (max-width: 600px) {
+        .profile-card, .edit-card {
+            padding: 1.5rem 0.5rem;
+        }
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+        }
+        .profile-name {
+            font-size: 1.3rem;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-layout">
+
+    <!-- LEFT: Profile Card -->
+    <div class="profile-card">
+      <label for="id_profile_picture" class="profile-pic">
+        {% if profile_picture %}
+          <img src="{{ profile_picture.url }}" alt="Profile Picture">
+        {% else %}
+          <i class="fas fa-user-circle"></i>
+        {% endif %}
+      </label>
+      <div class="profile-name">{{ firstName }} {{ lastName }}</div>
+            <div class="profile-info"><i class="fas fa-envelope"></i> {{ email }}</div>
+            <div class="profile-info"><i class="fas fa-user"></i> {{ firstName|default:"Not set" }} {{ lastName }}</div>
+            <div class="profile-info"><i class="fas fa-info"></i> {{ address|default:"This account is regulated via Organization. Please Contact Your Organization if faced any issue." }}</div>
+    </div>
+
+    <!-- RIGHT: Edit Form -->
+    <div class="edit-card">
+      <h2>Edit User Details</h2>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="success-message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Hidden input for profile picture -->
+        <input type="file" name="profile_picture" id="id_profile_picture" class="file-input" accept="image/*" />
+        {% if field_errors.profile_picture %}
+          <div class="error-message">{{ field_errors.profile_picture }}</div>
+        {% endif %}
+
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" value="{{ firstName }}" required />
+        {% if field_errors.firstName %}
+          <div class="error-message">{{ field_errors.firstName }}</div>
+        {% endif %}
+
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" value="{{ lastName }}" required />
+        {% if field_errors.lastName %}
+          <div class="error-message">{{ field_errors.lastName }}</div>
+        {% endif %}
+
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" value="{{ user.username }}" readonly />
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" value="{{ email }}" readonly />
+
+        <button type="submit">Update Details</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

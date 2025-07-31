@@ -33,5 +33,7 @@ urlpatterns = [
     path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'),
     path('dashboard/', include('dashboard.urls')), 
     path('add-dashboard/', include('staff.urls')),
+    path('profile/', cms_views.profile),
+    path('edit-profile/', cms_views.editProfile),
 
 ]

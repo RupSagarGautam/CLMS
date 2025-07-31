@@ -73,7 +73,6 @@ def home(request):
     return render(request, 'pages/home.html')
 
 
-
 @login_required
 def profile(request):
     if not request.user.is_staff:
@@ -125,9 +124,12 @@ def editProfile(request):
                 field_errors["profile_picture"] = "Please upload an image file only"
             else:
                 # Delete old profile picture if it exists
+                import os
+
                 if user_profile.profile_picture:
-                    if os.path.isfile(user_profile.profile_picture.path):
-                        os.remove(user_profile.profile_picture.path)
+                    image_path = user_profile.profile_picture.path
+                    if os.path.isfile(image_path):
+                        os.remove(image_path)
                 # Save new profile picture
                 user_profile.profile_picture = profile_picture
                 user_profile.save()

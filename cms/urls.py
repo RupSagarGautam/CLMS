@@ -19,6 +19,9 @@ from django.urls import path, include
 from cms import views as cms_views
 from clientapp import views as clientapp_views
 from staff import views as staff_views
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 
 
@@ -37,3 +40,5 @@ urlpatterns = [
     path('edit-profile/', cms_views.editProfile),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

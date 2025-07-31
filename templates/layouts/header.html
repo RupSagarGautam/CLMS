@@ -9,10 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="top-bar">
+    <div class="top-bar-head">
+        {% comment %} Home Button {% endcomment %}
+        <a href="/" class="stats-btn-head">Home</a>
+
         {% if user.is_superuser %}
-            <a href="/dashboard" class="stats-btn">Overall Stats</a>
-            <a href="/admin" class="dashboard-btn">Super Admin Dashboard</a>
+            <a href="/dashboard" class="stats-btn-head">Overall Stats</a>
+            <a href="/admin" class="dashboard-btn-head">Super Admin Dashboard</a>
         {% endif %}
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-icon" onclick="toggleDropdown()">
@@ -38,9 +41,5 @@
             }
         }
     </script>
-    <div style="padding: 2rem;">
-        <div class="welcome-main" style="font-size:1.3rem;font-weight:600;color:#31882e;margin-bottom:2rem;">Welcome, {{ user.username }}</div>
-        <!-- Main homepage content can go here -->
-    </div>
 </body>
 </html>

@@ -3,7 +3,7 @@ body {
     margin: 0;
     font-family: 'Roboto', Arial, sans-serif;
 }
-.top-bar {
+.top-bar-head {
     width: 100%;
     background: linear-gradient(90deg, #43ea7c 0%, #27ae60 100%);
     color: #fff;
@@ -14,7 +14,7 @@ body {
     box-sizing: border-box;
     position: relative;
 }
-.top-bar .dashboard-btn, .top-bar .stats-btn {
+.top-bar-head .dashboard-btn-head, .top-bar-head .stats-btn-head {
     background: #fff;
     color: #333;
     border: none;
@@ -29,7 +29,7 @@ body {
     display: inline-block;
     transition: 300ms;
 }
-.top-bar .dashboard-btn:hover, .top-bar .stats-btn:hover {
+.top-bar-head .dashboard-btn-head:hover, .top-bar-head .stats-btn-head:hover {
     background: #1e5c1a ;
     color:#e6f7ea ;
     transition: 300ms;

@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <title>Online Class Inquiry List</title>
   <link rel="stylesheet" href="{% static 'css/Visit.css' %}">
-
+  <link rel="stylesheet" href="{% static 'css/dltvisit.css' %}">
 </head>
 
 <body>
@@ -66,10 +66,11 @@
           {% endif %}
         </div>
 
+        <!-- Success Message - Small box below Add button -->
         {% if messages %}
-          <div class="message-container">
+          <div class="flash-message" id="flashMessage">
             {% for message in messages %}
-              <div class="success-message">{{ message }}</div>
+              <span class="success-message">{{ message }}</span>
             {% endfor %}
           </div>
         {% endif %}
@@ -88,29 +89,57 @@
           </tr>
         </thead>
         <tbody>
-          {% for inquiry in online_classes %}
+          {% for inquiry in online_inquiries %}
           <tr class="{% cycle 'white-row' 'green-row' %}">
             <td>{{ inquiry.name }}</td>
             <td>{{ inquiry.contact }}</td>
             <td>{{ inquiry.purpose }}</td>
             <td>{{ inquiry.date }}</td>
             <td>
-              <a href="{% url 'edit_online' inquiry.id %}" class="edit-btn">Edit</a>
-              <form method="POST" action="{% url 'delete_online' inquiry.id %}" style="display: inline; margin: 0;">
-                {% csrf_token %}
-                <button class="delete-btn">Delete</button>
-              </form>
+              <div class="action-buttons">
+                <a href="{% url 'edit_online' inquiry.id %}" class="edit-btn">Edit</a>
+                <button class="delete-btn" onclick="showOnlineClassDeleteConfirmation('{{ inquiry.id }}', '{{ inquiry.name }}')">Delete</button>
+              </div>
             </td>
             <td>{{ inquiry.user.username }}</td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="5">No online class inquiries available.</td>
+            <td colspan="6">No online class inquiries available.</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
+
+  <!-- CSRF Token for JavaScript -->
+  {% csrf_token %}
+  
+  <!-- Custom Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Confirm Deletion</h3>
+        <button class="close-btn" onclick="hideDeleteConfirmation()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon"></div>
+        <div class="modal-title">Delete Online Class Inquiry</div>
+        <div class="modal-message">
+          Are you sure you want to delete the online class inquiry for <span class="visit-name" id="visitName"></span>?<br>
+          <strong>This action cannot be undone.</strong>
+        </div>
+        <div class="modal-buttons">
+          <button class="modal-btn cancel" onclick="hideDeleteConfirmation()">Cancel</button>
+           <button class="modal-btn confirm" onclick="confirmDelete()">Delete</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="{% static 'js/visit.js' %}"></script>
+
 </body>
 </html>

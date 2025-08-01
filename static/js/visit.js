@@ -75,17 +75,17 @@ document.addEventListener('keydown', function(e) {
 
 // Helper functions for different visit types
 function showOfficeVisitDeleteConfirmation(visitId, visitName) {
-  showDeleteConfirmation(visitId, visitName, `/add-dashboard/office-visit/delete/${visitId}/`);
+  showDeleteConfirmation(visitId, visitName, `/add-dashboard/delete/office/${visitId}/`);
 }
 
 function showClientVisitDeleteConfirmation(visitId, visitName) {
-  showDeleteConfirmation(visitId, visitName, `/add-dashboard/client-visit/delete/${visitId}/`);
+  showDeleteConfirmation(visitId, visitName, `/add-dashboard/delete/client/${visitId}/`);
 }
 
 function showCollegeVisitDeleteConfirmation(visitId, visitName) {
-  showDeleteConfirmation(visitId, visitName, `/add-dashboard/college-visit/delete/${visitId}/`);
+  showDeleteConfirmation(visitId, visitName, `/add-dashboard/delete/college/${visitId}/`);
 }
 
 function showOnlineClassDeleteConfirmation(visitId, visitName) {
-  showDeleteConfirmation(visitId, visitName, `/add-dashboard/online-class/delete/${visitId}/`);
+  showDeleteConfirmation(visitId, visitName, `/add-dashboard/delete/online/${visitId}/`);
 } 

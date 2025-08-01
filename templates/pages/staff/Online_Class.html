@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Online Class Inquiry List</title>
-  <link rel="stylesheet" href="{% static 'css/Visit.css' %}">
-  <link rel="stylesheet" href="{% static 'css/dltvisit.css' %}">
+  <link rel="stylesheet" href="{% static 'css/Visit.css' %}?v=1.2">
+  <link rel="stylesheet" href="{% static 'css/dltvisit.css' %}?v=1.2">
+
 </head>
 
 {% include "layouts/header.html" %}
@@ -90,7 +91,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for inquiry in online_inquiries %}
+          {% for inquiry in online_classes %}
           <tr class="{% cycle 'white-row' 'green-row' %}">
             <td>{{ inquiry.name }}</td>
             <td>{{ inquiry.contact }}</td>
@@ -106,7 +107,7 @@
           </tr>
           {% empty %}
           <tr>
-            <td colspan="6">No online class inquiries available.</td>
+            <td colspan="5">No online class inquiries available.</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -140,7 +141,7 @@
   </div>
 
   <!-- JavaScript -->
-  <script src="{% static 'js/visit.js' %}"></script>
+  <script src="{% static 'js/visit.js' %}?v=1.1"></script>
 
 </body>
 </html>

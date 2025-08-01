@@ -1,8 +1,16 @@
-{% load static %}
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
 
-<!-- Dashboard CSS and fonts -->
+    <!-- Dashboard CSS and fonts -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
 
 <div class="dashboard-container">
   <header>
@@ -11,7 +19,7 @@
   </header>
 
   <!-- Filter Section -->
-  <div class="filter-section">
+  <form method="get" class="filter-section">
     <label for="visitType">Visit Type:</label>
     <select id="visitType" name="visit_type">
       <option value="All" {% if selected_type == "All" %}selected{% endif %}>All</option>
@@ -20,21 +28,24 @@
       {% endfor %}
     </select>
 
-    <label for="startDate">Start Date:</label>
-    <input type="date" id="startDate" name="start_date" disabled>
+      <label for="startDate">Start Date:</label>
+      <input type="date" id="startDate" name="start_date">
 
-    <label for="endDate">End Date:</label>
-    <input type="date" id="endDate" name="end_date" disabled>
+      <label for="endDate">End Date:</label>
+      <input type="date" id="endDate" name="end_date">
 
-    <button disabled>Apply Filters</button>
-  </div>
+      <button type="submit">Apply Filters</button>
+  </form>
 
   <!-- Stat Cards -->
   <section class="stats">
     <div class="stat-card"><h3>Total Visits</h3><p>{{ total_visits }}</p></div>
     <div class="stat-card"><h3>Today's Visits</h3><p>{{ todays_visits }}</p></div>
     <div class="stat-card"><h3>Monthly Visits</h3><p>{{ monthly_visits }}</p></div>
-    <div class="stat-card"><h3>Total Staff</h3><p>--</p></div>
+    <div class="stat-card">
+    <h3>Total Staff</h3>
+    <p>{{ total_staff|default:"Not Available" }}</p>
+    </div>
   </section>
 
   <!-- Charts -->
@@ -78,11 +89,15 @@
 
 <!-- JS Data Injection -->
 <script>
-  window.allDates = {{ dates|safe }};
-  window.allVisitCounts = {{ totals|safe }};
-  window.typeLabels = {{ type_labels|safe }};
-  window.typeCounts = {{ type_counts|safe }};
+  window.allDates = JSON.parse('{{ dates|default:"[]"|escapejs }}');
+  window.allVisitCounts = JSON.parse('{{ totals|default:"[]"|escapejs }}');
+  window.typeLabels = JSON.parse('{{ type_labels|default:"[]"|escapejs }}');
+  window.typeCounts = JSON.parse('{{ type_counts|default:"[]"|escapejs }}');
 </script>
+
+
 
 <!-- Chart Script -->
 <script src="{% static 'dashboard/js/apex-charts.js' %}"></script>
+</body>
+</html>

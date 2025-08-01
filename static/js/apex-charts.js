@@ -21,9 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // Format dates for x-axis labels
   const formattedAllDates = allDates.map(formatDateLabel);
 
-  const dashboardData = JSON.parse(document.getElementById('dashboard-data').textContent);
-
-
   // Initialize line chart (Visits Over Time)
   const lineChartOptions = {
     chart: {

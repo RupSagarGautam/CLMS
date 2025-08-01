@@ -72,6 +72,16 @@ from django.shortcuts import render
 from django.db.models import Sum
 from datetime import date  # <-- add this import
 from .models import Visit, VisitType
+<<<<<<< HEAD
+=======
+from django.db.models import Count
+from staff.models import ClientVisit, OnlineClassInquiry, OfficeVisit, CollegeVisit
+from datetime import datetime
+from django.db.models.functions import TruncDate
+from django.db.models import Count
+from django.utils.timezone import now
+
+>>>>>>> e62bb25638786f053cfb531b1995d06ce5290bb3
 
 def dashboard(request):
     # Visits over time (all)

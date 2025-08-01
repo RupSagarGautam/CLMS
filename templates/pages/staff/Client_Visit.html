@@ -9,9 +9,11 @@
 </head>
 
 <body>
-  <div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
+<!-- Include header -->
+{% include "layouts/header.html" %}
+<div class="container">
+  <!-- Sidebar -->
+  <div class="sidebar">
       <div class="logo">
         <a href="{% url 'add_dashboard' %}">
          <img src="{% static 'assets/favicon.png' %}" alt="Logo">

@@ -1,10 +1,19 @@
 {% load static %}
-
+{% include "layouts/header.html" %}
 <div class="dashboard-container">
   <header>
     <h1>Dashboard</h1>
-    <p>Welcome, Admin! Here's your real-time overview.</p>
+    <p>Welcome, Admin!.</p>
   </header>
+  <!-- Dashboard CSS and fonts -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ApexCharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
   <!-- Filter Section -->
   <div class="filter-section">

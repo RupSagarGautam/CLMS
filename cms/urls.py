@@ -19,6 +19,9 @@ from django.urls import path, include
 from cms import views as cms_views
 from clientapp import views as clientapp_views
 from staff import views as staff_views
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 
 
@@ -33,5 +36,9 @@ urlpatterns = [
     path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'),
     path('dashboard/', include('dashboard.urls')), 
     path('add-dashboard/', include('staff.urls')),
+    path('profile/', cms_views.profile),
+    path('edit-profile/', cms_views.editProfile),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

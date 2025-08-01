@@ -1,10 +1,13 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>CLMS Dashboard</title>
   <link rel="stylesheet" href="{% static 'css/clms.css' %}">
+
+  {% include "layouts/header.html" %}
   <style>
     .error-field {
       border: 2px solid #dc3545 !important;

@@ -1,6 +1,5 @@
 
-# Views for staff app: handles CRUD and filtering for Office Visit, Client Visit, Online Class Inquiry, and College/School Visit.
-
+# Views for staff app: 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required

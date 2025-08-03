@@ -5,10 +5,15 @@
     <meta charset="UTF-8">
     <title>Recent Activity</title>
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 </head>
 <body>
-
     {% include "layouts/header.html" %}
+
+        <div style="padding: 2rem;">
+        <div class="welcome-main" style="font-size:1.3rem;font-weight:600;color:#31882e;margin-bottom:2rem;">
+           <h1> Welcome, {{ user.username }} </h1>
+        </div>
 
     {% if messages %}
         <div class="backend-message">
@@ -19,7 +24,7 @@
     {% endif %}
 
     <div class="recent-activity-wrapper">
-        <h2 class="recent-title">📊 Visit Type Totals</h2>
+        <h2 class="recent-title"><i class="fa-solid fa-chart-simple"></i> Overall Entries  </h2>
 
         <div class="summary-cards">
             <div class="summary-card">
@@ -41,41 +46,79 @@
         </div>
 
         <div class="visit-types-section">
-            <h3 class="section-title">🧑‍💼 Staff Activities (Last 7 Days)</h3>
+            <h3 class="section-title"><i class="fa-solid fa-user-tie"></i> Staff Activities</h3>
+
             {% if recent_staff_activity %}
                 <table class="visit-types-table">
                     <thead>
                         <tr>
                             <th>Username</th>
                             <th>Action</th>
+                            <th>Role</th>
                             <th>Model</th>
-                            <th>Object</th>
-                            <th>Time</th>
+                            <th>Date & Time</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for entry in recent_staff_activity %}
-                            <tr>
-                                <td>{{ entry.user.username }}</td>
-                                <td>
-                                    {% if entry.action_flag == 1 %} Added
-                                    {% elif entry.action_flag == 2 %} Changed
-                                    {% elif entry.action_flag == 3 %} Deleted 
-                                    {% else %}❔ Unknown
+                        <tr>
+                            <td>{{ entry.user.username }}</td>
+                            <td>
+                                {% if entry.action_flag == 1 %}
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Added
+                                {% elif entry.action_flag == 2 %}
+                                    <i class="fa fa-pencil" aria-hidden="true"></i> Changed
+                                {% elif entry.action_flag == 3 %}
+                                    <i class="fa fa-trash" aria-hidden="true"></i> Deleted
+                                {% else %}
+                                    ❔ Unknown
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if entry.user.is_superuser %}
+                                    Admin
+                                {% elif entry.user.is_staff %}
+                                    Staff
+                                {% else %}
+                                    User
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% with model_name=entry.content_type.model app_label=entry.content_type.app_label %}
+                                    {% if app_label == "staff" %}
+                                        {% if model_name == "clientvisit" %}
+                                            Client Visit
+                                        {% elif model_name == "officevisit" %}
+                                            Office Visit
+                                        {% elif model_name == "collegevisit" %}
+                                            School/College Visit
+                                        {% elif model_name == "onlineclassinquiry" %}
+                                            Online Class Inquiry
+                                        {% else %}
+                                            Unknown Staff Model ({{ model_name }})
+                                        {% endif %}
+                                    {% elif app_label == "auth" and model_name == "user" %}
+                                        User
+                                    {% else %}
+                                        Unknown Model ({{ app_label }}.{{ model_name }})
                                     {% endif %}
-                                </td>
-                                <td>{{ entry.content_type.model|title }}</td>
-                                <td>{{ entry.object_repr }}</td>
-                                <td>{{ entry.action_time|date:"Y-m-d H:i" }}</td>
-                            </tr>
+                                {% endwith %}
+                            </td>
+                            <td>{{ entry.action_time|date:"Y-m-d H:i" }}</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+
+                {% if not view_all and request.user.is_superuser %}
+                    <div class="view-all-btn-wrapper">
+                        <a href="?view=all" class="view-all-btn">View All</a>
+                    </div>
+                {% endif %}
             {% else %}
                 <p>No recent staff activities recorded.</p>
             {% endif %}
         </div>
     </div>
-
 </body>
 </html>

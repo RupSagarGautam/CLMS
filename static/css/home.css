@@ -245,3 +245,29 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     z-index: 99;
 }
+
+.view-all-btn-wrapper {
+    text-align: center;
+    margin-top: 20px;
+}
+.view-all-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #393939;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: 300ms;
+    font-weight: 600;
+
+}
+.view-all-btn:hover {
+    background-color: #308c06;
+    box-shadow: inset 0 0 0 2px #fafff8;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.402);
+    transition: 400ms;
+    transform: translateY(-2px);
+}
+
+
+

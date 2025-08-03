@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
-  <!-- FontAwesome for icons -->
+  <!--For icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- ApexCharts CDN -->
@@ -22,7 +22,7 @@
   <div class="dashboard-container">
     <header>
       <h1>Dashboard</h1>
-      <p>Welcome, Admin!</p>
+      <p>Welcome, {{ request.user.username }}!</p>
     </header>
 
     <form method="get" id="filterForm" class="filter-section">
@@ -68,7 +68,7 @@
         <tbody>
           {% for visit in detailed_visits %}
             <tr>
-              <td>{{ visit.visit_type.name }}</td>
+              <td>{{ visit.visit_type }}</td>
               <td>{{ visit.date }}</td>
               <td>{{ visit.count }}</td>
             </tr>
@@ -102,12 +102,15 @@
         name: 'Visits',
         data: window.allVisitCounts  // corrected from totalsData
       }],
+
       xaxis: {
         categories: window.allDates,  // added categories for x-axis
         labels: {
           style: { fontSize: '12px', colors: '#333' }
-        }
+         }
       },
+
+
       stroke: {
         curve: 'smooth',
         width: 4,

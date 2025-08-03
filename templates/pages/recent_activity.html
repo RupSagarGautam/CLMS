@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recent Activity</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+
+    {% include "layouts/header.html" %}
+
+    {% if messages %}
+        <div class="backend-message">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="recent-activity-wrapper">
+        <h2 class="recent-title">📊 Visit Type Totals</h2>
+
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>Client Visits</h3>
+                <p class="summary-count">{{ total_client_visits }}</p>
+            </div>
+            <div class="summary-card">
+                <h3>Online Class Inquiries</h3>
+                <p class="summary-count">{{ total_online_inquiries }}</p>
+            </div>
+            <div class="summary-card">
+                <h3>Office Visits</h3>
+                <p class="summary-count">{{ total_office_visits }}</p>
+            </div>
+            <div class="summary-card">
+                <h3>College/School Visits</h3>
+                <p class="summary-count">{{ total_college_visits }}</p>
+            </div>
+        </div>
+
+        <div class="visit-types-section">
+            <h3 class="section-title">🧑‍💼 Staff Activities (Last 7 Days)</h3>
+            {% if recent_staff_activity %}
+                <table class="visit-types-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Action</th>
+                            <th>Model</th>
+                            <th>Object</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in recent_staff_activity %}
+                            <tr>
+                                <td>{{ entry.user.username }}</td>
+                                <td>
+                                    {% if entry.action_flag == 1 %} Added
+                                    {% elif entry.action_flag == 2 %} Changed
+                                    {% elif entry.action_flag == 3 %} Deleted 
+                                    {% else %}❔ Unknown
+                                    {% endif %}
+                                </td>
+                                <td>{{ entry.content_type.model|title }}</td>
+                                <td>{{ entry.object_repr }}</td>
+                                <td>{{ entry.action_time|date:"Y-m-d H:i" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No recent staff activities recorded.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

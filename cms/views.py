@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -13,6 +13,9 @@ from django.shortcuts import render
 from django.db.models import Count
 from clientapp.models import UserProfile
 import os
+from django.db.models import Q, Count
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from staff.models import ClientVisit, OfficeVisit, CollegeVisit, OnlineClassInquiry
 
 
 
@@ -76,6 +79,63 @@ def home(request):
         return render(request, "pages/home.html")
     return render(request, 'pages/home.html')
 
+from django.contrib.admin.models import LogEntry
+from django.utils.timezone import now
+from django.contrib.contenttypes.models import ContentType
+
+# ...
+
+@login_required(login_url="/log-in")
+def recent_activity(request):
+    if not request.user.is_authenticated:
+        messages.error(request, "You need to log in to access this page")
+        return render(request, "pages/login.html", status=403)
+    if not request.user.is_staff and not request.user.is_superuser:
+        messages.error(request, "You are not authorized to access this page")
+        return render(request, "pages/login.html", status=403)
+
+    # Fetch all data counts
+    total_client_visits = ClientVisit.objects.count()
+    total_online_inquiries = OnlineClassInquiry.objects.count()
+    total_office_visits = OfficeVisit.objects.count()
+    total_college_visits = CollegeVisit.objects.count()
+
+    # Fetch recent admin activities (last 7 days)
+    last_7_days = now() - timezone.timedelta(days=7)
+    recent_staff_activity = LogEntry.objects.filter(
+        action_time__gte=last_7_days,
+        user__is_staff=True
+    ).select_related('user', 'content_type').order_by('-action_time')
+
+    context = {
+        'total_client_visits': total_client_visits,
+        'total_online_inquiries': total_online_inquiries,
+        'total_office_visits': total_office_visits,
+        'total_college_visits': total_college_visits,
+        'recent_staff_activity': recent_staff_activity,
+    }
+
+    return render(request, 'pages/recent_activity.html', context)
+def log_deletion(request, obj, message="Deleted"):
+    LogEntry.objects.log_action(
+        user_id=request.user.pk,
+        content_type_id=ContentType.objects.get_for_model(obj).pk,
+        object_id=obj.pk,
+        object_repr=str(obj),
+        action_flag=DELETION,
+        change_message=message
+    )
+    
+@login_required
+def delete_client_visit(request, id):
+    visit = get_object_or_404(ClientVisit, id=id)
+    if request.user.is_superuser or visit.user == request.user:
+        log_deletion(request, visit, "Deleted Client Visit")
+        visit.delete()
+        messages.success(request, "Client Visit deleted successfully.")
+    else:
+        messages.error(request, "You are not authorized to delete this.")
+    return redirect('client_visit_list')
 
 @login_required
 def profile(request):

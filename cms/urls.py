@@ -38,6 +38,7 @@ urlpatterns = [
     path('add-dashboard/', include('staff.urls')),
     path('profile/', cms_views.profile),
     path('edit-profile/', cms_views.editProfile),
+    path('recent-activity/', cms_views.recent_activity, name='recent_activity'),
 
 ]
 

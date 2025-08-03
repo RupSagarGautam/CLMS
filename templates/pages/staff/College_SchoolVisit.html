@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>College/School Visit List</title>
-  <link rel="stylesheet" href="{% static 'css/Visit.css' %}">
+  <link rel="stylesheet" href="{% static 'css/Visit.css' %}?">
+  <link rel="stylesheet" href="{% static 'css/dltvisit.css' %}">
 </head>
 
 {% include "layouts/header.html" %}
@@ -66,10 +67,11 @@
           {% endif %}
         </div>
 
+        <!-- Success Message - Small box below Add button -->
         {% if messages %}
-          <div class="message-container">
+          <div class="flash-message" id="flashMessage">
             {% for message in messages %}
-              <div class="success-message">{{ message }}</div>
+              <span class="success-message">{{ message }}</span>
             {% endfor %}
           </div>
         {% endif %}
@@ -97,22 +99,50 @@
             <td>{{ visit.purpose }}</td>
             <td>{{ visit.date }}</td>
             <td>
-              <a href="{% url 'edit_college' visit.id %}" class="edit-btn">Edit</a>
-              <form method="POST" action="{% url 'delete_college' visit.id %}" style="display: inline; margin: 0;">
-                {% csrf_token %}
-                <button class="delete-btn">Delete</button>
-              </form>
+              <div class="action-buttons">
+                <a href="{% url 'edit_college' visit.id %}" class="edit-btn">Edit</a>
+                <button class="delete-btn" onclick="showCollegeVisitDeleteConfirmation('{{ visit.id }}', '{{ visit.name }}')">Delete</button>
+              </div>
             </td>
             <td>{{ visit.user.username }}</td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="6">No college/school visits available.</td>
+            <td colspan="7">No college/school visits available.</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
+
+  <!-- CSRF Token for JavaScript -->
+  {% csrf_token %}
+  
+  <!-- Custom Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Confirm Deletion</h3>
+        <button class="close-btn" onclick="hideDeleteConfirmation()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon"></div>
+        <div class="modal-title">Delete College/School Visit</div>
+        <div class="modal-message">
+          Are you sure you want to delete the college/school visit for <span class="visit-name" id="visitName"></span>?<br>
+          <strong>This action cannot be undone.</strong>
+        </div>
+        <div class="modal-buttons">
+          <button class="modal-btn cancel" onclick="hideDeleteConfirmation()">Cancel</button>
+          <button class="modal-btn confirm" onclick="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="{% static 'js/visit.js' %}?v=1.1"></script>
+
 </body>
 </html>

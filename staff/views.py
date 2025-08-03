@@ -12,6 +12,11 @@ from .forms import ClientVisitForm, OnlineClassInquiryForm, OfficeVisitForm, Col
 from django.contrib.admin.models import ADDITION, CHANGE
 from cms.views import log_action  # Import log_action
 
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import json
 
 
 
@@ -281,6 +286,16 @@ def client_visit_list(request):
         client_visits = ClientVisit.objects.filter(user=request.user).order_by('-date')
         staff_users = None
     
+    # Pagination
+    paginator = Paginator(client_visits, 5)  # Show 5 items per page
+    page = request.GET.get('page')
+    try:
+        client_visits = paginator.page(page)
+    except PageNotAnInteger:
+        client_visits = paginator.page(1)
+    except EmptyPage:
+        client_visits = paginator.page(paginator.num_pages)
+    
     return render(request, 'pages/staff/Client_Visit.html', {
         'client_visits': client_visits,
         'staff_users': staff_users,
@@ -329,6 +344,16 @@ def online_class_list(request):
     else:
         online_classes = OnlineClassInquiry.objects.filter(user=request.user).order_by('-date')
         staff_users = None
+    
+    # Pagination
+    paginator = Paginator(online_classes, 5)  # Show 5 items per page
+    page = request.GET.get('page')
+    try:
+        online_classes = paginator.page(page)
+    except PageNotAnInteger:
+        online_classes = paginator.page(1)
+    except EmptyPage:
+        online_classes = paginator.page(paginator.num_pages)
     
     return render(request, 'pages/staff/Online_Class.html', {
         'online_classes': online_classes,
@@ -379,6 +404,16 @@ def office_visit_list(request):
         office_visits = OfficeVisit.objects.filter(user=request.user).order_by('-date')
         staff_users = None
     
+    # Pagination
+    paginator = Paginator(office_visits, 5)  # Show 5 items per page
+    page = request.GET.get('page')
+    try:
+        office_visits = paginator.page(page)
+    except PageNotAnInteger:
+        office_visits = paginator.page(1)
+    except EmptyPage:
+        office_visits = paginator.page(paginator.num_pages)
+    
     return render(request, 'pages/staff/Office_Visit.html', {
         'office_visits': office_visits,
         'staff_users': staff_users,
@@ -427,6 +462,16 @@ def college_visit_list(request):
     else:
         college_visits = CollegeVisit.objects.filter(user=request.user).order_by('-id')
         staff_users = None
+    
+    # Pagination
+    paginator = Paginator(college_visits, 5)  # Show 5 items per page
+    page = request.GET.get('page')
+    try:
+        college_visits = paginator.page(page)
+    except PageNotAnInteger:
+        college_visits = paginator.page(1)
+    except EmptyPage:
+        college_visits = paginator.page(paginator.num_pages)
     
     return render(request, 'pages/staff/College_SchoolVisit.html', {
         'college_visits': college_visits,

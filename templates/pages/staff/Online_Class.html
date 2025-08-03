@@ -112,6 +112,29 @@
           {% endfor %}
         </tbody>
       </table>
+
+      <!-- Pagination -->
+      {% if online_classes.has_other_pages %}
+      <div class="pagination">
+        {% if online_classes.has_previous %}
+          <a href="?page=1{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">&laquo; First</a>
+          <a href="?page={{ online_classes.previous_page_number }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">Previous</a>
+        {% endif %}
+
+        {% for num in online_classes.paginator.page_range %}
+          {% if online_classes.number == num %}
+            <span class="current">{{ num }}</span>
+          {% elif num > online_classes.number|add:'-3' and num < online_classes.number|add:'3' %}
+            <a href="?page={{ num }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if online_classes.has_next %}
+          <a href="?page={{ online_classes.next_page_number }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">Next</a>
+          <a href="?page={{ online_classes.paginator.num_pages }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">Last &raquo;</a>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
   </div>
 

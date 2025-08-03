@@ -5,10 +5,6 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.models import User
 
-<<<<<<< HEAD
-
-=======
->>>>>>> def59db0b4ba08b0312d692277c5ab2145c33b7a
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)

@@ -3,20 +3,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-<<<<<<< HEAD
-from django.contrib.auth import logout
-from django.shortcuts import render
-from django.db.models import Sum
-from django.utils import timezone
-from dashboard.models import Visit, VisitType 
-from django.shortcuts import render
-from django.db.models import Count
-from clientapp.models import UserProfile
-import os
-
-
-=======
->>>>>>> def59db0b4ba08b0312d692277c5ab2145c33b7a
 
 def staff_login(request):
     if request.user.is_authenticated:
@@ -26,11 +12,7 @@ def staff_login(request):
     errors = {}
 
     if request.method == "POST":
-<<<<<<< HEAD
-        identifier = request.POST.get("username")  # can be email or username
-=======
         identifier = request.POST.get("username")
->>>>>>> def59db0b4ba08b0312d692277c5ab2145c33b7a
         password = request.POST.get("password")
 
         user_obj = None
@@ -56,14 +38,9 @@ def staff_login(request):
                 errors["password"] = "Incorrect password"
 
         return render(request, 'pages/login.html', {'errors': errors})
-<<<<<<< HEAD
-    
-    return render(request, 'pages/login.html')
-=======
     else:
         return render(request, 'pages/login.html')
 
->>>>>>> def59db0b4ba08b0312d692277c5ab2145c33b7a
 
 @login_required(login_url="/log-in")
 def logoutUser(request):
@@ -80,15 +57,6 @@ def home(request):
     if not request.user.is_staff and not request.user.is_superuser:
         messages.error(request, "You are not authorized to access this page")
         return render(request, "pages/login.html", status=403)
-<<<<<<< HEAD
-    if request.user.is_staff and not request.user.is_superuser:
-        return render(request, "pages/staff/add_dashboard.html")
-    elif request.user.is_superuser and request.user.is_staff:
-        return render(request, "pages/home.html")
-    return render(request, 'pages/home.html')
-
-
-=======
     return render(request, 'pages/home.html')
 
 
@@ -97,7 +65,6 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import os
 
->>>>>>> def59db0b4ba08b0312d692277c5ab2145c33b7a
 @login_required
 def profile(request):
     if not request.user.is_staff:
@@ -149,18 +116,9 @@ def editProfile(request):
                 field_errors["profile_picture"] = "Please upload an image file only"
             else:
                 # Delete old profile picture if it exists
-<<<<<<< HEAD
-                import os
-
-                if user_profile.profile_picture:
-                    image_path = user_profile.profile_picture.path
-                    if os.path.isfile(image_path):
-                        os.remove(image_path)
-=======
                 if user_profile.profile_picture:
                     if os.path.isfile(user_profile.profile_picture.path):
                         os.remove(user_profile.profile_picture.path)
->>>>>>> def59db0b4ba08b0312d692277c5ab2145c33b7a
                 # Save new profile picture
                 user_profile.profile_picture = profile_picture
                 user_profile.save()

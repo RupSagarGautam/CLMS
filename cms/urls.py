@@ -18,17 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from cms import views as cms_views
 from clientapp import views as clientapp_views
-<<<<<<< HEAD
-from staff import views as staff_views
-from django.conf.urls.static import static
-from django.conf import settings
-
-
-
-=======
 from django.conf import settings
 from django.conf.urls.static import static
->>>>>>> def59db0b4ba08b0312d692277c5ab2145c33b7a
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,16 +30,6 @@ urlpatterns = [
     path('reset-password/', clientapp_views.reset_password, name='reset_password'),
     path('forgot-password/', clientapp_views.forgot_password, name='forgot_password'),
     path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'),
-<<<<<<< HEAD
-    path('dashboard/', include('dashboard.urls')), 
-    path('add-dashboard/', include('staff.urls')),
-    path('profile/', cms_views.profile),
-    path('edit-profile/', cms_views.editProfile),
-
-]
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-=======
     path('profile/', cms_views.profile,),
     path('edit-profile/', cms_views.editProfile,),
 ]
@@ -56,4 +37,3 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # Add this at the end of the file to serve media files in development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
->>>>>>> def59db0b4ba08b0312d692277c5ab2145c33b7a

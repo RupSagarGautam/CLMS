@@ -23,8 +23,17 @@ class OfficeVisitForm(forms.ModelForm):
         if any(char.isupper() for char in email):
             raise forms.ValidationError("Email must be in lowercase letters only.")
 
+<<<<<<< HEAD
         # Check if email already exists
         if OfficeVisit.objects.filter(email=email).exists():
+=======
+        # Check if email already exists, excluding current instance if editing
+        queryset = OfficeVisit.objects.filter(email=email)
+        if self.instance and self.instance.pk:
+            queryset = queryset.exclude(pk=self.instance.pk)
+        
+        if queryset.exists():
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
             raise forms.ValidationError("Email already exists.")
 
         return email
@@ -37,7 +46,17 @@ class OfficeVisitForm(forms.ModelForm):
                 raise forms.ValidationError("Contact must be numbers only.")
             if len(contact) < 10:
                 raise forms.ValidationError("Contact number must be at least 10 digits.")
+<<<<<<< HEAD
             if OfficeVisit.objects.filter(contact=contact).exists():
+=======
+            
+            # Check if contact already exists, excluding current instance if editing
+            queryset = OfficeVisit.objects.filter(contact=contact)
+            if self.instance and self.instance.pk:
+                queryset = queryset.exclude(pk=self.instance.pk)
+            
+            if queryset.exists():
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
                 raise forms.ValidationError("Contact number already exists.")
         return contact
 
@@ -63,7 +82,17 @@ class ClientVisitForm(forms.ModelForm):
                 raise forms.ValidationError("Contact must be numbers only.")
             if len(contact) < 10:
                 raise forms.ValidationError("Contact number must be at least 10 digits.")
+<<<<<<< HEAD
             if ClientVisit.objects.filter(contact_number=contact).exists():
+=======
+            
+            # Check if contact already exists, excluding current instance if editing
+            queryset = ClientVisit.objects.filter(contact_number=contact)
+            if self.instance and self.instance.pk:
+                queryset = queryset.exclude(pk=self.instance.pk)
+            
+            if queryset.exists():
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
                 raise forms.ValidationError("Contact number already exists.")
         return contact
 
@@ -89,7 +118,17 @@ class OnlineClassInquiryForm(forms.ModelForm):
                 raise forms.ValidationError("Contact must be numbers only.")
             if len(contact) < 10:
                 raise forms.ValidationError("Contact number must be at least 10 digits.")
+<<<<<<< HEAD
             if OnlineClassInquiry.objects.filter(contact=contact).exists():
+=======
+            
+            # Check if contact already exists, excluding current instance if editing
+            queryset = OnlineClassInquiry.objects.filter(contact=contact)
+            if self.instance and self.instance.pk:
+                queryset = queryset.exclude(pk=self.instance.pk)
+            
+            if queryset.exists():
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
                 raise forms.ValidationError("Contact number already exists.")
         return contact
 
@@ -115,7 +154,17 @@ class CollegeVisitForm(forms.ModelForm):
                 raise forms.ValidationError("Contact must be numbers only.")
             if len(contact) < 10:
                 raise forms.ValidationError("Contact number must be at least 10 digits.")
+<<<<<<< HEAD
             if CollegeVisit.objects.filter(contact=contact).exists():
+=======
+            
+            # Check if contact already exists, excluding current instance if editing
+            queryset = CollegeVisit.objects.filter(contact=contact)
+            if self.instance and self.instance.pk:
+                queryset = queryset.exclude(pk=self.instance.pk)
+            
+            if queryset.exists():
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
                 raise forms.ValidationError("Contact number already exists.")
         return contact
 
@@ -132,3 +181,4 @@ class CollegeVisitForm(forms.ModelForm):
             if re.search(r'\d|@', person_name):
                 raise forms.ValidationError("Person name must contain only letters.")
         return person_name
+    

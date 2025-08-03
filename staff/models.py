@@ -45,7 +45,11 @@ class CollegeVisit(models.Model):
     contact = models.CharField(max_length=20)
     person_name = models.CharField(max_length=100)
     purpose = models.CharField(max_length=255)
+<<<<<<< HEAD
     date = models.DateField()
+=======
+    date = models.DateField()  
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 
     def __str__(self):
         return self.name

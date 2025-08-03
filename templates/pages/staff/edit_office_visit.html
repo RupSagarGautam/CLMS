@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="{% static 'css/Visit.css' %}">
 </head>
 
+<<<<<<< HEAD
+=======
+{% include "layouts/header.html" %}
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 <body>
   <div class="container">
     <!-- Sidebar -->
@@ -108,7 +112,16 @@
                     <div class="field-error">{{ form.date.errors.0 }}</div>
                   {% endif %}
                 </td>
+<<<<<<< HEAD
                 <td><button type="submit" class="add-btn">Update</button></td>
+=======
+                <td>
+                  <div class="button-container">
+                    <button type="submit" class="add-btn">Update</button>
+                    <a href="{% url 'office_visit_list' %}" class="cancel-btn">Cancel</a>
+                  </div>
+                </td>
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
               </tr>
             </tbody>
           </table>

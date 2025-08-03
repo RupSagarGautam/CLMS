@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/static/css/profile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+   
+</head>
+{% include "layouts/header.html" %}
+<body>
+    <div class="profile-layout">
+        <div class="profile-card">
+            <div class="profile-pic">
+                {% if profile_picture %}
+                    <img src="{{ profile_picture.url }}" alt="Profile Picture">
+                {% else %}
+                    <i class="fas fa-user-circle"></i>
+                {% endif %}
+            </div>
+            <div class="profile-name">{{ firstName }} {{ lastName }}</div>
+            <div class="profile-info"><i class="fas fa-envelope"></i> {{ email }}</div>
+            <div class="profile-info"><i class="fas fa-user"></i> {{ firstName|default:"Not set" }} {{ lastName }}</div>
+            <div class="profile-info"><i class="fas fa-info"></i> {{ address|default:"This account is regulated via Organization. Please Contact Your Organization if faced any issue." }}</div>
+
+        </div>
+        <div class="details-card">
+            <h2>User Details Customization</h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="success-message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="profile-field">
+                <label class="profile-label">First Name</label>
+                <div class="profile-value">{{ firstName }}</div>
+            </div>
+            <div class="profile-field">
+                <label class="profile-label">Last Name</label>
+                <div class="profile-value">{{ lastName }}</div>
+            </div>
+            <div class="profile-field">
+                <label class="profile-label">Username</label>
+                <div class="profile-value">{{ user.username }}</div>
+            </div>
+            <div class="profile-field">
+                <label class="profile-label">Email</label>
+                <div class="profile-value">{{ email }}</div>
+            </div>
+            <div class="profile-field">
+                <label class="profile-label">Roles</label>
+                <div class="profile-value">{{ roles }}</div>
+            </div>
+            <a href="/edit-profile" class="edit-btn">Edit Details</a>
+        </div>
+    </div>
+</body>
+</html>

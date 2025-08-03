@@ -1,32 +1,32 @@
-{% load static %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="shortcut icon" href="/static/assets/logo.png" type="image/x-icon">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- Existing home.css -->
+    
     <link rel="stylesheet" href="/static/css/home.css">
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<<<<<<< HEAD
-    <div class="top-bar">
+    <div class="top-bar-head">
+        {% comment %} Home Button {% endcomment %}
+        <a href="/" class="stats-btn-head">Home</a>
+
         {% if user.is_superuser %}
-            <a href="/add-dashboard" class="stats-btn">Overall Stats</a>
-            <a href="/admin" class="dashboard-btn">Super Admin Dashboard</a>
+            <a href="/dashboard" class="stats-btn-head">Overall Stats</a>
+            <a href="/admin" class="dashboard-btn-head">Super Admin Dashboard</a>
+        {% endif %}
+        {% if user.is_staff %}
+        <a href="/add-dashboard" class="stats-btn-head">Data Entry</a>
         {% endif %}
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-icon" onclick="toggleDropdown()">
-                <i class="fa-solid fa-user"></i>
+               <i class="fa-solid fa-user"></i>
             </div>
             <div class="dropdown-content" id="dropdownContent">
                 <a href="/profile"><i class="fa-solid fa-id-badge"></i> My Profile</a>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+                <a href="#" class="prf-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
     </div>
@@ -43,18 +43,15 @@
                 document.getElementById('profileDropdown').classList.remove('show');
             }
         }
+        function goBack() {
+    window.history.back(); // or use history.go(-1);
+  }
     </script>
-=======
-{% include "layouts/header.html" %}
-
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
-    <div style="padding: 2rem;">
-        <div class="welcome-main" style="font-size:1.3rem;font-weight:600;color:#31882e;margin-bottom:2rem;">
-            Welcome, {{ user.username }}
-        </div>
-
-        
-
+{% if request.path != "/" %}
+    <button class="go-back-btn" onclick="goBack()">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+{% endif %}
 
 </body>
 </html>

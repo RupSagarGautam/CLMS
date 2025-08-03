@@ -1,0 +1,93 @@
+{% load static %}
+{% include "layouts/header.html" %}
+<div class="dashboard-container">
+  <header>
+    <h1>Dashboard</h1>
+    <p>Welcome, Admin!.</p>
+  </header>
+  <!-- Dashboard CSS and fonts -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ApexCharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <label for="visitType">Visit Type:</label>
+    <select id="visitType" name="visit_type">
+      <option value="All" {% if selected_type == "All" %}selected{% endif %}>All</option>
+      {% for vt in visit_types %}
+        <option value="{{ vt }}" {% if selected_type == vt %}selected{% endif %}>{{ vt }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" name="start_date" disabled>
+
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate" name="end_date" disabled>
+
+    <button disabled>Apply Filters</button>
+  </div>
+
+  <!-- Stat Cards -->
+  <section class="stats">
+    <div class="stat-card"><h3>Total Visits</h3><p>{{ total_visits }}</p></div>
+    <div class="stat-card"><h3>Today's Visits</h3><p>{{ todays_visits }}</p></div>
+    <div class="stat-card"><h3>Monthly Visits</h3><p>{{ monthly_visits }}</p></div>
+    <div class="stat-card"><h3>Total Staff</h3><p>--</p></div>
+  </section>
+
+  <!-- Charts -->
+  <section class="charts">
+    <div class="chart-placeholder">
+      <h2>Visits Over Time</h2>
+      <div id="lineChart" style="height: 400px;"></div>
+    </div>
+
+    <div class="chart-placeholder">
+      <h2>Distribution by Type</h2>
+      <div id="barChart" style="height: 400px;"></div>
+    </div>
+  </section>
+
+  <!-- Table -->
+  <section class="recent-visits">
+    <h2>🗂 Recent Visits</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Visit Type</th>
+          <th>Date</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for visit in detailed_visits %}
+          <tr>
+            <td>{{ visit.visit_type.name }}</td>
+            <td>{{ visit.date }}</td>
+            <td>{{ visit.count }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="3">No visits found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<!-- JS Data Injection -->
+<script>
+  window.allDates = {{ dates|safe }};
+  window.allVisitCounts = {{ totals|safe }};
+  window.typeLabels = {{ type_labels|safe }};
+  window.typeCounts = {{ type_counts|safe }};
+</script>
+
+<!-- Chart Script -->
+<script src="{% static 'dashboard/js/apex-charts.js' %}"></script>

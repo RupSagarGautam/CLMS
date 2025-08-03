@@ -8,6 +8,10 @@ from .models import PasswordResetOTP
 import random
 from datetime import timedelta
 from django.contrib.auth import login as auth_login
+<<<<<<< HEAD
+=======
+from django.contrib.auth import authenticate, login as auth_login
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 
 # Create your views here.
 

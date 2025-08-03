@@ -19,6 +19,11 @@ from django.urls import path, include
 from cms import views as cms_views
 from clientapp import views as clientapp_views
 from staff import views as staff_views
+from django.conf.urls.static import static
+from django.conf import settings
+
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +34,15 @@ urlpatterns = [
     path('reset-password/', clientapp_views.reset_password, name='reset_password'),
     path('forgot-password/', clientapp_views.forgot_password, name='forgot_password'),
     path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'),
+<<<<<<< HEAD
     path('add-dashboard/', include('staff.urls')),
+=======
+    path('dashboard/', include('dashboard.urls')), 
+    path('add-dashboard/', include('staff.urls')),
+    path('profile/', cms_views.profile),
+    path('edit-profile/', cms_views.editProfile),
+>>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

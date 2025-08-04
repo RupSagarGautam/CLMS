@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Recent Activity</title>
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+   
 </head>
 <body>
     {% include "layouts/header.html" %}
@@ -25,19 +25,19 @@
 
     <div class="recent-activity-wrapper">
         <h2 class="recent-title"><i class="fa-solid fa-chart-simple"></i> Overall Entries  </h2>
-
         <div class="summary-cards">
             <div class="summary-card">
                 <h3>Client Visits</h3>
-                <p class="summary-count">{{ total_client_visits }}</p>
+               <p class="summary-count" data-date="{{ client_visit_latest_time|date:'Y-m-d H:i' }}">{{ total_client_visits }}</p>
+
             </div>
             <div class="summary-card">
                 <h3>Online Class Inquiries</h3>
-                <p class="summary-count">{{ total_online_inquiries }}</p>
+                <p class="summary-count" data-date="{{ online_inquiries_latest_time|date:'Y-m-d H:i' }}">{{ total_online_inquiries }}</p>
             </div>
             <div class="summary-card">
                 <h3>Office Visits</h3>
-                <p class="summary-count">{{ total_office_visits }}</p>
+                <p class="summary-count" data-date="{{ client_visit_latest_time|date:'Y-m-d H:i' }}">{{ total_office_visits }}</p>
             </div>
             <div class="summary-card">
                 <h3>College/School Visits</h3>
@@ -47,7 +47,9 @@
 
         <div class="visit-types-section">
             <h3 class="section-title"><i class="fa-solid fa-user-tie"></i> Staff Activities</h3>
-
+                <div class="search-container" style="margin-bottom: 1rem;">
+                    <input type="text" id="searchInput" placeholder="Search by Username, Model, or Date & Time..." style="width: 100%; padding: 0.5rem; font-size: 1rem;">
+                </div>
             {% if recent_staff_activity %}
                 <table class="visit-types-table">
                     <thead>
@@ -120,5 +122,25 @@
             {% endif %}
         </div>
     </div>
+
+    <script>
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('.visit-types-table tbody tr');
+
+        rows.forEach(row => {
+            const username = row.cells[0]?.innerText.toLowerCase();
+            const model = row.cells[3]?.innerText.toLowerCase();
+            const dateTime = row.cells[4]?.innerText.toLowerCase();
+
+            const match = username.includes(searchValue) || 
+                          model.includes(searchValue) || 
+                          dateTime.includes(searchValue);
+
+            row.style.display = match ? '' : 'none';
+        });
+    });
+</script>
+
 </body>
 </html>

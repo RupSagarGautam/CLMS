@@ -111,6 +111,8 @@ def home(request):
 def recent_activity(request):
     if not request.user.is_superuser:
         messages.error(request, "You are not authorized to access this page, Only Admin can view Staff Activity")
+        if request.user.is_staff:
+            return redirect('/logout')
         return render(request, "pages/login.html", status=403)
     else:
 

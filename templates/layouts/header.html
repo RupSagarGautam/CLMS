@@ -60,9 +60,11 @@
 
     </script>
 {% if request.path != "/" %}
+<div class="go-back-container">
     <button class="go-back-btn" onclick="goBack()">
         <i class="fa-solid fa-arrow-left"></i> Back
     </button>
+</div>
 {% endif %}
 {% if messages %}
     <div class="backend-message">

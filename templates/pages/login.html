@@ -130,7 +130,23 @@ if (loginBtn) {
     loginBtnIcon && loginBtnIcon.classList.remove('invert');
   });
 }
+ setTimeout(() => {
+        const msg = document.querySelector('.backend-message');
+        if (msg) {
+            msg.style.display = 'none';
+        }
+    }, 4000); // hide after 4 seconds
+    
+    
 </script>
+
+{% if messages %}
+    <div class="backend-message">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
 
 </body>
 </html> 

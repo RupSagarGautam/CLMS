@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Office Visit List</title>
-  <link rel="stylesheet" href="{% static 'css/Visit.css' %}">
+  <link rel="stylesheet" href="{% static 'css/Visit.css' %}?v=1.2">
+  <link rel="stylesheet" href="{% static 'css/dltvisit.css' %}?v=1.2">
 </head>
 
 {% include "layouts/header.html" %}
@@ -21,7 +22,7 @@
       <ul>
         <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
         <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
-        <li><a href="{% url 'office_visit_list' %}">office Visit</a></li>
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
         <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
       </ul>
     </div>
@@ -66,10 +67,11 @@
           {% endif %}
         </div>
 
+        <!-- Success Message - Small box below Add button -->
         {% if messages %}
-          <div class="message-container">
+          <div class="flash-message" id="flashMessage">
             {% for message in messages %}
-              <div class="success-message">{{ message }}</div>
+              <span class="success-message">{{ message }}</span>
             {% endfor %}
           </div>
         {% endif %}
@@ -97,25 +99,75 @@
             <td>{{ visit.email }}</td>
             <td>{{ visit.address }}</td>
             <td>{{ visit.purpose }}</td>
-
             <td>{{ visit.date }}</td>
             <td>
-              <a href="{% url 'edit_office' visit.id %}" class="edit-btn">Edit</a>
-              <form method="POST" action="{% url 'delete_office' visit.id %}"   style="display: inline; margin: 0;">
-                {% csrf_token %}
-                <button class="delete-btn">Delete</button>
-              </form>
+              <div class="action-buttons">
+                <a href="{% url 'edit_office' visit.id %}" class="edit-btn">Edit</a>
+                <button class="delete-btn" onclick="showOfficeVisitDeleteConfirmation('{{ visit.id }}', '{{ visit.name }}')">Delete</button>
+              </div>
             </td>
             <td>{{ visit.user.username }}</td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="7">No office visits available.</td>
+            <td colspan="8">No office visits available.</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
+
+      <!-- Pagination -->
+      {% if office_visits.has_other_pages %}
+      <div class="pagination">
+        {% if office_visits.has_previous %}
+          <a href="?page=1{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">&laquo; First</a>
+          <a href="?page={{ office_visits.previous_page_number }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">Previous</a>
+        {% endif %}
+
+        {% for num in office_visits.paginator.page_range %}
+          {% if office_visits.number == num %}
+            <span class="current">{{ num }}</span>
+          {% elif num > office_visits.number|add:'-3' and num < office_visits.number|add:'3' %}
+            <a href="?page={{ num }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if office_visits.has_next %}
+          <a href="?page={{ office_visits.next_page_number }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">Next</a>
+          <a href="?page={{ office_visits.paginator.num_pages }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">Last &raquo;</a>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
   </div>
+
+  <!-- CSRF Token for JavaScript -->
+  {% csrf_token %}
+  
+  <!-- Custom Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Confirm Deletion</h3>
+        <button class="close-btn" onclick="hideDeleteConfirmation()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon"></div>
+        <div class="modal-title">Delete Office Visit</div>
+        <div class="modal-message">
+          Are you sure you want to delete the office visit for <span class="visit-name" id="visitName"></span>?<br>
+          <strong>This action cannot be undone.</strong>
+        </div>
+        <div class="modal-buttons">
+          <button class="modal-btn cancel" onclick="hideDeleteConfirmation()">Cancel</button>
+          <button class="modal-btn confirm" onclick="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="{% static 'js/visit.js' %}?v=1.1"></script>
+
 </body>
 </html>

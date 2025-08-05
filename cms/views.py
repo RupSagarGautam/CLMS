@@ -70,6 +70,10 @@ def home(request):
     if not request.user.is_staff and not request.user.is_superuser:
         messages.error(request, "You are not authorized to access this page")
         return render(request, "pages/login.html", status=403)
+    if request.user.is_staff and not request.user.is_superuser:
+        return render(request, "pages/staff/add_dashboard.html")
+    elif request.user.is_superuser and request.user.is_staff:
+        return render(request, "pages/home.html")
     return render(request, 'pages/home.html')
 
 

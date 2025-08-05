@@ -248,3 +248,18 @@ body {
     font-weight: 500;
     color: #a94442 !important;
  }
+
+
+ .backend-message {
+    position: absolute;
+    top: 70px;
+    right: 30px;
+    background-color: #f0fff5;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+}

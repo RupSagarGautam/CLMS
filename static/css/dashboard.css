@@ -60,8 +60,15 @@ header p {
   border: none;
   padding: 8px 16px;
   border-radius: 8px;
-  opacity: 0.6;
+  opacity: 1;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
+
+.filter-section button:hover {
+  background-color: #388e3c;
+}
+
 
 /* Stat Cards */
 .stats {
@@ -168,4 +175,18 @@ th {
 
 tbody tr:hover {
   background-color: #f0fdf4;
+}
+
+@media (max-width: 600px) {
+  .filter-section {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-section label,
+  .filter-section select,
+  .filter-section input[type="date"],
+  .filter-section button {
+    width: 100%;
+  }
 }

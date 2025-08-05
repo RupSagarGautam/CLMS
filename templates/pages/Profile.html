@@ -22,7 +22,7 @@
             </div>
             <div class="profile-name">{{ firstName }} {{ lastName }}</div>
             <div class="profile-info"><i class="fas fa-envelope"></i> {{ email }}</div>
-            <div class="profile-info"><i class="fas fa-user"></i> {{ firstName|default:"Not set" }} {{ lastName }}</div>
+            <div class="profile-info"><i class="fas fa-user"></i> {{ user.username|default:"Not set" }}</div>
             <div class="profile-info"><i class="fas fa-info"></i> {{ address|default:"This account is regulated via Organization. Please Contact Your Organization if faced any issue." }}</div>
 
         </div>

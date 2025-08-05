@@ -86,9 +86,9 @@
       </div>
       <h2>CLMS</h2>
       <ul>
-        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
-        <li class="active"><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
         <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
+        <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
         <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
       </ul>
     </div>
@@ -147,7 +147,11 @@
                   {% endif %}
                 </td>
                 <td>
-                  <input type="date" name="date" value="{{ form.date.value|date:'Y-m-d' }}" required class="{% if form.date.errors %}error-field{% endif %}">
+                  <!-- Change this line: -->
+                  {% comment %} <input type="date" name="date" value="{{ form.date.value|date:'Y-m-d' }}" required class="{% if form.date.errors %}error-field{% endif %}"> {% endcomment %}
+                  
+                  <!-- To this: -->
+                  <input type="date" name="date" value="{{ form.date.value|date:'Y-m-d' }}" class="{% if form.date.errors %}error-field{% endif %}">
                   {% if form.date.errors %}
                     <div class="field-error">{{ form.date.errors.0 }}</div>
                   {% endif %}
@@ -182,4 +186,4 @@
 </script>
 
 </body>
-</html> 
+</html>

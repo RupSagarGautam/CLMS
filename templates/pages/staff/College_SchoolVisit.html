@@ -22,7 +22,7 @@
       <ul>
         <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
         <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
-        <li><a href="{% url 'office_visit_list' %}">office Visit</a></li>
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
         <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
       </ul>
     </div>
@@ -67,14 +67,7 @@
           {% endif %}
         </div>
 
-        <!-- Success Message - Small box below Add button -->
-        {% if messages %}
-          <div class="flash-message" id="flashMessage">
-            {% for message in messages %}
-              <span class="success-message">{{ message }}</span>
-            {% endfor %}
-          </div>
-        {% endif %}
+
       </div>
 
       <!-- Table -->
@@ -113,6 +106,29 @@
           {% endfor %}
         </tbody>
       </table>
+
+      <!-- Pagination -->
+      {% if college_visits.has_other_pages %}
+      <div class="pagination">
+        {% if college_visits.has_previous %}
+          <a href="?page=1{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">&laquo; First</a>
+          <a href="?page={{ college_visits.previous_page_number }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">Previous</a>
+        {% endif %}
+
+        {% for num in college_visits.paginator.page_range %}
+          {% if college_visits.number == num %}
+            <span class="current">{{ num }}</span>
+          {% elif num > college_visits.number|add:'-3' and num < college_visits.number|add:'3' %}
+            <a href="?page={{ num }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if college_visits.has_next %}
+          <a href="?page={{ college_visits.next_page_number }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">Next</a>
+          <a href="?page={{ college_visits.paginator.num_pages }}{% if current_filters.staff %}&staff={{ current_filters.staff }}{% endif %}{% if current_filters.start_date %}&start_date={{ current_filters.start_date }}{% endif %}{% if current_filters.end_date %}&end_date={{ current_filters.end_date }}{% endif %}">Last &raquo;</a>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
   </div>
 

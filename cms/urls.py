@@ -30,8 +30,12 @@ urlpatterns = [
     path('reset-password/', clientapp_views.reset_password, name='reset_password'),
     path('forgot-password/', clientapp_views.forgot_password, name='forgot_password'),
     path('verify-otp/', clientapp_views.verify_otp, name='verify_otp'),
-    path('profile/', cms_views.profile,),
-    path('edit-profile/', cms_views.editProfile,),
+    path('dashboard/', include('dashboard.urls')), 
+    path('add-dashboard/', include('staff.urls')),
+    path('profile/', cms_views.profile),
+    path('edit-profile/', cms_views.editProfile),
+    path('recent-activity/', cms_views.recent_activity, name='recent_activity'),
+    
 ]
 
 # Add this at the end of the file to serve media files in development

@@ -43,7 +43,7 @@
       <ul>
         <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
         <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
-        <li><a href="{% url 'office_visit_list' %}">office Visit</a></li>
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
         <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
       </ul>
     </div>
@@ -59,8 +59,8 @@
     <table>
       <thead>
         <tr>
-          <th>Contact Number</th>
           <th>Name</th>
+          <th>Contact Number</th>
           <th>Purpose</th>
           <th>Date</th>
           <th></th>
@@ -69,29 +69,29 @@
       <tbody>
         <tr>
           <!-- Contact Number -->
-            <td>
-            <input type="text" name="contact_number" value="{{ client_form.contact_number.value|default:'' }}"
-                  class="{% if client_form.contact_number.errors %}error-field{% endif %}">
-            {% if client_form.contact_number.errors %}
-              <div class="error-message-container">
-                {% for error in client_form.contact_number.errors %}
-                  <span class="field-error">{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% endif %}
-          </td>
-
+          
           <!-- Name -->
-        <td>
-          <div class="form-row">
-            <input type="text" name="name" value="{{ client_form.name.value|default:'' }}" 
-                   class="{% if client_form.name.errors %}error-field{% endif %}">
-            {% for error in client_form.name.errors %}
+          <td>
+            <div class="form-row">
+              <input type="text" name="name" value="{{ client_form.name.value|default:'' }}" 
+              class="{% if client_form.name.errors %}error-field{% endif %}">
+              {% for error in client_form.name.errors %}
               <div class="error-message-container"><span class="field-error">{{ error }}</span></div>
-            {% endfor %}
-          </div>
+              {% endfor %}
+            </div>
+          </td>
+          
+          <td>
+          <input type="text" name="contact_number" value="{{ client_form.contact_number.value|default:'' }}"
+                class="{% if client_form.contact_number.errors %}error-field{% endif %}">
+          {% if client_form.contact_number.errors %}
+            <div class="error-message-container">
+              {% for error in client_form.contact_number.errors %}
+                <span class="field-error">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
         </td>
-
           <!-- Purpose -->
         <td>
           <div class="form-row">

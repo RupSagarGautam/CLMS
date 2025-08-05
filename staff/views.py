@@ -433,7 +433,7 @@ def college_visit_list(request):
     Regular staff see only their own records.
     """
     if request.user.is_superuser:
-        college_visits = CollegeVisit.objects.all().order_by('-id')
+        college_visits = CollegeVisit.objects.all().order_by('-date')
         
         # Filter by staff
         staff_filter = request.GET.get('staff')
@@ -461,7 +461,7 @@ def college_visit_list(request):
         # Get all staff users for filter dropdown
         staff_users = User.objects.filter(is_staff=True).order_by('username')
     else:
-        college_visits = CollegeVisit.objects.filter(user=request.user).order_by('-id')
+        college_visits = CollegeVisit.objects.filter(user=request.user).order_by('-date')
         staff_users = None
     
     # Pagination

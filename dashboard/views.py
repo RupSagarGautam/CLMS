@@ -22,10 +22,10 @@ def dashboard(request):
         if request.user.is_superuser:
             return model.objects.all()
         elif request.user.is_staff:
-            return model.objects.filter(user=request.user)  # Adjust field name if different
+            return model.objects.filter(user=request.user)  
         return model.objects.none()
 
-    # Bar chart data (visit counts by type)
+    # Bar chart data(visit counts by type)
     type_labels = ['Client Visit', 'Online Class', 'Office Visit', 'College/School Visit']
     type_counts = [
         get_queryset(ClientVisit).count(),

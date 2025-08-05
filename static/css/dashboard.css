@@ -14,6 +14,7 @@ body {
 .dashboard-container {
   max-width: 1200px;
   margin: auto;
+  text-align: center;
 }
 
 header {
@@ -29,6 +30,7 @@ header p {
   font-size: 1rem;
   color: #555;
 }
+
 
 /* Filter UI Design */
 .filter-section {
@@ -55,19 +57,21 @@ header p {
 }
 
 .filter-section button {
-  background-color: #4caf50;
+  background-color: #4caf50;     /* Normal green */
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 8px;
   opacity: 1;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .filter-section button:hover {
-  background-color: #388e3c;
+  background-color: #2e7d32;     
+  transform: scale(1.05);
 }
+
 
 
 /* Stat Cards */
@@ -147,6 +151,7 @@ canvas {
 .recent-visits h2 {
   margin-bottom: 10px;
   color: #2e7d32;
+  text-align: left;
 }
 
 table {

@@ -1,8 +1,10 @@
-// document.addEventListener('DOMContentLoaded', function () {
+
+// document.addEventListener('DOMContentLoaded', () => {
 //   function formatDateLabel(dateString) {
 //     const date = new Date(dateString);
+//     if (isNaN(date)) return dateString;
 //     const day = date.getDate();
-//     const month = date.toLocaleString('default', { month: 'long' });
+//     const month = date.toLocaleString('default', { month: 'short' });
 //     const getOrdinal = (n) => {
 //       const s = ["th", "st", "nd", "rd"];
 //       const v = n % 100;
@@ -11,28 +13,24 @@
 //     return `${getOrdinal(day)} ${month}`;
 //   }
 
-//   // Variables passed from Django template
-//   const allDates = window.allDates || [];
-//   const allVisitCounts = window.allVisitCounts || [];
+//   const formattedAllDates = allDates.map(formatDateLabel);
+
+//   // @ts-ignore
+//   const allDates = window.dates || [];
+//   const allVisitCounts = window.totals || [];
 //   const typeLabels = window.typeLabels || [];
 //   const typeCounts = window.typeCounts || [];
 
-//   // Format dates for x-axis labels
-//   const formattedAllDates = allDates.map(formatDateLabel);
 
-//   // Initialize line chart
 //   const lineChartOptions = {
 //     chart: {
 //       type: 'line',
 //       height: 350,
 //       toolbar: { show: false }
 //     },
-//     series: [{
-//       name: 'All Visits',
-//       data: allVisitCounts
-//     }],
+//     series: [{ name: 'Visits', data: allVisitCounts }],
 //     xaxis: {
-//       categories: formattedAllDates,
+//       categories: formattedAllDates ,
 //       labels: { style: { colors: '#2e7d32' } }
 //     },
 //     stroke: { curve: 'smooth' },
@@ -54,10 +52,7 @@
 //     colors: ['#43a047'],
 //     legend: { show: false }
 //   };
-//   const lineChart = new ApexCharts(document.querySelector("#lineChart"), lineChartOptions);
-//   lineChart.render();
 
-//   // Initialize bar chart
 //   const barChartOptions = {
 //     chart: {
 //       type: 'bar',
@@ -84,20 +79,23 @@
 //     },
 //     legend: { show: false }
 //   };
-//   const barChart = new ApexCharts(document.querySelector("#barChart"), barChartOptions);
-//   barChart.render();
 
-//   // Elements
+//   const lineChartEl = document.querySelector("#lineChart");
+//   const barChartEl = document.querySelector("#barChart");
 //   const visitTypeSelect = document.getElementById('visitType');
 //   const barChartContainer = document.getElementById('barChartContainer');
 //   const chartSection = document.querySelector('.charts');
 
-//   // Handle visit type change
-//   function handleVisitTypeChange() {
+//   const lineChart = new ApexCharts(lineChartEl, lineChartOptions);
+//   const barChart = new ApexCharts(barChartEl, barChartOptions);
+
+//   lineChart.render();
+//   barChart.render();
+
+//   function updateCharts() {
 //     const selectedType = visitTypeSelect.value.trim();
 
 //     if (selectedType === 'All') {
-//       // Show bar chart and full line chart
 //       barChartContainer.style.display = 'block';
 //       chartSection.classList.remove('single-chart');
 
@@ -105,44 +103,30 @@
 //       lineChart.updateSeries([{ name: 'All Visits', data: allVisitCounts }]);
 
 //       barChart.updateOptions({
-//         xaxis: {
-//           categories: typeLabels,
-//           labels: { style: { colors: '#2e7d32' } }
-//         },
+//         xaxis: { categories: typeLabels, labels: { style: { colors: '#2e7d32' } } },
 //         colors: ['#66bb6a', '#81c784', '#a5d6a7', '#c8e6c9']
 //       });
 //       barChart.updateSeries([{ name: 'Count', data: typeCounts }]);
 //     } else {
-//       // Hide bar chart and update line chart for selected visit type
 //       barChartContainer.style.display = 'none';
 //       chartSection.classList.add('single-chart');
-
-//       // TODO: Replace this with real filtered data from backend or JS
-//       lineChart.updateOptions({ xaxis: { categories: [selectedType] } });
-//       lineChart.updateSeries([{
-//         name: `${selectedType}s`,
-//         data: [0]  // Placeholder count, update with real data when available
-//       }]);
 //     }
 
-//     // Filter table rows based on selected type
+//     // Update table rows
 //     const tableRows = document.querySelectorAll('tbody tr');
 //     tableRows.forEach(row => {
-//       const visitTypeCell = row.querySelectorAll('td')[0]; // Assuming first cell is visit type
+//       const visitTypeCell = row.querySelectorAll('td')[0];
 //       const visitType = visitTypeCell.textContent.trim();
 //       row.style.display = (selectedType === 'All' || visitType === selectedType) ? '' : 'none';
 //     });
 //   }
 
-//   // Run once on page load
-//   handleVisitTypeChange();
+//   updateCharts();
 
-//   // Attach event listener
-//   visitTypeSelect.addEventListener('change', handleVisitTypeChange);
+//   visitTypeSelect.addEventListener('change', () => {
+//     document.getElementById('filterForm').submit();
+//   });
 // });
-
-// 
-
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -159,14 +143,20 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${getOrdinal(day)} ${month}`;
   }
 
-  const formattedAllDates = allDates.map(formatDateLabel);
-
-  // @ts-ignore
-  const allDates = window.dates || [];
-  const allVisitCounts = window.totals || [];
+  // Data from Django context
+  const allDates = window.allDates || [];
+  const allVisitCounts = window.allVisitCounts || [];
   const typeLabels = window.typeLabels || [];
   const typeCounts = window.typeCounts || [];
 
+  const formattedAllDates = allDates.map(formatDateLabel);
+
+  // Chart containers and dropdown
+  const lineChartEl = document.querySelector("#lineChart");
+  const barChartEl = document.querySelector("#barChart");
+  const durationSelect = document.getElementById('duration');
+  const barChartContainer = document.getElementById('barChartContainer');
+  const chartSection = document.querySelector('.charts');
 
   const lineChartOptions = {
     chart: {
@@ -176,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     series: [{ name: 'Visits', data: allVisitCounts }],
     xaxis: {
-      categories: formattedAllDates ,
+      categories: formattedAllDates,
       labels: { style: { colors: '#2e7d32' } }
     },
     stroke: { curve: 'smooth' },
@@ -226,12 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     legend: { show: false }
   };
 
-  const lineChartEl = document.querySelector("#lineChart");
-  const barChartEl = document.querySelector("#barChart");
-  const visitTypeSelect = document.getElementById('visitType');
-  const barChartContainer = document.getElementById('barChartContainer');
-  const chartSection = document.querySelector('.charts');
-
   const lineChart = new ApexCharts(lineChartEl, lineChartOptions);
   const barChart = new ApexCharts(barChartEl, barChartOptions);
 
@@ -239,37 +223,49 @@ document.addEventListener('DOMContentLoaded', () => {
   barChart.render();
 
   function updateCharts() {
-    const selectedType = visitTypeSelect.value.trim();
+    const selectedDuration = durationSelect.value.trim();
+    let categories = formattedAllDates;
+    let seriesName = 'Visits';
+    let data = allVisitCounts;
 
-    if (selectedType === 'All') {
+    if (selectedDuration === 'week') {
+      categories = formattedAllDates.slice(-7);
+      data = allVisitCounts.slice(-7);
+      seriesName = 'Weekly Visits';
+    } else if (selectedDuration === 'month') {
+      categories = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+      data = allVisitCounts.slice(-4);
+      seriesName = 'Monthly Visits';
+    } else if (selectedDuration === 'year') {
+      categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      data = allVisitCounts.slice(0, 12);
+      seriesName = 'Yearly Visits';
+    } else if (selectedDuration === 'all') {
+      categories = formattedAllDates;
+      data = allVisitCounts;
+      seriesName = 'All Visits';
+    }
+
+    // Update Line Chart
+    lineChart.updateOptions({ xaxis: { categories } });
+    lineChart.updateSeries([{ name: seriesName, data }]);
+
+    // Update Bar Chart
+    if (selectedDuration === 'all') {
       barChartContainer.style.display = 'block';
       chartSection.classList.remove('single-chart');
 
-      lineChart.updateOptions({ xaxis: { categories: formattedAllDates } });
-      lineChart.updateSeries([{ name: 'All Visits', data: allVisitCounts }]);
-
-      barChart.updateOptions({
-        xaxis: { categories: typeLabels, labels: { style: { colors: '#2e7d32' } } },
-        colors: ['#66bb6a', '#81c784', '#a5d6a7', '#c8e6c9']
-      });
+      barChart.updateOptions({ xaxis: { categories: typeLabels } });
       barChart.updateSeries([{ name: 'Count', data: typeCounts }]);
     } else {
       barChartContainer.style.display = 'none';
       chartSection.classList.add('single-chart');
     }
-
-    // Update table rows
-    const tableRows = document.querySelectorAll('tbody tr');
-    tableRows.forEach(row => {
-      const visitTypeCell = row.querySelectorAll('td')[0];
-      const visitType = visitTypeCell.textContent.trim();
-      row.style.display = (selectedType === 'All' || visitType === selectedType) ? '' : 'none';
-    });
   }
 
   updateCharts();
 
-  visitTypeSelect.addEventListener('change', () => {
+  durationSelect.addEventListener('change', () => {
     document.getElementById('filterForm').submit();
   });
 });

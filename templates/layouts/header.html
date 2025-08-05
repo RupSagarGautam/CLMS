@@ -13,10 +13,9 @@
         
         
         {% if user.is_superuser %}
-            <a href="/" class="stats-btn-head">Home</a>
-            <a href="/dashboard" class="stats-btn-head">Overall Stats</a>
-            
-        {% endif %}
+            <a href="/" class="stats-btn-head">Home</a> 
+            {% endif %}
+            <a href="/dashboard" class="stats-btn-head">Stats</a>
         {% if user.is_staff or user.is_superuser %}
         <a href="/add-dashboard" class="stats-btn-head">Data View/Entry</a>
         {% endif %}

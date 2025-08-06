@@ -1,93 +1,443 @@
-{% load static %}
-{% include "layouts/header.html" %}
-<div class="dashboard-container">
-  <header>
-    <h1>Dashboard</h1>
-    <p>Welcome, Admin!.</p>
-  </header>
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include "layouts/header.html" %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
   <!-- Dashboard CSS and fonts -->
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
-    <!-- FontAwesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!--For icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ApexCharts CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <!-- ApexCharts CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
 
-  <!-- Filter Section -->
-  <div class="filter-section">
-    <label for="visitType">Visit Type:</label>
-    <select id="visitType" name="visit_type">
-      <option value="All" {% if selected_type == "All" %}selected{% endif %}>All</option>
-      {% for vt in visit_types %}
-        <option value="{{ vt }}" {% if selected_type == vt %}selected{% endif %}>{{ vt }}</option>
-      {% endfor %}
-    </select>
+<body>
+   <div class="dashboard-container">
+    <header>
+      <h1>Dashboard</h1>
+      <p>Welcome back, {{ request.user.username }}. Here's your latest overview.</p>
+    </header>
 
-    <label for="startDate">Start Date:</label>
-    <input type="date" id="startDate" name="start_date" disabled>
+    <form method="get" id="filterForm" class="filter-section">
+      <label for="visitType">Visit Type:</label>
+      <select id="visitType" name="visit_type" onchange="document.getElementById('filterForm').submit();">
+        <option value="All" {% if selected_type == "All" %}selected{% endif %}>All</option>
+        {% for vt in visit_types %}
+          <option value="{{ vt }}" {% if selected_type == vt %}selected{% endif %}>{{ vt }}</option>
+        {% endfor %}
+      </select>
 
-    <label for="endDate">End Date:</label>
-    <input type="date" id="endDate" name="end_date" disabled>
+      <label for="duration">Select Duration:</label>
+      <select id="duration" name="duration">
+        <option value="all" selected>All</option>
+        <option value="week">Week</option>
+        <option value="month">Month</option>
+        <option value="year">Year</option>
+      </select>
 
-    <button disabled>Apply Filters</button>
+      <button type="submit">Apply Filters</button>
+    </form>
+
+    <section class="charts">
+      <div class="chart-placeholder" id="lineChartContainer">
+        <h2>Visits Over Time</h2>
+        <div id="lineChart" style="height: 400px;"></div>
+      </div>
+
+      <div class="chart-placeholder" id="barChartContainer">
+        <h2>Distribution by Type</h2>
+        <div id="barChart" style="height: 400px;"></div>
+      </div>
+    </section>
+
+    <section class="recent-visits">
+      <h2>🗂 Recent Visits</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Visit Type</th>
+            <th>Date</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for visit in detailed_visits %}
+            <tr>
+              <td>{{ visit.visit_type }}</td>
+              <td>{{ visit.date }}</td>
+              <td>{{ visit.count }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="3">No visits found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
   </div>
 
-  <!-- Stat Cards -->
-  <section class="stats">
-    <div class="stat-card"><h3>Total Visits</h3><p>{{ total_visits }}</p></div>
-    <div class="stat-card"><h3>Today's Visits</h3><p>{{ todays_visits }}</p></div>
-    <div class="stat-card"><h3>Monthly Visits</h3><p>{{ monthly_visits }}</p></div>
-    <div class="stat-card"><h3>Total Staff</h3><p>--</p></div>
-  </section>
+  <!-- Pass Django context data to JS -->
+  <script>
+    window.allDates = {{ dates|safe }};
+    window.allVisitCounts = {{ totals|safe }};
+    window.typeLabels = {{ type_labels|safe }};
+    window.typeCounts = {{ type_counts|safe }};
+  </script>
 
-  <!-- Charts -->
-  <section class="charts">
-    <div class="chart-placeholder">
-      <h2>Visits Over Time</h2>
-      <div id="lineChart" style="height: 400px;"></div>
-    </div>
 
-    <div class="chart-placeholder">
-      <h2>Distribution by Type</h2>
-      <div id="barChart" style="height: 400px;"></div>
-    </div>
-  </section>
+<!-- Line Chart -->
+  <script>
 
-  <!-- Table -->
-  <section class="recent-visits">
-    <h2>🗂 Recent Visits</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Visit Type</th>
-          <th>Date</th>
-          <th>Count</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for visit in detailed_visits %}
-          <tr>
-            <td>{{ visit.visit_type.name }}</td>
-            <td>{{ visit.date }}</td>
-            <td>{{ visit.count }}</td>
-          </tr>
-        {% empty %}
-          <tr><td colspan="3">No visits found.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
-</div>
+    var lineChartOptions = {
+      chart: {
+        type: 'line',
+        height: 400,
+        toolbar: { show: false }
+      },
+      series: [{
+        name: 'Visits',
+        data: window.allVisitCounts
+      }],
+      xaxis: {
+        categories: window.allDates,
+        title: {
+          text: 'Date',
+          style: {
+            fontSize: '13px',
+            fontWeight: 400,  // normal weight
+            color: '#555',
+            fontFamily: 'Segoe UI, sans-serif'
+          }
+        },
+        labels: {
+          style: {
+            fontSize: '12px',
+            colors: '#333'
+          }
+        }
+      },
 
-<!-- JS Data Injection -->
-<script>
-  window.allDates = {{ dates|safe }};
-  window.allVisitCounts = {{ totals|safe }};
-  window.typeLabels = {{ type_labels|safe }};
-  window.typeCounts = {{ type_counts|safe }};
+      yaxis: {
+        title: {
+          text: 'Count',
+          style: {
+            fontSize: '13px',
+            fontWeight: 400,  // normal weight
+            color: '#555',
+            fontFamily: 'Segoe UI, sans-serif'
+          }
+        },
+        labels: {
+          style: {
+            fontSize: '12px',
+            colors: '#333'
+          }
+        }
+      },
+
+
+      stroke: {
+        curve: 'smooth',
+        width: 4,
+        colors: ['#28a745']
+      },
+      markers: {
+        size: 5,
+        colors: ['#28a745'],
+        strokeColors: '#fff',
+        strokeWidth: 2
+      },
+      colors: ['#28a745'],
+      tooltip: {
+        enabled: true,
+        x: { format: 'dd MMM' }
+      },
+      grid: {
+        borderColor: '#eee',
+        row: {
+          colors: ['#f9f9f9', 'transparent'],
+          opacity: 0.5
+        }
+      }
+    };
+
+    var lineChart = new ApexCharts(document.querySelector("#lineChart"), lineChartOptions);
+    lineChart.render();
+  </script>
+
+  <!-- Bar Chart -->
+  <script>
+  var barChartOptions = {
+    chart: {
+      type: 'bar',
+      height: 400,
+      toolbar: { show: false }
+    },
+    series: [{
+      name: 'Visit Count',
+      data: typeCounts
+    }],
+    xaxis: {
+      categories: typeLabels,
+      title: {
+        text: 'Visit Type',
+        style: {
+          fontSize: '13px',
+          fontWeight: 400,
+          color: '#555',
+          fontFamily: 'Segoe UI, sans-serif'
+        }
+      },
+      labels: {
+        style: {
+          fontSize: '12px',
+          colors: '#333'
+        }
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Count',
+        style: {
+          fontSize: '13px',
+          fontWeight: 400,
+          color: '#555',
+          fontFamily: 'Segoe UI, sans-serif'
+        }
+      },
+      labels: {
+        style: {
+          fontSize: '12px',
+          colors: '#333'
+        }
+      }
+    },
+    colors: ['#66bb6a', '#81c784', '#a5d6a7', '#c8e6c9'],
+    plotOptions: {
+      bar: {
+        columnWidth: '50%',
+        borderRadius: 4
+      }
+    },
+    tooltip: {
+      enabled: true
+    },
+    grid: {
+      borderColor: '#eee',
+      row: {
+        colors: ['#f9f9f9', 'transparent'],
+        opacity: 0.5
+      }
+    }
+  };
+
+  var barChart = new ApexCharts(document.querySelector("#barChart"), barChartOptions);
+  barChart.render();
 </script>
 
-<!-- Chart Script -->
-<script src="{% static 'dashboard/js/apex-charts.js' %}"></script>
+</body>
+</html> 
+ {% endcomment %}
+
+
+
+
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include "layouts/header.html" %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
+  <!-- Dashboard CSS and fonts -->
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!--For icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- ApexCharts CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body>
+   <div class="dashboard-container">
+    <header>
+      <h1>Dashboard</h1>
+      <p>Welcome back, {{ request.user.username }}. Here's your latest overview.</p>
+    </header>
+
+    <form method="get" id="filterForm" class="filter-section">
+      <label for="visitType">Visit Type:</label>
+      <select id="visitType" name="visit_type" onchange="document.getElementById('filterForm').submit();">
+        <option value="All" {% if selected_type == "All" %}selected{% endif %}>All</option>
+        {% for vt in visit_types %}
+          <option value="{{ vt }}" {% if selected_type == vt %}selected{% endif %}>{{ vt }}</option>
+        {% endfor %}
+      </select>
+
+      <select name="duration" id="duration" onchange="handleDurationChange();">
+        <option value="7 days" {% if duration == '7 days' %}selected{% endif %}>Last 7 Days</option>
+        <option value="month" {% if duration == 'month' %}selected{% endif %}>Month</option>
+        <option value="year" {% if duration == 'year' %}selected{% endif %}>Year</option>
+        <option value="all" {% if duration == 'all' %}selected{% endif %}>All</option>
+      </select>
+
+      
+       <label for="month">Select Month:</label>
+        <select id="month" name="month"
+          {% if duration != 'month' %}disabled{% endif %}
+          onchange="document.getElementById('filterForm').submit();">
+          <option value="1" {% if selected_month == '1' %}selected{% endif %}>Jan</option>
+          <option value="2" {% if selected_month == '2' %}selected{% endif %}>Feb</option>
+          <option value="3" {% if selected_month == '3' %}selected{% endif %}>Mar</option>
+          <option value="4" {% if selected_month == '4' %}selected{% endif %}>Apr</option>
+          <option value="5" {% if selected_month == '5' %}selected{% endif %}>May</option>
+          <option value="6" {% if selected_month == '6' %}selected{% endif %}>Jun</option>
+          <option value="7" {% if selected_month == '7' %}selected{% endif %}>Jul</option>
+          <option value="8" {% if selected_month == '8' %}selected{% endif %}>Aug</option>
+          <option value="9" {% if selected_month == '9' %}selected{% endif %}>Sep</option>
+          <option value="10" {% if selected_month == '10' %}selected{% endif %}>Oct</option>
+          <option value="11" {% if selected_month == '11' %}selected{% endif %}>Nov</option>
+          <option value="12" {% if selected_month == '12' %}selected{% endif %}>Dec</option>
+        </select>
+
+
+      <button type="submit">Apply Filters</button>
+    </form>
+
+    <section class="charts">
+      <div class="chart-placeholder" id="lineChartContainer">
+        <h2>Visits Over Time</h2>
+        <div id="lineChart" style="height: 400px;"></div>
+      </div>
+
+      <div class="chart-placeholder" id="barChartContainer">
+        <h2>Distribution by Type</h2>
+        <div id="barChart" style="height: 400px;"></div>
+      </div>
+    </section>
+
+    <section class="recent-visits">
+      <h2>🗂 Recent Visits</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Visit Type</th>
+            <th>Date</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for visit in detailed_visits %}
+            <tr>
+              <td>{{ visit.visit_type }}</td>
+              <td>{{ visit.date }}</td>
+              <td>{{ visit.count }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="3">No visits found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- Pass Django context data to JS -->
+  <script>
+    window.allDates = {{ dates|safe }};
+    window.allVisitCounts = {{ totals|safe }};
+    window.typeLabels = {{ type_labels|safe }};
+    window.typeCounts = {{ type_counts|safe }};
+  </script>
+
+  <script>
+    function handleDurationChange() {
+      const duration = document.getElementById("duration").value;
+      const monthSelect = document.getElementById("month");
+
+      if (duration === "month") {
+        monthSelect.disabled = false;
+      } else {
+        monthSelect.disabled = true;
+        monthSelect.selectedIndex = 0; // Optional reset
+      }
+
+      document.getElementById("filterForm").submit();
+    }
+  </script>
+
+
+  <script>
+    // Line Chart Options and Render
+    var lineChartOptions = {
+      chart: {
+        type: 'line',
+        height: 400,
+        toolbar: { show: false }
+      },
+      series: [{
+        name: 'Visits',
+        data: window.allVisitCounts
+      }],
+      xaxis: {
+        categories: window.allDates,
+        title: {
+          text: 'Date',
+          style: { fontSize: '13px', fontWeight: 400, color: '#555', fontFamily: 'Segoe UI, sans-serif' }
+        },
+        labels: { style: { fontSize: '12px', colors: '#333' } }
+      },
+      yaxis: {
+        title: {
+          text: 'Count',
+          style: { fontSize: '13px', fontWeight: 400, color: '#555', fontFamily: 'Segoe UI, sans-serif' }
+        },
+        labels: { style: { fontSize: '12px', colors: '#333' } }
+      },
+      stroke: { curve: 'smooth', width: 4, colors: ['#28a745'] },
+      markers: { size: 5, colors: ['#28a745'], strokeColors: '#fff', strokeWidth: 2 },
+      colors: ['#28a745'],
+      tooltip: { enabled: true, x: { format: 'dd MMM' } },
+      grid: {
+        borderColor: '#eee',
+        row: { colors: ['#f9f9f9', 'transparent'], opacity: 0.5 }
+      }
+    };
+    var lineChart = new ApexCharts(document.querySelector("#lineChart"), lineChartOptions);
+    lineChart.render();
+
+    // Bar Chart Options and Render
+    var barChartOptions = {
+      chart: { type: 'bar', height: 400, toolbar: { show: false } },
+      series: [{ name: 'Visit Count', data: window.typeCounts }],
+      xaxis: {
+        categories: window.typeLabels,
+        title: { text: 'Visit Type', style: { fontSize: '13px', fontWeight: 400, color: '#555', fontFamily: 'Segoe UI, sans-serif' } },
+        labels: { style: { fontSize: '12px', colors: '#333' } }
+      },
+      yaxis: {
+        title: { text: 'Count', style: { fontSize: '13px', fontWeight: 400, color: '#555', fontFamily: 'Segoe UI, sans-serif' } },
+        labels: { style: { fontSize: '12px', colors: '#333' } }
+      },
+      colors: ['#66bb6a', '#81c784', '#a5d6a7', '#c8e6c9'],
+      plotOptions: { bar: { columnWidth: '50%', borderRadius: 4 } },
+      tooltip: { enabled: true },
+      grid: {
+        borderColor: '#eee',
+        row: { colors: ['#f9f9f9', 'transparent'], opacity: 0.5 }
+      }
+    };
+    var barChart = new ApexCharts(document.querySelector("#barChart"), barChartOptions);
+    barChart.render();
+  </script>
+</body>
+</html>

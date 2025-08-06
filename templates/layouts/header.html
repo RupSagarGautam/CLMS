@@ -10,15 +10,18 @@
 </head>
 <body>
     <div class="top-bar-head">
-        {% comment %} Home Button {% endcomment %}
-        <a href="/" class="stats-btn-head">Home</a>
-
+        
+        
         {% if user.is_superuser %}
-            <a href="/dashboard" class="stats-btn-head">Overall Stats</a>
-            <a href="/admin" class="dashboard-btn-head">Super Admin Dashboard</a>
+            <a href="/" class="stats-btn-head">Home</a> 
+            {% endif %}
+            <a href="/dashboard" class="stats-btn-head">Stats</a>
+        {% if user.is_staff or user.is_superuser %}
+        <a href="/add-dashboard" class="stats-btn-head">Data View/Entry</a>
         {% endif %}
-        {% if user.is_staff %}
-        <a href="/add-dashboard" class="stats-btn-head">Data Entry</a>
+        {% if user.is_superuser %}
+            <a href="/recent-activity" class="stats-btn-head">Recent Activity</a>
+            <a href="/admin" class="dashboard-btn-head">Super Admin Dashboard</a>
         {% endif %}
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-icon" onclick="toggleDropdown()">
@@ -53,12 +56,14 @@
             msg.style.display = 'none';
         }
     }, 4000); // hide after 4 seconds
-    
+
     </script>
 {% if request.path != "/" %}
+<div class="go-back-container">
     <button class="go-back-btn" onclick="goBack()">
         <i class="fa-solid fa-arrow-left"></i> Back
     </button>
+</div>
 {% endif %}
 {% if messages %}
     <div class="backend-message">

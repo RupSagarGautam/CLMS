@@ -14,3 +14,4 @@ class Visit(models.Model):
 
     def __str__(self):
         return f"{self.visit_type.name} on {self.date}: {self.count}"
+    

@@ -85,9 +85,9 @@
       </div>
       <h2>CLMS</h2>
       <ul>
-        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
+          <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
         <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
-        <li class="active"><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
         <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
       </ul>
     </div>
@@ -121,7 +121,6 @@
                 <th>Name</th>
                 <th>Contact Number</th>
                 <th>Purpose</th>
-                <th>Date</th>
                 <th></th>
               </tr>
             </thead>
@@ -145,12 +144,7 @@
                     <div class="field-error">{{ form.purpose.errors.0 }}</div>
                   {% endif %}
                 </td>
-                <td>
-                  <input type="date" name="date" value="{{ form.date.value|date:'Y-m-d' }}" required class="{% if form.date.errors %}error-field{% endif %}">
-                  {% if form.date.errors %}
-                    <div class="field-error">{{ form.date.errors.0 }}</div>
-                  {% endif %}
-                </td>
+
                 <td>
                   <div class="button-container">
                     <button type="submit" class="add-btn">Update</button>
@@ -182,4 +176,4 @@
 </script>
 
 </body>
-</html> 
+</html>

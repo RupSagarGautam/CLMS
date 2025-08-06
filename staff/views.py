@@ -7,7 +7,11 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from datetime import datetime
 from .models import ClientVisit, OnlineClassInquiry, OfficeVisit, CollegeVisit
-from .forms import ClientVisitForm, OnlineClassInquiryForm, OfficeVisitForm, CollegeVisitForm
+from .forms import ClientVisitForm, OnlineClassInquiryForm, OfficeVisitForm, CollegeVisitForm, ClientVisitEditForm, OnlineClassInquiryEditForm, OfficeVisitEditForm, CollegeVisitEditForm
+# staff/views.py
+from django.contrib.admin.models import ADDITION, CHANGE
+from cms.views import log_action  # Import log_action
+
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
@@ -36,7 +40,6 @@ def add_client_visit(request):
         form = ClientVisitForm(request.POST)
         if form.is_valid():
             contact = form.cleaned_data.get('contact_number')
-
             if ClientVisit.objects.filter(contact_number=contact).exists():
                 messages.error(request, "Client Visit with this contact number already exists.")
                 return render(request, 'pages/staff/add_dashboard.html', {
@@ -45,23 +48,20 @@ def add_client_visit(request):
                     'office_form': OfficeVisitForm(),
                     'college_form': CollegeVisitForm(),
                 })
-
             client_visit = form.save(commit=False)
             client_visit.user = request.user
+            client_visit.date = datetime.now().date()  # Set current date automatically
             client_visit.save()
+            log_action(request, client_visit, ADDITION, "Added Client Visit")  # Log the action
             messages.success(request, "Client Visit added successfully.")
             return redirect('client_visit_list')
-
-        # Show validation errors
         return render(request, 'pages/staff/add_dashboard.html', {
             'client_form': form,
             'online_form': OnlineClassInquiryForm(),
             'office_form': OfficeVisitForm(),
             'college_form': CollegeVisitForm(),
         })
-
     return redirect('add_dashboard')
-
 
 
 
@@ -81,7 +81,9 @@ def add_online_class(request):
                 })
             inquiry = form.save(commit=False)
             inquiry.user = request.user
+            inquiry.date = datetime.now().date()  # Set current date automatically
             inquiry.save()
+            log_action(request, inquiry, ADDITION, "Added Online Class Inquiry")  # Log the action
             messages.success(request, "Online Class Inquiry added successfully.")
             return redirect('online_class_list')
         # Show validation errors
@@ -94,15 +96,12 @@ def add_online_class(request):
     return redirect('add_dashboard')
 
 
-
 @login_required
 def add_office_visit(request):
     if request.method == 'POST':
         form = OfficeVisitForm(request.POST)
         if form.is_valid():
             contact = form.cleaned_data.get('contact')
-
-            # ✅ Check if contact already exists
             if OfficeVisit.objects.filter(contact=contact).exists():
                 messages.error(request, "An Office Visit with this contact number already exists.")
                 return render(request, 'pages/staff/add_dashboard.html', {
@@ -111,13 +110,13 @@ def add_office_visit(request):
                     'online_form': OnlineClassInquiryForm(),
                     'college_form': CollegeVisitForm(),
                 })
-
             visit = form.save(commit=False)
             visit.user = request.user
+            visit.date = datetime.now().date()  # Set current date automatically
             visit.save()
+            log_action(request, visit, ADDITION, "Added Office Visit")  # Log the action
             messages.success(request, "Office Visit added successfully.")
             return redirect('office_visit_list')
-
         # If form validation fails
         return render(request, 'pages/staff/add_dashboard.html', {
             'office_form': form,
@@ -144,7 +143,9 @@ def add_college_visit(request):
                 })
             visit = form.save(commit=False)
             visit.user = request.user
+            visit.date = datetime.now().date()  # Set current date automatically
             visit.save()
+            log_action(request, visit, ADDITION, "Added School/College Visit")  # Log the action
             messages.success(request, "College/School Visit added successfully.")
             return redirect('college_visit_list')
         # Show validation errors
@@ -163,11 +164,16 @@ def edit_office_visit(request, id):
     visit = get_object_or_404(OfficeVisit, id=id)
     if request.user.is_superuser or visit.user == request.user:
         if request.method == 'POST':
-            form = OfficeVisitForm(request.POST, instance=visit)
+            form = OfficeVisitEditForm(request.POST, instance=visit)
             if form.is_valid():
-                # Only save if changes were made
                 if form.has_changed():
+                    # Preserve the original date when editing
+                    original_date = visit.date
                     form.save()
+                    # Restore the original date
+                    visit.date = original_date
+                    visit.save()
+                    log_action(request, visit, CHANGE, "Updated Office Visit")  # Log the action
                     messages.success(request, "Office Visit updated successfully.")
                 else:
                     messages.info(request, "No changes were made to the office visit.")
@@ -175,7 +181,7 @@ def edit_office_visit(request, id):
             else:
                 messages.error(request, "There were errors in your form. Please check the fields below.")
         else:
-            form = OfficeVisitForm(instance=visit)
+            form = OfficeVisitEditForm(instance=visit)
         return render(request, 'pages/staff/edit_office_visit.html', {'form': form, 'visit': visit})
     else:
         messages.error(request, "You are not authorized to edit this.")
@@ -186,10 +192,16 @@ def edit_client_visit(request, id):
     visit = get_object_or_404(ClientVisit, id=id)
     if request.user.is_superuser or visit.user == request.user:
         if request.method == 'POST':
-            form = ClientVisitForm(request.POST, instance=visit)
+            form = ClientVisitEditForm(request.POST, instance=visit)
             if form.is_valid():
                 if form.has_changed():
+                    # Preserve the original date when editing
+                    original_date = visit.date
                     form.save()
+                    # Restore the original date
+                    visit.date = original_date
+                    visit.save()
+                    log_action(request, visit, CHANGE, "Updated Client Visit")  # Log the action
                     messages.success(request, "Client Visit updated successfully.")
                 else:
                     messages.info(request, "No changes were made to the client visit.")
@@ -197,7 +209,7 @@ def edit_client_visit(request, id):
             else:
                 messages.error(request, "There were errors in your form. Please check the fields below.")
         else:
-            form = ClientVisitForm(instance=visit)
+            form = ClientVisitEditForm(instance=visit)
         return render(request, 'pages/staff/edit_client_visit.html', {'form': form, 'visit': visit})
     else:
         messages.error(request, "You are not authorized to edit this.")
@@ -208,10 +220,16 @@ def edit_college_visit(request, id):
     visit = get_object_or_404(CollegeVisit, id=id)
     if request.user.is_superuser or visit.user == request.user:
         if request.method == 'POST':
-            form = CollegeVisitForm(request.POST, instance=visit)
+            form = CollegeVisitEditForm(request.POST, instance=visit)
             if form.is_valid():
                 if form.has_changed():
+                    # Preserve the original date when editing
+                    original_date = visit.date
                     form.save()
+                    # Restore the original date
+                    visit.date = original_date
+                    visit.save()
+                    log_action(request, visit, CHANGE, "Updated School/College Visit")  # Log the action
                     messages.success(request, "College/School Visit updated successfully.")
                 else:
                     messages.info(request, "No changes were made to the college/school visit.")
@@ -219,7 +237,7 @@ def edit_college_visit(request, id):
             else:
                 messages.error(request, "There were errors in your form. Please check the fields below.")
         else:
-            form = CollegeVisitForm(instance=visit)
+            form = CollegeVisitEditForm(instance=visit)
         return render(request, 'pages/staff/edit_college_visit.html', {'form': form, 'visit': visit})
     else:
         messages.error(request, "You are not authorized to edit this.")
@@ -230,10 +248,16 @@ def edit_online_class(request, id):
     inquiry = get_object_or_404(OnlineClassInquiry, id=id)
     if request.user.is_superuser or inquiry.user == request.user:
         if request.method == 'POST':
-            form = OnlineClassInquiryForm(request.POST, instance=inquiry)
+            form = OnlineClassInquiryEditForm(request.POST, instance=inquiry)
             if form.is_valid():
                 if form.has_changed():
+                    # Preserve the original date when editing
+                    original_date = inquiry.date
                     form.save()
+                    # Restore the original date
+                    inquiry.date = original_date
+                    inquiry.save()
+                    log_action(request, inquiry, CHANGE, "Updated Online Class Inquiry")  # Log the action
                     messages.success(request, "Online Class Inquiry updated successfully.")
                 else:
                     messages.info(request, "No changes were made to the online class inquiry.")
@@ -241,12 +265,11 @@ def edit_online_class(request, id):
             else:
                 messages.error(request, "There were errors in your form. Please check the fields below.")
         else:
-            form = OnlineClassInquiryForm(instance=inquiry)
+            form = OnlineClassInquiryEditForm(instance=inquiry)
         return render(request, 'pages/staff/edit_online_class.html', {'form': form, 'inquiry': inquiry})
     else:
         messages.error(request, "You are not authorized to edit this.")
         return redirect('online_class_list')
-
 
 # --- List Views with Filtering (Admin) ---
 @login_required
@@ -485,11 +508,13 @@ def college_visit_list(request):
     })
 
 
-# --- Delete ---
+from django.contrib.admin.models import DELETION
+
 @login_required
 def delete_client_visit(request, id):
     visit = get_object_or_404(ClientVisit, id=id)
     if request.user.is_superuser or visit.user == request.user:
+        log_action(request, visit, DELETION, "Deleted Client Visit")
         visit.delete()
         messages.success(request, "Client Visit deleted successfully.")
     else:
@@ -501,6 +526,7 @@ def delete_client_visit(request, id):
 def delete_online_class(request, id):
     inquiry = get_object_or_404(OnlineClassInquiry, id=id)
     if request.user.is_superuser or inquiry.user == request.user:
+        log_action(request, inquiry, DELETION, "Deleted Online Class Inquiry")  # Log the action
         inquiry.delete()
         messages.success(request, "Online Class Inquiry deleted successfully.")
     else:
@@ -512,6 +538,7 @@ def delete_online_class(request, id):
 def delete_office_visit(request, id):
     visit = get_object_or_404(OfficeVisit, id=id)
     if request.user.is_superuser or visit.user == request.user:
+        log_action(request, visit, DELETION, "Deleted Office Visit")  # Log the action
         visit.delete()
         messages.success(request, "Office Visit deleted successfully.")
     else:
@@ -523,8 +550,11 @@ def delete_office_visit(request, id):
 def delete_college_visit(request, id):
     visit = get_object_or_404(CollegeVisit, id=id)
     if request.user.is_superuser or visit.user == request.user:
+        log_action(request, visit, DELETION, "Deleted School/College Visit")  # Log the action
         visit.delete()
         messages.success(request, "College/School Visit deleted successfully.")
     else:
         messages.error(request, "You are not authorized to delete this.")
     return redirect('college_visit_list')
+
+

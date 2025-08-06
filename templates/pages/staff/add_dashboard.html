@@ -59,39 +59,38 @@
     <table>
       <thead>
         <tr>
-          <th>Contact Number</th>
           <th>Name</th>
+          <th>Contact Number</th>
           <th>Purpose</th>
-          <th>Date</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <!-- Contact Number -->
-            <td>
-            <input type="text" name="contact_number" value="{{ client_form.contact_number.value|default:'' }}"
-                  class="{% if client_form.contact_number.errors %}error-field{% endif %}">
-            {% if client_form.contact_number.errors %}
-              <div class="error-message-container">
-                {% for error in client_form.contact_number.errors %}
-                  <span class="field-error">{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% endif %}
-          </td>
-
+          
           <!-- Name -->
-        <td>
-          <div class="form-row">
-            <input type="text" name="name" value="{{ client_form.name.value|default:'' }}" 
-                   class="{% if client_form.name.errors %}error-field{% endif %}">
-            {% for error in client_form.name.errors %}
+          <td>
+            <div class="form-row">
+              <input type="text" name="name" value="{{ client_form.name.value|default:'' }}" 
+              class="{% if client_form.name.errors %}error-field{% endif %}">
+              {% for error in client_form.name.errors %}
               <div class="error-message-container"><span class="field-error">{{ error }}</span></div>
-            {% endfor %}
-          </div>
+              {% endfor %}
+            </div>
+          </td>
+          
+          <td>
+          <input type="text" name="contact_number" value="{{ client_form.contact_number.value|default:'' }}"
+                class="{% if client_form.contact_number.errors %}error-field{% endif %}">
+          {% if client_form.contact_number.errors %}
+            <div class="error-message-container">
+              {% for error in client_form.contact_number.errors %}
+                <span class="field-error">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
         </td>
-
           <!-- Purpose -->
         <td>
           <div class="form-row">
@@ -102,16 +101,7 @@
             {% endfor %}
           </div>
         </td>
-          <!-- Date -->
-        <td>
-          <div class="form-row">
-            <input type="date" name="date" value="{{ client_form.date.value|default:'' }}" 
-                   class="{% if client_form.date.errors %}error-field{% endif %}">
-            {% for error in client_form.date.errors %}
-              <div class="error-message-container"><span class="field-error">{{ error }}</span></div>
-            {% endfor %}
-          </div>
-        </td>
+
         
 
           <!-- Submit -->
@@ -136,7 +126,6 @@
                 <th>Name</th>
                 <th>Contact Number</th>
                 <th>Purpose</th>
-                <th>Date</th>
                 <th></th>
               </tr>
             </thead>
@@ -188,19 +177,7 @@
                   </div>
                 </td>
 
-               <!-- Date -->
-                <td>
-                  <input type="date" name="date" value="{{ online_form.date.value|default:'' }}"
-                          class="{% if online_form.date.errors %}error-field{% endif %}">
-                  {% if online_form.date.errors %}
-                    <div class="error-message-container">
-                      {% for error in online_form.date.errors %}
-                        <span class="field-error">{{ error }}</span>
-                      {% endfor %}
-                    </div>
-                  {% endif %}
-                </div>
-                </td>
+
                 
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
@@ -222,7 +199,6 @@
                 <th>Email</th>
                 <th>Address</th>
                 <th>Purpose</th>
-                <th>Date</th>
                 <th></th>
               </tr>
             </thead>
@@ -296,19 +272,7 @@
                 </div>
               </td>
 
-              <td>
-                <div class="form-row">
-                  <input type="date" name="date" value="{{ office_form.date.value|default:'' }}"
-                        class="{% if office_form.date.errors %}error-field{% endif %}">
-                  {% if office_form.date.errors %}
-                    <div class="error-message-container">
-                      {% for error in office_form.date.errors %}
-                        <span class="field-error">{{ error }}</span>
-                      {% endfor %}
-                    </div>
-                  {% endif %}
-                </div>
-              </td>
+
 
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
@@ -329,7 +293,6 @@
                 <th>Contact Number</th>
                 <th>Person Name</th>
                 <th>Purpose</th>
-                <th>Date</th>
                 <th></th>
               </tr>
             </thead>
@@ -387,19 +350,7 @@
                     {% endif %}
                   </div>
                 </td>
-                <td>
-                  <div class="form-row">
-                    <input type="date" name="date" value="{{ college_form.date.value|default:'' }}" 
-                          class="{% if college_form.date.errors %}error-field{% endif %}">
-                    {% if college_form.date.errors %}
-                      <div class="error-message-container">
-                        {% for error in college_form.date.errors %}
-                          <span class="field-error">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-                  </div>
-                </td>
+
               <td><button type="submit" class="add-btn">+</button></td>
               </tr>
             </tbody>

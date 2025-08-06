@@ -416,18 +416,6 @@ th {
   font-weight: 700;
 }
 
-<<<<<<< HEAD
-.error-field {
-  border: 2px solid #dc3545 !important;
-  background-color: #fff5f5;
-}
-
-.field-error {
-  color: #dc3545;
-  font-size: 12px;
-  margin-top: 4px;
-  font-weight: bold;
-=======
 /* Error field styling for required fields */
 .error-field {
     border: 2px solid #e74c3c !important;
@@ -440,7 +428,6 @@ th {
     font-size: 1em;
     margin-top: 4px;
     font-weight: 500;
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 }
 
 .form-container {
@@ -606,13 +593,10 @@ form input[type="date"]:focus {
   flex-wrap: wrap;
 }
 
-<<<<<<< HEAD
-=======
 .header-controls .add-btn{
   margin: 0 0 auto auto !important;
 }
 
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 .add-btn {
   background: #43e97b;
   color: white;
@@ -636,8 +620,6 @@ form input[type="date"]:focus {
   box-shadow: 0 6px 20px rgba(67, 233, 123, 0.25);
 }
 
-<<<<<<< HEAD
-=======
 .cancel-btn {
   background-color: #dc3545;  /* vibrant red like the image */
   color: white;
@@ -672,7 +654,6 @@ form input[type="date"]:focus {
   padding: 10px 0;
 }
 
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 /* Clean filter layout - inline with Add button */
 .filter-container {
   flex: 1;
@@ -770,11 +751,7 @@ form input[type="date"]:focus {
   box-shadow: 0 6px 20px rgba(67, 233, 123, 0.25);
   white-space: nowrap;
   display: inline-block;
-<<<<<<< HEAD
-  margin: 0 auto 30px auto;
-=======
   margin: none !important;
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
   position: relative;
   overflow: hidden;
   width: auto;

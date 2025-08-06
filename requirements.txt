@@ -1,0 +1,7 @@
+<<<<<<< HEAD
+=======
+Django<5.0
+pillow>=10.0.0
+django-jazzmin>=3.0.1
+mysqlclient>=2.0
+>>>>>>> e5c0032710efacfb818a1d7f31a6fc9246ec5eff

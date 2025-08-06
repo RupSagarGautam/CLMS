@@ -64,13 +64,6 @@ def logoutUser(request):
 
 @login_required(login_url="/log-in")
 def home(request):
-<<<<<<< HEAD
-    if request.method == "GET":
-        print("Home Page")
-    else:
-        return redirect('/log-in')
-    return render(request, 'pages/home.html')
-=======
     if not request.user.is_authenticated:
         messages.error(request, "You need to log in to access this page")
         return render(request, "pages/login.html", status=403)
@@ -173,4 +166,3 @@ def editProfile(request):
     }
 
     return render(request, "pages/edit_profile.html", context)
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e

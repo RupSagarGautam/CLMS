@@ -20,6 +20,9 @@
         {% if user.is_staff %}
         <a href="/add-dashboard" class="stats-btn-head">Data Entry</a>
         {% endif %}
+        {% if user.is_superuser %}
+            <a href="/recent-activity" class="stats-btn-head">Recent Activity</a>
+        {% endif %}
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-icon" onclick="toggleDropdown()">
                <i class="fa-solid fa-user"></i>
@@ -46,12 +49,26 @@
         function goBack() {
     window.history.back(); // or use history.go(-1);
   }
+
+      setTimeout(() => {
+        const msg = document.querySelector('.backend-message');
+        if (msg) {
+            msg.style.display = 'none';
+        }
+    }, 4000); // hide after 4 seconds
+
     </script>
 {% if request.path != "/" %}
     <button class="go-back-btn" onclick="goBack()">
         <i class="fa-solid fa-arrow-left"></i> Back
     </button>
 {% endif %}
-
+{% if messages %}
+    <div class="backend-message">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
 </body>
 </html>

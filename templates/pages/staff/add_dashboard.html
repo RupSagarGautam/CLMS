@@ -1,19 +1,10 @@
 {% load static %}
-<<<<<<< HEAD
-=======
-
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>CLMS Dashboard</title>
   <link rel="stylesheet" href="{% static 'css/clms.css' %}">
-<<<<<<< HEAD
-=======
-
-  {% include "layouts/header.html" %}
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
   <style>
     .error-field {
       border: 2px solid #dc3545 !important;
@@ -47,15 +38,9 @@
       </div>
       <h2>CLMS</h2>
       <ul>
-<<<<<<< HEAD
         <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
         <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
         <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
-=======
-        <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
-        <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
-        <li><a href="{% url 'office_visit_list' %}">office Visit</a></li>
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
         <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
       </ul>
     </div>
@@ -63,59 +48,6 @@
     <!-- Main Content -->
     <div class="main-content">
 
-<<<<<<< HEAD
-      <!-- Client Visit -->
-      <section>
-        <h3>Client Visit</h3>
-        <form method="POST" action="{% url 'add_client' %}">
-          {% csrf_token %}
-          <table>
-            <thead>
-              <tr>
-                <th>Contact Number</th>
-                <th>Name</th>
-                <th>Purpose</th>
-                <th>Date</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="form-row">
-                    <input type="text" name="contact_number" value="{{ client_form.contact_number.value|default:'' }}" 
-                           class="{% if client_form.contact_number.errors %}error-field{% endif %}" required>
-                    {% if client_form.contact_number.errors %}
-                      <div class="error-message-container">
-                        {% for error in client_form.contact_number.errors %}
-                          <span class="field-error">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-                  </div>
-                </td>
-                <td>
-                  <div class="form-row">
-                    <input type="text" name="name" value="{{ client_form.name.value|default:'' }}" 
-                           class="{% if client_form.name.errors %}error-field{% endif %}" required>
-                    {% if client_form.name.errors %}
-                      <div class="error-message-container">
-                        {% for error in client_form.name.errors %}
-                          <span class="field-error">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-                  </div>
-                </td>
-                <td><input type="text" name="purpose" value="{{ client_form.purpose.value|default:'' }}"></td>
-                <td><input type="date" name="date" value="{{ client_form.date.value|default:'' }}"></td>
-                <td><button type="submit" class="add-btn">+</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
-      </section>
-=======
    <!-- client Visit -->
   <section>
   <h3>Client Visit</h3>
@@ -189,7 +121,6 @@
   </form>
 </section>
 
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 
       <!-- Online Class Inquiry -->
       <section>
@@ -208,19 +139,12 @@
             </thead>
             <tbody>
               <tr>
-<<<<<<< HEAD
-                <td>
-                  <div class="form-row">
-                    <input type="text" name="name" value="{{ online_form.name.value|default:'' }}" 
-                           class="{% if online_form.name.errors %}error-field{% endif %}" required>
-=======
 
                 <!-- Name -->
                 <td>
                   <div class="form-row">
                     <input type="text" name="name" value="{{ online_form.name.value|default:'' }}" 
                            class="{% if online_form.name.errors %}error-field{% endif %}">
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
                     {% if online_form.name.errors %}
                       <div class="error-message-container">
                         {% for error in online_form.name.errors %}
@@ -230,19 +154,12 @@
                     {% endif %}
                   </div>
                 </td>
-<<<<<<< HEAD
-                <td>
-                  <div class="form-row">
-                    <input type="text" name="contact" value="{{ online_form.contact.value|default:'' }}" 
-                           class="{% if online_form.contact.errors %}error-field{% endif %}" required>
-=======
 
                  <!-- Contact -->
                 <td>
                   <div class="form-row">
                     <input type="text" name="contact" value="{{ online_form.contact.value|default:'' }}" 
                            class="{% if online_form.contact.errors %}error-field{% endif %}">
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
                     {% if online_form.contact.errors %}
                       <div class="error-message-container">
                         {% for error in online_form.contact.errors %}
@@ -252,10 +169,6 @@
                     {% endif %}
                   </div>
                 </td>
-<<<<<<< HEAD
-                <td><input type="text" name="purpose" value="{{ online_form.purpose.value|default:'' }}"></td>
-                <td><input type="date" name="date" value="{{ online_form.date.value|default:'' }}"></td>
-=======
 
                  <!-- Purpose -->
                 <td>
@@ -286,7 +199,6 @@
                 </div>
                 </td>
                 
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
             </tbody>
@@ -353,11 +265,6 @@
                     {% endif %}
                   </div>
                 </td>
-<<<<<<< HEAD
-                <td><input type="text" name="address" value="{{ office_form.address.value|default:'' }}"></td>
-                <td><input type="text" name="purpose" value="{{ office_form.purpose.value|default:'' }}"></td>
-                <td><input type="date" name="date" value="{{ office_form.date.value|default:'' }}"></td>
-=======
                 <td>
                 <div class="form-row">
                   <input type="text" name="address" value="{{ office_form.address.value|default:'' }}"
@@ -400,7 +307,6 @@
                 </div>
               </td>
 
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
                 <td><button type="submit" class="add-btn">+</button></td>
               </tr>
             </tbody>
@@ -465,11 +371,6 @@
                     {% endif %}
                   </div>
                 </td>
-<<<<<<< HEAD
-                <td><input type="text" name="purpose" value="{{ college_form.purpose.value|default:'' }}"></td>
-                <td><input type="date" name="date" value="{{ college_form.date.value|default:'' }}"></td>
-                <td><button type="submit" class="add-btn">+</button></td>
-=======
                 <td>
                   <div class="form-row">
                     <input type="text" name="purpose" value="{{ college_form.purpose.value|default:'' }}" 
@@ -497,7 +398,6 @@
                   </div>
                 </td>
               <td><button type="submit" class="add-btn">+</button></td>
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
               </tr>
             </tbody>
           </table>

@@ -16,7 +16,7 @@ body {
 }
 .top-bar-head .dashboard-btn-head, .top-bar-head .stats-btn-head {
     background: #fff;
-    color: #31882e;
+    color: #333;
     border: none;
     border-radius: 5px;
     padding: 0.5rem 1.1rem;
@@ -27,17 +27,12 @@ body {
     transition: background 0.2s, color 0.2s;
     text-decoration: none;
     display: inline-block;
+    transition: 300ms;
 }
-<<<<<<< HEAD
-.top-bar .dashboard-btn:hover, .top-bar .stats-btn:hover {
-    background: #e6f7ea;
-    color: #1e5c1a;
-=======
 .top-bar-head .dashboard-btn-head:hover, .top-bar-head .stats-btn-head:hover {
     background: #1e5c1a ;
     color:#e6f7ea ;
     transition: 300ms;
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
 }
 .profile-dropdown {
     position: relative;
@@ -48,7 +43,7 @@ body {
     height: 40px;
     border-radius: 50%;
     background: #fff;
-    color: #31882e;
+    color: #333;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -73,7 +68,7 @@ body {
     overflow: hidden;
 }
 .dropdown-content a {
-    color: #31882e;
+    color: #333;
     padding: 12px 18px;
     text-decoration: none;
     display: block;
@@ -102,8 +97,6 @@ body {
     justify-content: center;
     align-items: center;
 }
-<<<<<<< HEAD
-=======
 
 .prf-logout {
     color: #ff0707 !important;
@@ -140,4 +133,18 @@ body {
     transform: translateY(-1px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
+
+.backend-message {
+    position: absolute;
+    top: 70px;
+    right: 30px;
+    font-size: 15px;
+    background-color: #f0fff5;
+    color: #2e7d32;
+    border: 1px solid #badbbb;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+}

@@ -19,11 +19,6 @@
       </div>
       <h2>CLMS</h2>
       <ul>
-<<<<<<< HEAD
-        <li class="active"><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
-        <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
-=======
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
         <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
         <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
         <li><a href="{% url 'office_visit_list' %}">office Visit</a></li>
@@ -35,17 +30,11 @@
     <div class="main-content">
       <div class="header">
         <h2>Office Visit List</h2>
-<<<<<<< HEAD
-        <!-- Add button and filters -->
-        <div class="header-controls">
-          <a href="{% url 'add_dashboard' %}" class="add-btn">Add ➕</a>
-=======
         
         <!-- Add button and filters row -->
         <div class="header-controls">
           <a href="{% url 'add_dashboard' %}" class="add-btn">Add ➕</a>
           
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
           {% if user.is_superuser and staff_users %}
           <div class="filter-container">
             <form method="GET" class="filter-form" style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
@@ -60,41 +49,22 @@
                   {% endfor %}
                 </select>
               </div>
-<<<<<<< HEAD
-=======
               
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
               <div class="filter-item">
                 <label for="start_date">Start Date</label>
                 <input type="date" name="start_date" id="start_date" value="{{ current_filters.start_date }}" placeholder="yyyy-mm-dd">
               </div>
-<<<<<<< HEAD
-=======
               
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
               <div class="filter-item">
                 <label for="end_date">End Date</label>
                 <input type="date" name="end_date" id="end_date" value="{{ current_filters.end_date }}" placeholder="yyyy-mm-dd">
               </div>
-<<<<<<< HEAD
-=======
               
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
               <button type="submit" class="apply-btn">Apply Filters</button>
             </form>
           </div>
           {% endif %}
         </div>
-<<<<<<< HEAD
-        {% if messages %}
-        <div class="message-container">
-          {% for message in messages %}
-            <div class="success-message">{{ message }}</div>
-          {% endfor %}
-        </div>
-        {% endif %}
-        <!-- Table of office visits -->
-=======
 
         {% if messages %}
           <div class="message-container">
@@ -106,7 +76,6 @@
       </div>
 
       <!-- Table -->
->>>>>>> 3e7a35ee888d3205cac12d20b58f29908d0efc9e
       <table>
         <thead>
           <tr>

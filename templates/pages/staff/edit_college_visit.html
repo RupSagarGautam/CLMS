@@ -154,7 +154,11 @@
                   {% endif %}
                 </td>
                 <td>
-                  <input type="date" name="date" value="{{ form.date.value|date:'Y-m-d' }}" required class="{% if form.date.errors %}error-field{% endif %}">
+                  <!-- Change this line: -->
+                  {% comment %} <input type="date" name="date" value="{{ form.date.value|date:'Y-m-d' }}" required class="{% if form.date.errors %}error-field{% endif %}">
+                   {% endcomment %}
+                  <!-- To this: -->
+                  <input type="date" name="date" value="{{ form.date.value|date:'Y-m-d' }}" class="{% if form.date.errors %}error-field{% endif %}">
                   {% if form.date.errors %}
                     <div class="field-error">{{ form.date.errors.0 }}</div>
                   {% endif %}
@@ -189,4 +193,4 @@
 </script>
 
 </body>
-</html> 
+</html>

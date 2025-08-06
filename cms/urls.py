@@ -39,8 +39,7 @@ urlpatterns = [
     path('profile/', cms_views.profile),
     path('edit-profile/', cms_views.editProfile),
     path('recent-activity/', cms_views.recent_activity, name='recent_activity'),
-
-
+    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

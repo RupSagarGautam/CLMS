@@ -1,0 +1,364 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CLMS Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/clms.css' %}">
+
+  {% include "layouts/header.html" %}
+  <style>
+    .error-field {
+      border: 2px solid #dc3545 !important;
+      background-color: #fff5f5 !important;
+    }
+    .field-error {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: 4px;
+      font-weight: bold;
+      display: block;
+    }
+    .form-row {
+      position: relative;
+    }
+    .error-message-container {
+      margin-top: 5px;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo">
+        <a href="{% url 'add_dashboard' %}">
+         <img src="{% static 'assets/favicon.png' %}" alt="Logo">
+        </a>
+      </div>
+      <h2>CLMS</h2>
+      <ul>
+        <li><a href="{% url 'client_visit_list' %}">Client Visit</a></li>
+        <li><a href="{% url 'online_class_list' %}">Online Class Inquiry</a></li>
+        <li><a href="{% url 'office_visit_list' %}">Office Visit</a></li>
+        <li><a href="{% url 'college_visit_list' %}">College/School Visit</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+   <!-- client Visit -->
+  <section>
+  <h3>Client Visit</h3>
+  <form method="POST" action="{% url 'add_client' %}">
+    {% csrf_token %}
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Contact Number</th>
+          <th>Purpose</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <!-- Contact Number -->
+          
+          <!-- Name -->
+          <td>
+            <div class="form-row">
+              <input type="text" name="name" value="{{ client_form.name.value|default:'' }}" 
+              class="{% if client_form.name.errors %}error-field{% endif %}">
+              {% for error in client_form.name.errors %}
+              <div class="error-message-container"><span class="field-error">{{ error }}</span></div>
+              {% endfor %}
+            </div>
+          </td>
+          
+          <td>
+          <input type="text" name="contact_number" value="{{ client_form.contact_number.value|default:'' }}"
+                class="{% if client_form.contact_number.errors %}error-field{% endif %}">
+          {% if client_form.contact_number.errors %}
+            <div class="error-message-container">
+              {% for error in client_form.contact_number.errors %}
+                <span class="field-error">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </td>
+          <!-- Purpose -->
+        <td>
+          <div class="form-row">
+            <input type="text" name="purpose" value="{{ client_form.purpose.value|default:'' }}" 
+                   class="{% if client_form.purpose.errors %}error-field{% endif %}">
+            {% for error in client_form.purpose.errors %}
+              <div class="error-message-container"><span class="field-error">{{ error }}</span></div>
+            {% endfor %}
+          </div>
+        </td>
+
+        
+
+          <!-- Submit -->
+          <td>
+            <button type="submit" class="add-btn">+</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</section>
+
+
+      <!-- Online Class Inquiry -->
+      <section>
+        <h3>Online Class Inquiry</h3>
+        <form method="POST" action="{% url 'add_online' %}">
+          {% csrf_token %}
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th>Purpose</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+
+                <!-- Name -->
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="name" value="{{ online_form.name.value|default:'' }}" 
+                           class="{% if online_form.name.errors %}error-field{% endif %}">
+                    {% if online_form.name.errors %}
+                      <div class="error-message-container">
+                        {% for error in online_form.name.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+
+                 <!-- Contact -->
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="contact" value="{{ online_form.contact.value|default:'' }}" 
+                           class="{% if online_form.contact.errors %}error-field{% endif %}">
+                    {% if online_form.contact.errors %}
+                      <div class="error-message-container">
+                        {% for error in online_form.contact.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+
+                 <!-- Purpose -->
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="purpose" value="{{ online_form.purpose.value|default:'' }}"
+                          class="{% if online_form.purpose.errors %}error-field{% endif %}">
+                    {% if online_form.purpose.errors %}
+                      <div class="error-message-container">
+                        {% for error in online_form.purpose.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+
+
+                
+                <td><button type="submit" class="add-btn">+</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </section>
+
+      <!-- Office Visit -->
+      <section>
+        <h3>Office Visit</h3>
+        <form method="POST" action="{% url 'add_office' %}">
+          {% csrf_token %}
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Purpose</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="name" value="{{ office_form.name.value|default:'' }}" 
+                           class="{% if office_form.name.errors %}error-field{% endif %}">
+                    {% if office_form.name.errors %}
+                      <div class="error-message-container">
+                        {% for error in office_form.name.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="contact" value="{{ office_form.contact.value|default:'' }}" 
+                           class="{% if office_form.contact.errors %}error-field{% endif %}">
+                    {% if office_form.contact.errors %}
+                      <div class="error-message-container">
+                        {% for error in office_form.contact.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="email" value="{{ office_form.email.value|default:'' }}" 
+                           class="{% if office_form.email.errors %}error-field{% endif %}" 
+                           oninput="this.value = this.value.toLowerCase()">
+                    {% if office_form.email.errors %}
+                      <div class="error-message-container">
+                        {% for error in office_form.email.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                <div class="form-row">
+                  <input type="text" name="address" value="{{ office_form.address.value|default:'' }}"
+                        class="{% if office_form.address.errors %}error-field{% endif %}">
+                  {% if office_form.address.errors %}
+                    <div class="error-message-container">
+                      {% for error in office_form.address.errors %}
+                        <span class="field-error">{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+              </td>
+
+              <td>
+                <div class="form-row">
+                  <input type="text" name="purpose" value="{{ office_form.purpose.value|default:'' }}"
+                        class="{% if office_form.purpose.errors %}error-field{% endif %}">
+                  {% if office_form.purpose.errors %}
+                    <div class="error-message-container">
+                      {% for error in office_form.purpose.errors %}
+                        <span class="field-error">{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+              </td>
+
+
+
+                <td><button type="submit" class="add-btn">+</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </section>
+
+      <!-- College/School Visit -->
+      <section>
+        <h3>College/School Visit</h3>
+        <form method="POST" action="{% url 'add_college' %}">
+          {% csrf_token %}
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th>Person Name</th>
+                <th>Purpose</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="name" value="{{ college_form.name.value|default:'' }}" 
+                           class="{% if college_form.name.errors %}error-field{% endif %}">
+                    {% if college_form.name.errors %}
+                      <div class="error-message-container">
+                        {% for error in college_form.name.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="contact" value="{{ college_form.contact.value|default:'' }}" 
+                           class="{% if college_form.contact.errors %}error-field{% endif %}">
+                    {% if college_form.contact.errors %}
+                      <div class="error-message-container">
+                        {% for error in college_form.contact.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="person_name" value="{{ college_form.person_name.value|default:'' }}" 
+                           class="{% if college_form.person_name.errors %}error-field{% endif %}">
+                    {% if college_form.person_name.errors %}
+                      <div class="error-message-container">
+                        {% for error in college_form.person_name.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <div class="form-row">
+                    <input type="text" name="purpose" value="{{ college_form.purpose.value|default:'' }}" 
+                          class="{% if college_form.purpose.errors %}error-field{% endif %}">
+                    {% if college_form.purpose.errors %}
+                      <div class="error-message-container">
+                        {% for error in college_form.purpose.errors %}
+                          <span class="field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </td>
+
+              <td><button type="submit" class="add-btn">+</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </section>
+
+    </div>
+  </div>
+</body>
+</html>

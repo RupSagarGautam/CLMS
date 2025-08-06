@@ -77,6 +77,38 @@ class OfficeVisitForm(forms.ModelForm):
             if re.search(r'\d|@', name):
                 raise forms.ValidationError("Name must contain only letters.")
         return name
+        
+    # For OfficeVisitForm class
+    def clean_purpose(self):
+        purpose = self.cleaned_data.get('purpose')
+        if purpose:
+            if re.search(r'\d', purpose):
+                raise forms.ValidationError("Purpose must not contain numbers.")
+        return purpose
+
+    # For ClientVisitForm class
+    def clean_purpose(self):
+        purpose = self.cleaned_data.get('purpose')
+        if purpose:
+            if re.search(r'\d', purpose):
+                raise forms.ValidationError("Purpose must not contain numbers.")
+        return purpose
+
+    # For OnlineClassInquiryForm class
+    def clean_purpose(self):
+        purpose = self.cleaned_data.get('purpose')
+        if purpose:
+            if re.search(r'\d', purpose):
+                raise forms.ValidationError("Purpose must not contain numbers.")
+        return purpose
+
+    # For CollegeVisitForm class
+    def clean_purpose(self):
+        purpose = self.cleaned_data.get('purpose')
+        if purpose:
+            if re.search(r'\d', purpose):
+                raise forms.ValidationError("Purpose must not contain numbers.")
+        return purpose
 
 # ------------------------
 # Client Visit Form
@@ -225,6 +257,13 @@ class CollegeVisitForm(forms.ModelForm):
             if re.search(r'\d|@', name):
                 raise forms.ValidationError("Name must contain only letters.")
         return name
+        
+    def clean_purpose(self):
+        purpose = self.cleaned_data.get('purpose')
+        if purpose:
+            if re.search(r'\d', purpose):
+                raise forms.ValidationError("Purpose must not contain numbers.")
+        return purpose
 
     def clean_person_name(self):
         person_name = self.cleaned_data.get('person_name')
